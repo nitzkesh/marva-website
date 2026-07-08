@@ -11,9 +11,14 @@ from [Marva_brand_foundation.md](./Marva_brand_foundation.md).*
 
 | Form | What it is | Where it's used |
 |---|---|---|
-| **Full lockup** | sage-leaf mark **+** מרווה wordmark (Rubik 700, deep sage `#5C7A4E`) | Site header, deck covers, letterhead, footer |
-| **Mark only** | the sage leaf alone, `#8CA87C`, with its central vein | Favicon, IG avatar, app icon, watermark |
-| **Latin lockup** *(optional)* | leaf + "MARVA" (Rubik 700) | Advertiser / international decks only |
+| **Full lockup** | three-block mark **+** מרווה wordmark (Rubik 700, **black `#111111`**) | Site header, deck covers, letterhead, footer |
+| **Mark only** | the three-block mark — sage leaf (white vein) + sky lobe + sand base | Favicon, IG avatar, app icon, watermark |
+| **Latin lockup** *(optional)* | mark + "MARVA" (Rubik 700) | Advertiser / international decks only |
+
+> **Finalized 2026-07-09:** the mark is the **three-block Bauhaus sprout** (sage leaf + sky lobe +
+> sand base + white vein), shipped as `app/public/marva-mark.svg` (full-color) and
+> `marva-mark-white.svg` (reversed). Source direction: `Marva/primary-logo-viaGPT.png`. A
+> higher-fidelity Recraft/Figma vector master may replace it later with no downstream change.
 
 **Leaf placement — *locked*:** leaf **leading** — it sits to the **right** of the wordmark
 (first in RTL reading order). The leaf-trailing (left) version is retired as an alternate;
@@ -57,15 +62,15 @@ Below these, the leaf's central vein and the Hebrew glyphs break up.
 
 | Background | Full lockup | Mark only |
 |---|---|---|
-| Off-white base `#FBFAF5` | ✅ default | ✅ |
-| Pale-sage tile `#EEF2E6` | ✅ | ✅ **preferred for avatars** |
+| Off-white base `#FBFAF6` | ✅ default | ✅ |
+| Sage-tint tile `#EEF2EC` | ✅ | ✅ **preferred for avatars** |
 | White `#FFFFFF` | ✅ | ✅ |
-| Sage `#8CA87C` / sky `#8FC2DE` / sand `#E6D8B8` fill | ⚠️ wordmark must switch to **off-white** `#FBFAF5` for contrast | ✅ leaf in off-white |
+| Sage `#A8BFAE` / sky `#A6C9E8` / sand `#E6DCC6` fill | ⚠️ wordmark must switch to **off-white** `#FBFAF6` for contrast | ✅ mark in off-white (`marva-mark-white.svg`) |
 | Photo / busy background | ❌ unless behind a solid or ½-opacity brand-color panel | ❌ same rule |
 
 **Contrast is the hard rule** (from the brand foundation): sage/sky/sand are all light —
-deep-sage text on them fails WCAG AA. On any brand-color fill, the logo goes **off-white**,
-not deep sage. Check 4.5:1 before shipping.
+**black** text/logo on them passes WCAG AA. But on a **black** fill (or any saturated fill),
+the logo/wordmark must switch to **off-white** `#FBFAF6`. Check 4.5:1 before shipping.
 
 ---
 
@@ -92,7 +97,7 @@ For each of full lockup + mark-only:
 - On both off-white and pale-sage tile backgrounds
 
 Plus: **favicon** (`.ico` + 32/16 px PNG, simplified solid leaf) and a **512×512 IG
-avatar** (mark on `#EEF2E6`).
+avatar** (mark on `#EEF2EC`).
 
 *Term note — **SVG** ("Scalable Vector Graphic"): a logo stored as math (curves), not
 pixels, so it's razor-sharp at any size and edits cleanly. **PNG**: a pixel image with
@@ -100,23 +105,15 @@ transparency, for places SVG isn't accepted. Always prefer SVG for the web.*
 
 ---
 
-## 7. Production workflow (the Recraft → Figma step)
+## 7. Production status
 
-Per the brand foundation, the mark is built like this — **this is the one part that needs
-you at the keyboard**, because AI-only logos may not be copyrightable and the hand-finish
-is what makes it ownable:
+**The mark is finalized** as a hand-built SVG (`app/public/marva-mark.svg` + `marva-mark-white.svg`),
+derived from the approved brand sheet `Marva/primary-logo-viaGPT.png`, and is live on the site.
 
-1. **You, in Recraft** (Vector engine, batch of 6–8) — generate the **leaf mark only**,
-   using the prompts already written in
-   [Marva_brand_foundation.md §Recraft prompts](./Marva_brand_foundation.md). Never let it
-   render Hebrew.
-2. **Me + you, in Figma** — take the best 1–2 leaves, simplify the paths, set **מרווה in
-   Rubik 700**, lock the lockup, export SVG + PNG.
-
-There's already a usable rough leaf at [marva-website-logo.pdf](./marva-website-logo.pdf)
-— good color and gesture, but raster. We can build the lockup structure from it now as a
-working placeholder and swap in your clean Recraft SVG when it's ready; nothing downstream
-breaks (the website scaffolds against a placeholder by design).
+*Optional upgrade:* for a higher-fidelity vector master, redraw the mark in **Figma** (or generate
+a vector base in **Recraft**, Vector engine, then hand-finish in Figma — never let AI render the
+Hebrew; set **מרווה in Rubik 700** as real text). Export SVG + PNG and drop the SVG in over
+`marva-mark.svg`; nothing downstream breaks (header/footer/label/favicon all reference the one file).
 
 ---
 

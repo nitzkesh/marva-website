@@ -1,19 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Assistant:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&family=Rubik:wght@400;500;700;900&family=Work+Sans:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+/* Brand palette — Marva design system (Bauhaus TLV one-pager, source of truth).
+   Sage 45% (dominant) · Sky 30% · Sand 15% · Black/White 10%. */
 @theme {
-  --color-sage: #8CA87C;
-  --color-sage-light: #a3bc96;
-  --color-sky: #8FC2DE;
-  --color-sky-light: #b5d6e9;
-  --color-sand: #E6D8B8;
-  --color-pale-sage: #EEF2E6;
-  --color-ink: #5C7A4E;
-  --color-ink-strong: #2E332B;
-  --color-base: #FBFAF5;
+  --color-sage: #A8BFAE;
+  --color-sage-deep: #7FA089;
+  --color-sky: #A6C9E8;
+  --color-sky-deep: #5FA8D3;
+  --color-sand: #E6DCC6;
+  --color-sand-deep: #D8C39F;
+  --color-ink: #111111;
+  --color-base: #FBFAF6;        /* off-white page background */
+  --color-surface: #FFFFFF;     /* white card surface */
+  --color-inverse: #FBFAF6;     /* text on dark/black */
+  --color-muted: #5B6660;
+  --color-border: #E3E0D8;
+  --color-sage-tint: #EEF2EC;
+  --color-sky-tint: #EAF4FA;
+  --color-sand-tint: #F7F1E5;
 
-  --font-heading: 'Rubik', 'Assistant', 'Segoe UI', system-ui, sans-serif;
-  --font-body: 'Assistant', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Rubik', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Work Sans', 'Assistant', 'Segoe UI', system-ui, sans-serif;
 }
 
 html {
@@ -22,7 +30,7 @@ html {
 
 body {
   background: var(--color-base);
-  color: var(--color-ink-strong);
+  color: var(--color-ink);
   font-family: var(--font-body);
 }
 
@@ -32,7 +40,7 @@ body {
   top: -100%;
   right: 1rem;
   background: var(--color-ink);
-  color: var(--color-base);
+  color: var(--color-inverse);
   padding: 0.75rem 1.5rem;
   border-radius: 0 0 0.5rem 0.5rem;
   z-index: 100;
@@ -45,72 +53,55 @@ body {
 
 /* Header scroll state */
 .header-scrolled {
-  box-shadow: 0 1px 12px rgba(46, 51, 43, 0.08);
-}
-
-/* Placeholder image slot */
-.img-slot {
-  background: repeating-linear-gradient(135deg, var(--color-pale-sage), var(--color-pale-sage) 10px, #ffffff 10px, #ffffff 20px);
-  border: 1.5px dashed var(--color-sage);
-  color: var(--color-ink);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  padding: 1rem;
+  box-shadow: 0 1px 12px rgba(17, 17, 17, 0.08);
 }
 
 /* Form inputs */
 .form-input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1.5px solid var(--color-sand);
-  border-radius: 0.75rem;
-  background: var(--color-base);
-  color: var(--color-ink-strong);
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.12s, box-shadow 0.12s;
 }
 .form-input:focus {
-  outline: none;
-  border-color: var(--color-sage);
-  box-shadow: 0 0 0 3px rgba(140, 168, 124, 0.15);
+  outline: 2px solid var(--color-sage-tint);
+  border-color: var(--color-sage-deep);
 }
 .form-input::placeholder {
-  color: var(--color-ink-strong);
+  color: var(--color-ink);
   opacity: 0.35;
 }
 
 .form-label {
   display: block;
-  font-size: 0.875rem;
   font-weight: 600;
+  font-size: 0.8125rem;
   color: var(--color-ink);
-  margin-bottom: 0.375rem;
+  margin-bottom: 6px;
 }
 
 /* Radio button custom style */
 .radio-option {
   display: flex;
+  gap: 12px;
   align-items: flex-start;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  border: 1.5px solid var(--color-sand);
-  border-radius: 0.75rem;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
 }
 .radio-option:has(input:checked) {
-  border-color: var(--color-sage);
-  background: var(--color-pale-sage);
+  border-color: var(--color-sage-deep);
+  background: var(--color-sage-tint);
 }
 .radio-option input[type="radio"] {
   accent-color: var(--color-ink);
-  margin-top: 0.2rem;
-  flex-shrink: 0;
 }
 
 /* Conditional form fields */
@@ -121,47 +112,33 @@ body {
   transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 .conditional-fields.is-active {
-  max-height: 500px;
+  max-height: 600px;
   opacity: 1;
 }
 
-/* Contact method toggle (segmented pill) */
-.contact-toggle {
-  display: inline-flex;
-  gap: 0.25rem;
-  padding: 0.3rem;
-  background: #fff;
-  border: 1.5px solid var(--color-sand);
-  border-radius: 9999px;
-}
-.contact-toggle-btn {
-  padding: 0.6rem 1.6rem;
-  border: none;
-  background: transparent;
-  border-radius: 9999px;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--color-ink);
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-.contact-toggle-btn.is-active {
-  background: var(--color-ink);
-  color: var(--color-base);
-}
-
 /* Content placeholder (dashed) — for sections whose content comes later */
-.placeholder-box {
-  border: 1.5px dashed var(--color-sage);
-  border-radius: 1rem;
-  color: var(--color-ink);
+.dashed-box {
+  border: 2px dashed var(--color-border);
+  border-radius: 20px;
+  color: var(--color-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 1.5rem;
+  padding: 48px 20px;
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  opacity: 0.75;
+}
+
+/* Card shadow utilities */
+.shadow-card {
+  box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.06);
+}
+.shadow-card-hover:hover {
+  box-shadow: 0 4px 8px rgba(17, 17, 17, 0.06), 0 16px 32px rgba(17, 17, 17, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }

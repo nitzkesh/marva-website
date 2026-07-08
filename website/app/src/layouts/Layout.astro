@@ -15,10 +15,12 @@ const { title, description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="description" content={description} />
     <title>{title}</title>
   </head>
-  <body class="bg-base text-ink-strong font-body overflow-x-hidden">
+  <body class="bg-base text-ink font-body overflow-x-hidden">
     <a href="#main-content" class="skip-link">דלג לתוכן</a>
     <slot />
   </body>

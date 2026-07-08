@@ -20,21 +20,12 @@ gimmick.
 
 ---
 
-## 2. Tagline & the core pun *(locked)*
+## 2. The name
 
-> **פרסום שמרווה**
-
-*Gloss: "advertising that satisfies / quenches."* This is the whole brand in two words:
-**מרווה** is simultaneously the brand name (sage), the Hebrew verb "quenches thirst,"
-and — by sound — "satisfies." Every piece of copy should stay inside this idea: the
-product literally quenches thirst *and* the advertising deal satisfies the client.
-
-**Full hero tagline (locked in site copy):**
-> מים מינרליים בחינם · פרסום שמרווה
-> *Gloss: "Free mineral water · advertising that satisfies."*
-
-Use the two-word **פרסום שמרווה** as the short signature (email sign-offs, IG bio,
-footer). Use the full line as the hero eyebrow.
+**מרווה** means *sage* (the Salvia plant) and, by sound, evokes the Hebrew verb "quenches
+thirst" — a natural fit for a water brand. Use that meaning as brand *rationale* (name + sage
+color + leaf mark all point at one idea). **Do not build a pun-based tagline from the name** —
+any such slogan has been retired and is not used anywhere.
 
 ---
 
@@ -59,7 +50,7 @@ footer). Use the full line as the hero eyebrow.
 
 | Do | Don't |
 |---|---|
-| המותג שלכם, ביד של כולם | !!!פרסום מטורף במחיר הכי זול |
+| המותג שלכם, בידיים של כולם | !!!פרסום מטורף במחיר הכי זול |
 | נקודות חלוקה בחופים ובטיילת ת״א | חשיפה בכל מקום בארץ (vague) |
 | הרקע ואזור עיצוב מוגדר הם שלכם | הכל על התווית שלכם (over-promise) |
 | נשמח להכין לכם הצעה | קנו עכשיו! מלאי מוגבל! |
@@ -102,7 +93,7 @@ Three lengths. Use the one that fits the slot (IG bio, about-section, deck intro
 
 ## 5. Words we own / words we avoid
 
-**Lean on:** מרווה · חינם · ביד של כולם · חשיפה · נקודות חלוקה · טבעי · תל אביב · חוף ·
+**Lean on:** מרווה · חינם · בידיים של כולם · חשיפה · נקודות חלוקה · טבעי · תל אביב · חוף ·
 טרי · חיובי.
 
 **Avoid:** "מהפכני" / "פורץ דרך" (empty hype), "הזול ביותר" (cheap ≠ the brand), heavy

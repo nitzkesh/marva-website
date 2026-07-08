@@ -1,5 +1,10 @@
 # Marva Landing Page — Design Direction
 
+> **Superseded 2026-07-09.** This describes an earlier landing design (audience-fork layout,
+> deep-sage palette) that has been replaced. The live site (`app/src/pages/index.astro`) and
+> `brand-book/Marva_brand_foundation.md` are the current sources of truth; palette hexes below
+> are the retired pre-reconciliation values. Kept as historical rationale only.
+
 Design decisions locked before coding. Every choice answers: "why this, not the generic default?"
 
 ---

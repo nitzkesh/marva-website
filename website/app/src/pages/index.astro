@@ -1,498 +1,332 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Logo from '../components/Logo.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import Input from '../components/Input.astro';
+
+const whereCards = [
+  { title: 'נקודות חלוקה אסטרטגיות', body: 'חופים, טיילות ומוקדים חמים בתל אביב.', accent: 'var(--color-sage)' },
+  { title: 'בתי עסק', body: 'הבקבוקים מגיעים ישירות לסניפי הרשת.', accent: 'var(--color-sky)' },
+  { title: 'אירועים', body: 'אירועי ספורט ותרבות, כנסים, הרצאות, סמינרים וחתונות.', accent: 'var(--color-sand)' },
+  { title: 'סופרמרקטים "הצינור"', body: 'על המדפים בסניפי הרשת.', accent: 'var(--color-sage)' },
+];
+
+const howSteps = [
+  { n: '01', title: 'קבלת הצעת מחיר', body: 'הצעה לפי פרטי הקמפיין שלכם.' },
+  { n: '02', title: 'עיצוב התווית', body: 'מעצבים את התווית — הרקע ואזור עיצוב מוגדר הם שלכם.' },
+  { n: '03', title: 'יוצאים לדרך!', body: 'מגיעים ליד של קהל היעד שלכם.' },
+];
+
+const routeButtons = [
+  { key: 'business', label: 'אני רוצה בקבוקים לעסק שלי' },
+  { key: 'find', label: 'איפה תמצאו אותנו?' },
+  { key: 'advertise', label: 'אני רוצה לפרסם' },
+];
+
+const tabs = [
+  { key: 'business', label: 'בקבוקים לעסק שלי' },
+  { key: 'find', label: 'איפה תמצאו אותנו?' },
+  { key: 'advertise', label: 'אני רוצה לפרסם' },
+];
+
+const findSpots = [
+  { date: 'א׳, 12.7', loc: 'טיילת תל אביב · מול גורדון' },
+  { date: 'ג׳, 14.7', loc: 'חוף פרישמן' },
+  { date: 'ה׳, 16.7', loc: 'כיכר הבימה' },
+  { date: 'ו׳, 17.7', loc: 'שרונה מרקט' },
+  { date: 'ש׳, 18.7', loc: 'דיזנגוף סנטר' },
+];
 ---
 
-<Layout
-  title="מרווה — המותג שלכם, ביד של כולם"
-  description="מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם. חשיפה רחבה, זמן מגע ארוך, וחוויה חיובית שנשארת ביד."
->
+<Layout title="מרווה — מים בחינם" description="מפרסמים משלמים על הבקבוקים, אנשים שותים בחינם. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם.">
+
   <!-- ═══════════════════ HEADER ═══════════════════ -->
-  <header class="site-header fixed top-0 inset-x-0 z-50 backdrop-blur-sm bg-base/80 border-b border-sand/50 transition-shadow duration-300">
-    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+  <header class="site-header sticky top-0 z-50 bg-base/85 backdrop-blur-sm border-b border-border transition-shadow">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
       <Logo size="sm" />
-      <nav class="hidden md:flex items-center gap-8 text-sm font-body font-semibold">
-        <a href="#how" class="text-ink-strong/70 hover:text-ink transition-colors">איך זה עובד</a>
-        <a href="#audience" class="text-ink-strong/70 hover:text-ink transition-colors">למי זה מתאים</a>
-        <a href="#distribution" class="text-ink-strong/70 hover:text-ink transition-colors">איפה אנחנו</a>
-        <a href="#quote" class="text-ink-strong/70 hover:text-ink transition-colors">צרו קשר</a>
+      <nav class="hidden md:flex items-center gap-7 font-body text-ink">
+        <a href="#who" class="hover:text-sage-deep transition-colors">מי אנחנו</a>
+        <a href="#where" class="hover:text-sage-deep transition-colors">לאן מגיעים</a>
+        <a href="#how" class="hover:text-sage-deep transition-colors">איך זה עובד</a>
       </nav>
-      <a
-        href="#quote"
-        data-source="general"
-        class="hidden md:inline-block bg-ink text-base px-5 py-2 rounded-full text-sm font-medium hover:bg-ink-strong transition-colors"
-      >
-        קבלת הצעת מחיר
-      </a>
+      <Button href="#forms" size="m" data-route="advertise" class="hidden md:inline-flex">אני רוצה לפרסם</Button>
       <button id="hamburger" class="md:hidden relative flex flex-col justify-center items-center gap-[6px] w-10 h-10" aria-label="תפריט ניווט">
-        <span class="hamburger-line block w-6 h-[2px] bg-ink-strong rounded-full origin-center"></span>
-        <span class="hamburger-line block w-6 h-[2px] bg-ink-strong rounded-full origin-center"></span>
-        <span class="hamburger-line block w-6 h-[2px] bg-ink-strong rounded-full origin-center"></span>
+        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
+        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-opacity duration-200"></span>
+        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
       </button>
     </div>
   </header>
 
   <!-- ═══════════════ MOBILE NAV OVERLAY ═══════════════ -->
-  <div id="mobile-nav" class="fixed inset-0 z-40 bg-ink/95 backdrop-blur-md flex flex-col items-center justify-center opacity-0 pointer-events-none">
+  <div id="mobile-nav" class="fixed inset-0 z-40 bg-ink/95 backdrop-blur-md flex flex-col items-center justify-center opacity-0 pointer-events-none md:hidden transition-opacity duration-300">
     <nav class="flex flex-col items-center gap-7">
-      <a href="#how" class="mobile-nav-link text-base font-heading font-bold text-2xl hover:text-sage-light transition-colors">איך זה עובד</a>
-      <a href="#audience" class="mobile-nav-link text-base font-heading font-bold text-2xl hover:text-sage-light transition-colors">למי זה מתאים</a>
-      <a href="#distribution" class="mobile-nav-link text-base font-heading font-bold text-2xl hover:text-sage-light transition-colors">איפה אנחנו</a>
-      <a
-        href="#quote"
-        data-source="general"
-        class="mobile-nav-link mt-6 bg-sage text-base px-8 py-3.5 rounded-full font-heading font-bold text-lg hover:bg-sage-light transition-colors"
-      >
-        קבלת הצעת מחיר
-      </a>
+      <a href="#who" class="mobile-nav-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">מי אנחנו</a>
+      <a href="#where" class="mobile-nav-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">לאן מגיעים</a>
+      <a href="#how" class="mobile-nav-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">איך זה עובד</a>
+      <Button href="#forms" size="l" data-route="advertise" class="mobile-nav-link mt-6 !bg-base !text-ink !border-base">אני רוצה לפרסם</Button>
     </nav>
-    <svg class="absolute bottom-16 opacity-[0.08] w-16 h-24 pointer-events-none" viewBox="0 0 200 300" fill="none" aria-hidden="true">
-      <path d="M100 0 C160 40 185 120 170 220 C155 280 125 300 100 300 C75 300 45 280 30 220 C15 120 40 40 100 0Z" fill="#8CA87C"/>
-    </svg>
   </div>
 
-  <main id="main-content" class="pt-16">
+  <main id="main-content">
 
-    <!-- ═══════════════════ HERO ═══════════════════ -->
-    <section class="hero-section relative overflow-hidden">
-      <svg class="hero-leaf-bg absolute -top-16 -left-24 w-[420px] h-[600px] -z-10 pointer-events-none" viewBox="0 0 200 300" fill="none" aria-hidden="true">
-        <path d="M100 0 C160 40 185 120 170 220 C155 280 125 300 100 300 C75 300 45 280 30 220 C15 120 40 40 100 0Z" fill="#8CA87C" opacity="0.06"/>
-        <path d="M100 20 Q100 150 100 290" stroke="#8CA87C" stroke-width="0.8" opacity="0.04" fill="none"/>
-      </svg>
-      <svg class="hero-leaf-bg absolute -bottom-28 -right-16 w-[260px] h-[380px] -z-10 rotate-[30deg] pointer-events-none" viewBox="0 0 200 300" fill="none" aria-hidden="true">
-        <path d="M100 0 C160 40 185 120 170 220 C155 280 125 300 100 300 C75 300 45 280 30 220 C15 120 40 40 100 0Z" fill="#8FC2DE" opacity="0.05"/>
-      </svg>
+    <!-- ═══════════════════ §1 HERO ═══════════════════ -->
+    <section class="relative overflow-hidden bg-base py-20 md:py-28">
+      <div class="absolute -top-16 [inset-inline-start:-60px] w-64 h-64 bg-sage opacity-50 rounded-[0_0_100%_0] z-0"></div>
+      <div class="absolute bottom-10 [inset-inline-end:80px] w-32 h-32 bg-sky opacity-45 rounded-full z-0"></div>
+      <div class="absolute -bottom-10 [inset-inline-end:-40px] w-44 h-44 bg-sand opacity-55 z-0"></div>
 
-      <div class="max-w-6xl mx-auto px-6 pt-20 pb-24 md:pt-28 md:pb-32 grid md:grid-cols-[1.15fr_0.85fr] gap-10 md:gap-14 items-center">
-        <div>
-          <p class="hero-eyebrow font-body font-semibold text-sage text-sm md:text-base mb-4 tracking-wide">
-            מים מינרליים בחינם
-          </p>
-          <h1 class="hero-title font-heading font-bold text-ink" style="font-size:clamp(2.75rem, 5vw + 1rem, 4.5rem); line-height:1.08">
-            המותג שלכם,<br />ביד של כולם
+      <div class="relative z-10 max-w-6xl mx-auto px-6">
+        <div class="max-w-[760px]">
+          <h1 class="font-display font-black text-ink text-[clamp(2.75rem,5vw+1rem,4.5rem)] leading-[1.05]">
+            מים בחינם
           </h1>
-          <p class="hero-subtitle text-ink-strong/80 md:text-lg max-w-md mt-6 mb-8 leading-relaxed">
-            אנחנו מייצרים מים מינרליים שהתווית שלהם היא שטח הפרסום שלכם, ומחלקים אותם בחינם
-            לקהל שתבחרו. חשיפה רחבה, זמן מגע ארוך, וחוויה חיובית שנשארת ביד.
+          <p class="font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
+            המותג שלכם, בידיים של כולם
           </p>
-          <div class="hero-ctas flex flex-wrap items-center gap-5 mb-10">
-            <a
-              href="#quote"
-              data-source="general"
-              class="bg-ink text-base px-7 py-3.5 rounded-full font-medium hover:bg-ink-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm"
-            >
-              קבלת הצעת מחיר
-            </a>
-            <a href="#how" class="text-ink font-medium hover:text-sage transition-colors group">
-              איך זה עובד
-              <span class="inline-block mr-1 group-hover:translate-y-0.5 transition-transform duration-200">↓</span>
-            </a>
-          </div>
-          <div class="hero-trust pt-5 border-t border-sand/70 text-sm text-ink-strong/50">
-            נקודות חלוקה בכל הארץ · חופים, טיילת ת״א, אירועים, בתי עסק ורשתות
-          </div>
-        </div>
-
-        <div class="hero-image img-slot aspect-[4/5] rounded-3xl">
-          תמונה: בקבוק מרווה עם תווית מותג לדוגמה, ביד, על רקע חוף/טיילת תל אביב
+          <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4 mb-8">
+            מפרסמים משלמים על הבקבוקים, אנשים שותים בחינם.
+          </p>
+          <Button href="#forms" size="l" data-route="advertise">אני רוצה לפרסם</Button>
         </div>
       </div>
     </section>
 
-    <!-- ── wave: base → pale-sage ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-8 md:h-12 block -my-px bg-base fill-pale-sage" aria-hidden="true">
-      <path d="M0,60 C360,10 1080,10 1440,60 Z"/>
-    </svg>
-
-    <!-- ═══════════════ HOW IT WORKS ═══════════════ -->
-    <section id="how" class="bg-pale-sage py-20 md:py-28">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="how-heading font-heading font-bold text-ink text-center mb-16" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          איך זה עובד
-        </h2>
-        <div class="grid md:grid-cols-3 gap-10 md:gap-8">
-          <div class="step-item text-center md:text-right">
-            <div class="step-number font-heading font-bold text-sage mb-3" style="font-size:clamp(3rem, 4vw, 4.5rem); line-height:1">01</div>
-            <h3 class="font-heading font-bold text-xl mb-2 text-ink">בוחרים עיצוב</h3>
-            <p class="text-ink-strong/65 leading-relaxed">
-              שולחים לנו את הלוגו, הסלוגן או קוד ההנחה שתרצו שיופיעו על התווית.
-            </p>
-          </div>
-          <div class="step-item text-center md:text-right">
-            <div class="step-number font-heading font-bold text-sage mb-3" style="font-size:clamp(3rem, 4vw, 4.5rem); line-height:1">02</div>
-            <h3 class="font-heading font-bold text-xl mb-2 text-ink">אנחנו מייצרים ומחלקים</h3>
-            <p class="text-ink-strong/65 leading-relaxed">
-              מפיקים את הבקבוקים ומחלקים אותם בנקודות שתבחרו — לגמרי בחינם לצרכן.
-            </p>
-          </div>
-          <div class="step-item text-center md:text-right">
-            <div class="step-number font-heading font-bold text-sage mb-3" style="font-size:clamp(3rem, 4vw, 4.5rem); line-height:1">03</div>
-            <h3 class="font-heading font-bold text-xl mb-2 text-ink">המותג שלכם נראה</h3>
-            <p class="text-ink-strong/65 leading-relaxed">
-              אנשים אמיתיים מחזיקים, שותים ורואים את המותג שלכם — בזמן אמת, בשטח.
-            </p>
-          </div>
+    <!-- ═══════════════ §2 WHO WE ARE ═══════════════ -->
+    <section id="who" class="bg-sand-tint py-16 md:py-24">
+      <div class="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] gap-14 items-center max-w-5xl mx-auto px-6">
+        <div>
+          <h2 class="who-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)]">
+            מי אנחנו?
+          </h2>
+          <p class="font-body text-ink/80 leading-relaxed mt-5 max-w-[460px]">
+            חברת מרווה היא פלטפורמה לפרסום על תוויות של בקבוקי מים. כשהבקבוקים מחולקים בחינם — כולם מרוויחים.
+          </p>
         </div>
-      </div>
-    </section>
 
-    <!-- ── wave: pale-sage → base ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-8 md:h-12 block -my-px bg-pale-sage fill-base" aria-hidden="true">
-      <path d="M0,60 C240,5 960,5 1440,60 Z"/>
-    </svg>
-
-    <!-- ═══════════════ AUDIENCE FORK ═══════════════ -->
-    <section id="audience" class="py-20 md:py-28">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="audience-heading font-heading font-bold text-ink text-center mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          שני מסלולים, מטרה אחת
-        </h2>
-        <p class="audience-sub text-center text-ink-strong/60 max-w-lg mx-auto mb-14">
-          בין אם אתם רוצים לפרסם לקהל רחב או לתת ללקוחות שלכם מתנה — יש לנו מסלול בשבילכם.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          <!-- מפרסמים -->
-          <div id="advertisers" class="audience-card bg-white rounded-3xl border border-sand/70 overflow-hidden shadow-sm">
-            <div class="h-1 bg-gradient-to-l from-sage to-sage-light"></div>
-            <div class="p-8 md:p-10">
-              <div class="img-slot aspect-[16/10] rounded-2xl mb-8">
-                תמונה: נקודת חלוקה ברחוב / בטיילת, אנשים מקבלים בקבוקים
-              </div>
-              <h3 class="font-heading font-bold text-2xl text-ink mb-2">למפרסמים</h3>
-              <p class="font-body font-semibold text-sage mb-5">בוחרים את הקהל, אנחנו מחלקים.</p>
-              <ul class="space-y-3 mb-8 text-ink-strong/70">
-                <li class="flex items-start gap-2.5">
-                  <span class="text-sage mt-0.5 font-bold">✓</span>
-                  <span>חשיפה רחבה בנקודות אסטרטגיות שבחרתם</span>
-                </li>
-                <li class="flex items-start gap-2.5">
-                  <span class="text-sage mt-0.5 font-bold">✓</span>
-                  <span>שליטה מלאה על היעד: מיקום, זמן ותדירות</span>
-                </li>
-                <li class="flex items-start gap-2.5">
-                  <span class="text-sage mt-0.5 font-bold">✓</span>
-                  <span>דוח חשיפה מסכם בתום הקמפיין</span>
-                </li>
-              </ul>
-              <a
-                href="#quote"
-                data-source="advertiser"
-                class="inline-block bg-ink text-base px-6 py-3 rounded-full font-medium hover:bg-ink-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-              >
-                הצעת מחיר למפרסמים
-              </a>
-            </div>
-          </div>
-
-          <!-- משווקים -->
-          <div id="publishers" class="audience-card bg-white rounded-3xl border border-sand/70 overflow-hidden shadow-sm">
-            <div class="h-1 bg-gradient-to-l from-sky to-sky-light"></div>
-            <div class="p-8 md:p-10">
-              <div class="img-slot aspect-[16/10] rounded-2xl mb-8">
-                תמונה: בית קפה/חדר כושר מחלק בקבוק ממותג ללקוח בדלפק
-              </div>
-              <h3 class="font-heading font-bold text-2xl text-ink mb-2">למשווקים</h3>
-              <p class="font-body font-semibold text-sky mb-5">נותנים ללקוחות שלכם בקבוק ממותג במתנה.</p>
-              <ul class="space-y-3 mb-8 text-ink-strong/70">
-                <li class="flex items-start gap-2.5">
-                  <span class="text-sky mt-0.5 font-bold">✓</span>
-                  <span>מתנה איכותית שמשדרגת את חוויית הלקוח</span>
-                </li>
-                <li class="flex items-start gap-2.5">
-                  <span class="text-sky mt-0.5 font-bold">✓</span>
-                  <span>בידול אמיתי על המדף או בדלפק שלכם</span>
-                </li>
-                <li class="flex items-start gap-2.5">
-                  <span class="text-sky mt-0.5 font-bold">✓</span>
-                  <span>אתם מחליטים איפה ומתי לחלק</span>
-                </li>
-              </ul>
-              <a
-                href="#quote"
-                data-source="publisher"
-                class="inline-block bg-ink text-base px-6 py-3 rounded-full font-medium hover:bg-ink-strong hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-              >
-                הצעת מחיר למשווקים
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── wave: base → pale-sage ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-8 md:h-12 block -my-px bg-base fill-pale-sage" aria-hidden="true">
-      <path d="M0,60 C360,10 1080,10 1440,60 Z"/>
-    </svg>
-
-    <!-- ═══════════════ TESTIMONIALS ═══════════════ -->
-    <section id="testimonials" class="bg-pale-sage py-20 md:py-28">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="testi-heading font-heading font-bold text-ink text-center mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          לקוחות ממליצים
-        </h2>
-        <p class="testi-sub text-center text-ink-strong/60 max-w-lg mx-auto mb-14">
-          המלצות מלקוחות מרווה יתווספו כאן בקרוב.
-        </p>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="testi-card placeholder-box min-h-[190px]">מקום להמלצת לקוח</div>
-          <div class="testi-card placeholder-box min-h-[190px]">מקום להמלצת לקוח</div>
-          <div class="testi-card placeholder-box min-h-[190px]">מקום להמלצת לקוח</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── wave: pale-sage → base ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-8 md:h-12 block -my-px bg-pale-sage fill-base" aria-hidden="true">
-      <path d="M0,60 C240,5 960,5 1440,60 Z"/>
-    </svg>
-
-    <!-- ═══════════════ PARTNERS ═══════════════ -->
-    <section id="partners" class="bg-base py-20 md:py-28">
-      <div class="max-w-6xl mx-auto px-6 text-center">
-        <h2 class="partners-heading font-heading font-bold text-ink mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          שותפים ומותגים
-        </h2>
-        <p class="partners-sub text-ink-strong/60 max-w-lg mx-auto mb-14">
-          מותגים ועסקים שעובדים עם מרווה יופיעו כאן.
-        </p>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-5">
-          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
-          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
-          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
-          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
-          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── wave: base → ink ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-10 md:h-14 block -my-px bg-base fill-ink" aria-hidden="true">
-      <path d="M0,60 C480,8 960,8 1440,60 Z"/>
-    </svg>
-
-    <!-- ═══════════ DISTRIBUTION / SOCIAL PROOF ═══════════ -->
-    <section id="distribution" class="bg-ink text-base relative overflow-hidden py-20 md:py-28">
-      <svg class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[700px] opacity-[0.035] pointer-events-none" viewBox="0 0 200 300" fill="none" aria-hidden="true">
-        <path d="M100 0 C160 40 185 120 170 220 C155 280 125 300 100 300 C75 300 45 280 30 220 C15 120 40 40 100 0Z" fill="currentColor"/>
-        <path d="M100 20 Q100 150 100 290" stroke="currentColor" stroke-width="1.2" fill="none"/>
-      </svg>
-
-      <div class="max-w-6xl mx-auto px-6 text-center relative">
-        <h2 class="dist-heading font-heading font-bold mb-6" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          איפה למצוא אותנו
-        </h2>
-        <p class="dist-sub max-w-xl mx-auto mb-14 text-base/80 leading-relaxed">
-          נקודות חלוקה בכל רחבי תל אביב והמרכז — במקומות שבהם אנשים כבר נמצאים, לא רק שרואים פרסומת.
-        </p>
-        <div class="location-chips flex flex-wrap justify-center gap-3 md:gap-4">
-          {['חופי תל אביב', 'טיילת תל אביב', 'הבימה', 'דיזנגוף', 'שרונה'].map((place) => (
-            <span class="location-chip border border-base/25 rounded-full px-6 py-2.5 font-body font-semibold text-sm md:text-base hover:border-base/50 transition-colors">
-              {place}
+        <div class="relative w-full max-w-[360px] justify-self-center">
+          <img src="/lifestyle-bottle-promenade.png" alt="בקבוק מרווה" class="w-full rounded-[20px] block" />
+          <div class="absolute top-[43%] [inset-inline-start:31%] w-[42%] h-[46%] bg-base rounded [box-shadow:0_1px_4px_rgba(17,17,17,0.12)] flex flex-col items-center justify-between p-[14px_8px]">
+            <span class="flex-1 flex items-center font-display font-bold text-ink text-[clamp(0.7rem,1.6vw,1rem)] text-center">
+              המותג שלכם כאן
             </span>
+            <div class="flex items-center gap-1">
+              <img src="/marva-mark.svg" alt="" class="h-[18px] w-[18px] object-contain" />
+              <span class="font-display font-bold text-ink text-xs">מרווה</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ §3 WHERE BOTTLES GO ═══════════════ -->
+    <section id="where" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="where-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          לאן הבקבוקים מגיעים?
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto mt-12">
+          {whereCards.map((c) => (
+            <Card accent={c.accent} class="where-card">
+              <h3 class="font-display font-bold text-ink text-xl mb-2.5">{c.title}</h3>
+              <p class="font-body text-ink/80">{c.body}</p>
+            </Card>
           ))}
         </div>
-        <p class="text-xs text-base/35 mt-12">
-          * רשימת הנקודות תעודכן בהתאם להיקף החלוקה בפועל — נתוני חשיפה מדויקים יתווספו לאחר סבב חלוקה ראשון.
-        </p>
       </div>
     </section>
 
-    <!-- ── wave: ink → pale-sage ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-10 md:h-14 block -my-px bg-ink fill-pale-sage" aria-hidden="true">
-      <path d="M0,60 C360,5 1080,12 1440,60 Z"/>
-    </svg>
-
-    <!-- ═══════════════ ORDER FORM ═══════════════ -->
-    <section id="quote" class="bg-pale-sage py-20 md:py-28">
-      <div class="max-w-3xl mx-auto px-6">
-        <h2 class="form-heading font-heading font-bold text-ink text-center mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          מוכנים להתחיל?
+    <!-- ═══════════════ §4 HOW IT WORKS ═══════════════ -->
+    <section id="how" class="bg-sand-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="how-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          איך זה עובד?
         </h2>
-        <p class="form-sub text-center text-ink-strong/65 mb-8 max-w-md mx-auto">
-          בחרו איך תרצו ליצור איתנו קשר — פנייה מהירה או השארת פרטים לקבלת הצעת מחיר.
-        </p>
-
-        <!-- Contact method toggle -->
-        <div class="contact-switch text-center mb-10">
-          <div class="contact-toggle">
-            <button type="button" class="contact-toggle-btn" data-panel="quick">צור קשר</button>
-            <button type="button" class="contact-toggle-btn is-active" data-panel="form">להשאיר פרטים</button>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
+          {howSteps.map((s) => (
+            <Card class="how-card">
+              <div class="font-display font-bold text-sage-deep text-5xl mb-2">{s.n}</div>
+              <h3 class="font-display font-bold text-ink text-xl mb-2.5">{s.title}</h3>
+              <p class="font-body text-ink/80">{s.body}</p>
+            </Card>
+          ))}
         </div>
-
-        <!-- Panel: quick contact — email + WhatsApp (placeholder for now) -->
-        <div id="panel-quick" class="contact-panel hidden">
-          <div class="bg-white rounded-3xl p-7 md:p-10 shadow-sm border border-sand/40 space-y-5 max-w-xl mx-auto">
-            <div>
-              <p class="form-label">אימייל</p>
-              <div class="placeholder-box">כתובת המייל תתווסף כאן בקרוב</div>
-            </div>
-            <div>
-              <p class="form-label">וואטסאפ</p>
-              <div class="placeholder-box">מספר הוואטסאפ יתווסף כאן בקרוב</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Panel: detailed form -->
-        <div id="panel-form" class="contact-panel">
-        <form id="order-form" class="form-card bg-white rounded-3xl p-7 md:p-10 shadow-sm border border-sand/40" novalidate>
-          <input type="hidden" name="source" id="form-source" value="general" />
-
-          <!-- ─ Business info ─ -->
-          <div class="grid md:grid-cols-2 gap-5 mb-5">
-            <div>
-              <label class="form-label" for="business-name">שם העסק <span class="text-sage">*</span></label>
-              <input type="text" id="business-name" name="business_name" class="form-input" required />
-            </div>
-            <div>
-              <label class="form-label" for="business-id">ח.פ. / ע.מ.</label>
-              <input type="text" id="business-id" name="business_id" class="form-input" placeholder="לא חובה" />
-            </div>
-          </div>
-
-          <!-- ─ Contact info ─ -->
-          <div class="grid md:grid-cols-2 gap-5 mb-5">
-            <div>
-              <label class="form-label" for="contact-name">איש קשר <span class="text-sage">*</span></label>
-              <input type="text" id="contact-name" name="contact_name" class="form-input" required />
-            </div>
-            <div>
-              <label class="form-label" for="phone">טלפון <span class="text-sage">*</span></label>
-              <input type="tel" id="phone" name="phone" class="form-input" dir="ltr" required />
-            </div>
-          </div>
-
-          <div class="mb-5">
-            <label class="form-label" for="email">אימייל <span class="text-sage">*</span></label>
-            <input type="email" id="email" name="email" class="form-input" dir="ltr" required />
-          </div>
-
-          <!-- ─ Campaign details ─ -->
-          <div class="grid md:grid-cols-2 gap-5 mb-5">
-            <div>
-              <label class="form-label" for="quantity">כמות בקבוקים רצויה <span class="text-sage">*</span></label>
-              <select id="quantity" name="quantity" class="form-input" required>
-                <option value="" disabled selected>בחרו כמות</option>
-                <option value="100">100</option>
-                <option value="250">250</option>
-                <option value="500">500</option>
-                <option value="1000">1,000</option>
-                <option value="2500">2,500</option>
-                <option value="5000">5,000</option>
-                <option value="10000+">+10,000</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label" for="duration">משך קמפיין</label>
-              <select id="duration" name="duration" class="form-input">
-                <option value="" disabled selected>בחרו משך</option>
-                <option value="שבוע">שבוע</option>
-                <option value="שבועיים">שבועיים</option>
-                <option value="חודש">חודש</option>
-                <option value="חודשיים">חודשיים</option>
-                <option value="שלושה חודשים">שלושה חודשים</option>
-                <option value="חצי שנה">חצי שנה</option>
-                <option value="אחר">אחר</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="mb-8">
-            <label class="form-label" for="start-date">תאריך התחלה רצוי</label>
-            <input type="date" id="start-date" name="start_date" class="form-input" />
-          </div>
-
-          <!-- ─ Delivery method ─ -->
-          <div class="mb-6">
-            <p class="form-label mb-3">אופן ההפצה <span class="text-sage">*</span></p>
-            <div class="space-y-3">
-              <label class="radio-option">
-                <input type="radio" name="delivery_method" id="delivery-marva" value="marva_distributes" required />
-                <div>
-                  <span class="font-semibold text-ink">הפצה דרך מרווה</span>
-                  <span class="block text-sm text-ink-strong/55 mt-0.5">מרווה מחלקת את הבקבוקים בנקודות אסטרטגיות בשבילכם</span>
-                </div>
-              </label>
-
-              <div id="fields-marva" class="conditional-fields pr-6 space-y-4 pt-1">
-                <div class="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label class="form-label" for="dist-points">מספר נקודות חלוקה</label>
-                    <input type="number" id="dist-points" name="distribution_points" class="form-input" min="1" />
-                  </div>
-                  <div>
-                    <label class="form-label" for="dist-area">אזור הפצה</label>
-                    <input type="text" id="dist-area" name="distribution_area" class="form-input" placeholder="למשל: תל אביב מרכז" />
-                  </div>
-                </div>
-              </div>
-
-              <label class="radio-option">
-                <input type="radio" name="delivery_method" id="delivery-client" value="client_distributes" />
-                <div>
-                  <span class="font-semibold text-ink">מרווה מספקת ללקוח</span>
-                  <span class="block text-sm text-ink-strong/55 mt-0.5">אתם מקבלים את הבקבוקים ומחלקים בעצמכם</span>
-                </div>
-              </label>
-
-              <div id="fields-client" class="conditional-fields pr-6 space-y-4 pt-1">
-                <div>
-                  <label class="form-label" for="delivery-address">כתובת למשלוח</label>
-                  <input type="text" id="delivery-address" name="delivery_address" class="form-input" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ─ Notes ─ -->
-          <div class="mb-8">
-            <label class="form-label" for="notes">הערות</label>
-            <textarea id="notes" name="notes" rows="3" class="form-input resize-y" placeholder="פרטים נוספים, בקשות מיוחדות..."></textarea>
-          </div>
-
-          <!-- ─ Submit ─ -->
-          <button
-            type="submit"
-            id="submit-btn"
-            class="w-full bg-ink text-base py-4 rounded-full font-heading font-bold text-lg hover:bg-ink-strong hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 shadow-sm"
-          >
-            שליחת בקשה להצעת מחיר
-          </button>
-
-          <p class="text-xs text-ink-strong/45 text-center mt-4 leading-relaxed">
-            שליחת הטופס אינה מהווה התחייבות. נחזור אליכם תוך יום עסקים אחד.
-          </p>
-        </form>
-
-        <!-- Success message -->
-        <div id="form-success" class="hidden bg-white rounded-3xl p-10 md:p-14 text-center shadow-sm border border-sand/40">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-pale-sage text-sage text-3xl mb-5">✓</div>
-          <h3 class="font-heading font-bold text-2xl text-ink mb-3">הבקשה נשלחה בהצלחה</h3>
-          <p class="text-ink-strong/65 max-w-sm mx-auto">קיבלנו את הפרטים שלכם ונחזור אליכם בהקדם עם הצעת מחיר מותאמת.</p>
-        </div>
-        </div><!-- /#panel-form -->
       </div>
     </section>
 
-    <!-- ── wave: pale-sage → base ── -->
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-6 md:h-10 block -my-px bg-pale-sage fill-base" aria-hidden="true">
-      <path d="M0,60 C480,15 960,15 1440,60 Z"/>
-    </svg>
+    <!-- ═══════════════ §5 THREE ROUTES ═══════════════ -->
+    <section class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          {routeButtons.map((o) => (
+            <button
+              type="button"
+              data-route={o.key}
+              class="py-7 px-5 rounded-[20px] cursor-pointer bg-sand-tint border border-border font-display font-bold text-lg text-ink transition-all duration-150 hover:bg-sand hover:-translate-y-0.5"
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ §6 PARTNERS ═══════════════ -->
+    <section id="partners" class="bg-sand-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="partners-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          שותפים
+        </h2>
+        <div class="dashed-box max-w-5xl mx-auto mt-8">בקרוב</div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ §7 TESTIMONIALS ═══════════════ -->
+    <section id="testimonials" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="testimonials-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          ממליצים
+        </h2>
+        <div class="dashed-box max-w-5xl mx-auto mt-8">בקרוב</div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ §8 FORMS HUB ═══════════════ -->
+    <section id="forms" class="bg-sand-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="forms-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          בואו נתחיל
+        </h2>
+
+        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-10 max-w-[780px] mx-auto mt-8">
+          <!-- Tab switcher -->
+          <div class="flex gap-2 mb-7 flex-wrap">
+            {tabs.map((t) => (
+              <button
+                type="button"
+                data-tab={t.key}
+                class={`tab-btn flex-1 py-2.5 px-3.5 rounded-full cursor-pointer font-display font-semibold text-sm border transition-colors ${t.key === 'advertise' ? 'bg-ink text-inverse border-ink' : 'bg-transparent text-ink border-border'}`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          <!-- Business panel -->
+          <div class="form-panel" data-panel="business" hidden>
+            <form class="lead-form">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                <Input label="שם העסק" name="business_name" placeholder="לדוגמה: קפה השכונה" required />
+                <Input label="איש קשר ותפקיד" name="contact" placeholder="שם מלא · תפקיד" required />
+                <Input label="טלפון" name="phone" type="tel" dir="ltr" placeholder="050-1234567" required />
+                <Input label="מיקום העסק" name="location" placeholder="עיר · כתובת" />
+                <Input label="כמות בקבוקים משוערת לחודש" name="qty" placeholder="לדוגמה: 500" class="sm:col-span-2" />
+              </div>
+              <Button size="l" class="w-full" type="submit">תחזרו אליי</Button>
+            </form>
+            <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">תודה! נחזור אליכם בקרוב.</div>
+          </div>
+
+          <!-- Find panel -->
+          <div class="form-panel" data-panel="find" hidden>
+            <p class="font-body text-muted mb-4">נקודות החלוקה הקרובות — מתעדכן לפי תאריכים ומיקומים.</p>
+            <ul class="list-none p-0 m-0">
+              {findSpots.map((s) => (
+                <li class="flex gap-4 items-center py-3.5 border-b border-border">
+                  <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
+                  <span class="font-body text-ink">{s.loc}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Advertise panel -->
+          <div class="form-panel" data-panel="advertise">
+            <form class="ad-form">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <Input label="שם העסק" name="business_name" placeholder="לדוגמה: קפה השכונה" required />
+                <Input label="ח.פ./ע.מ" name="tax_id" placeholder="123456789" />
+                <Input label="איש קשר" name="contact" placeholder="שם מלא" required />
+                <Input label="טלפון" name="phone" type="tel" dir="ltr" placeholder="050-1234567" required />
+                <Input label="אימייל" name="email" type="email" dir="ltr" placeholder="name@company.co.il" required />
+                <Input label="כמות בקבוקים רצויה" name="qty" placeholder="לדוגמה: 5,000" />
+                <Input label="משך קמפיין" name="duration" placeholder="לדוגמה: חודש" />
+                <Input label="תאריך התחלה רצוי" name="start_date" type="date" dir="ltr" />
+              </div>
+
+              <div class="mb-5">
+                <div class="form-label mb-2">שיטת חלוקה</div>
+                <div class="flex flex-col gap-2">
+                  <label class="radio-option">
+                    <input type="radio" name="delivery" value="supply" checked />
+                    <span>אתם מחלקים בעצמכם</span>
+                  </label>
+                  <label class="radio-option">
+                    <input type="radio" name="delivery" value="distribute" />
+                    <span>אנחנו מחלקים את הבקבוקים עבורכם</span>
+                  </label>
+                </div>
+                <div id="pref-points" class="conditional-fields">
+                  <div class="pt-3.5">
+                    <Input label="נקודות חלוקה מועדפות" name="pref_points" placeholder="לדוגמה: טיילת ת״א, חוף גורדון" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <button type="button" id="save-toggle" class="py-2.5 px-4.5 rounded-full cursor-pointer bg-transparent border border-ink text-ink font-body font-semibold text-sm transition-colors">
+                  אני רוצה לחסוך בעלויות
+                </button>
+                <div id="save-box" class="conditional-fields">
+                  <div class="mt-3.5 bg-sky-tint rounded-[10px] p-4">
+                    <p class="font-body text-ink mb-3">אפשר לפרסם על חצי תווית יחד עם מישהו אחר ולשלם פחות.</p>
+                    <label class="flex gap-2 items-start cursor-pointer font-body text-ink">
+                      <input type="checkbox" class="mt-1" />
+                      <span>אני רוצה לפרסם יחד עם מישהו אחר (לא תדעו מי המפרסם שחולק איתכם את התווית).</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <Button size="l" class="w-full" type="submit">שליחת פנייה</Button>
+            </form>
+            <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב.</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
   </main>
 
-  <!-- ═══════════════════ FOOTER ═══════════════════ -->
-  <footer class="py-12 bg-base">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+  <!-- ═══════════════════ ENDING / FOOTER ═══════════════════ -->
+  <footer class="bg-base border-t border-border py-12 md:py-16">
+    <div class="max-w-6xl mx-auto px-6 flex flex-wrap gap-6 justify-between items-center">
       <Logo size="sm" />
-      <p class="text-xs text-ink-strong/40">© {new Date().getFullYear()} מרווה · כל הזכויות שמורות</p>
+
+      <div class="text-center font-body text-ink">
+        <div class="mb-1.5">לשאלות נוספות, דברו איתנו:</div>
+        <div class="flex gap-4 justify-center text-muted">
+          <span>טלפון: 000-0000000</span>
+          <span>·</span>
+          <span>info@marva.co.il</span>
+        </div>
+      </div>
+
+      <div class="flex gap-3 items-center">
+        <a href="#" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+          </svg>
+        </a>
+        <span class="w-6 h-6 rounded-full border border-dashed border-border inline-block"></span>
+        <span class="w-6 h-6 rounded-full border border-dashed border-border inline-block"></span>
+      </div>
     </div>
   </footer>
 
-  <!-- ═══════════════ GSAP ANIMATIONS ═══════════════ -->
   <script>
     import gsap from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -501,219 +335,135 @@ import Logo from '../components/Logo.astro';
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    if (!reduced) {
-      /* ── Hero entrance (on load) ────────────────── */
-      const hero = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      hero
-        .from('.hero-eyebrow', { y: 30, opacity: 0, duration: 0.6 })
-        .from('.hero-title',    { y: 40, opacity: 0, duration: 0.8 }, '-=0.3')
-        .from('.hero-subtitle', { y: 30, opacity: 0, duration: 0.6 }, '-=0.4')
-        .from('.hero-ctas',     { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
-        .from('.hero-trust',    { y: 10, opacity: 0, duration: 0.4 }, '-=0.2')
-        .from('.hero-image',    { y: 40, opacity: 0, scale: 0.96, duration: 0.8 }, '-=0.6');
+    /* ── 1. Panel/tab logic ─────────────────────── */
+    const tabBtns = document.querySelectorAll<HTMLElement>('.tab-btn');
+    const panels = document.querySelectorAll<HTMLElement>('.form-panel');
 
-      /* ── Hero leaf parallax ─────────────────────── */
-      document.querySelectorAll<HTMLElement>('.hero-leaf-bg').forEach((el) => {
-        gsap.to(el, {
-          y: 100,
-          scrollTrigger: {
-            trigger: '.hero-section',
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1.5,
-          },
-        });
+    function setPanel(key: string) {
+      tabBtns.forEach((btn) => {
+        const active = btn.dataset.tab === key;
+        btn.classList.toggle('bg-ink', active);
+        btn.classList.toggle('text-inverse', active);
+        btn.classList.toggle('border-ink', active);
+        btn.classList.toggle('bg-transparent', !active);
+        btn.classList.toggle('text-ink', !active);
+        btn.classList.toggle('border-border', !active);
       });
-
-      /* ── Header shadow on scroll ────────────────── */
-      ScrollTrigger.create({
-        start: 'top -40',
-        onUpdate: (self) => {
-          const h = document.querySelector('.site-header');
-          if (!h) return;
-          h.classList.toggle('header-scrolled', self.scroll() > 40);
-        },
-      });
-
-      /* ── How it works ───────────────────────────── */
-      gsap.from('.how-heading', {
-        y: 40, opacity: 0, duration: 0.7,
-        scrollTrigger: { trigger: '#how', start: 'top 80%' },
-      });
-      gsap.from('.step-item', {
-        y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power2.out',
-        scrollTrigger: { trigger: '#how', start: 'top 70%' },
-      });
-      gsap.from('.step-number', {
-        scale: 0.7, duration: 0.5, stagger: 0.15, ease: 'back.out(1.7)',
-        scrollTrigger: { trigger: '#how', start: 'top 70%' },
-      });
-
-      /* ── Audience fork ──────────────────────────── */
-      gsap.from('.audience-heading', {
-        y: 40, opacity: 0, duration: 0.7,
-        scrollTrigger: { trigger: '#audience', start: 'top 80%' },
-      });
-      gsap.from('.audience-sub', {
-        y: 25, opacity: 0, duration: 0.6,
-        scrollTrigger: { trigger: '#audience', start: 'top 75%' },
-      });
-      gsap.from('.audience-card', {
-        y: 50, opacity: 0, scale: 0.97, duration: 0.7, stagger: 0.12, ease: 'power2.out',
-        scrollTrigger: { trigger: '#audience', start: 'top 65%' },
-      });
-
-      /* ── Testimonials ───────────────────────────── */
-      gsap.from('.testi-heading', {
-        y: 40, opacity: 0, duration: 0.7,
-        scrollTrigger: { trigger: '#testimonials', start: 'top 80%' },
-      });
-      gsap.from('.testi-sub', {
-        y: 25, opacity: 0, duration: 0.6,
-        scrollTrigger: { trigger: '#testimonials', start: 'top 75%' },
-      });
-      gsap.from('.testi-card', {
-        y: 40, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
-        scrollTrigger: { trigger: '#testimonials', start: 'top 70%' },
-      });
-
-      /* ── Partners ───────────────────────────────── */
-      gsap.from('.partners-heading', {
-        y: 40, opacity: 0, duration: 0.7,
-        scrollTrigger: { trigger: '#partners', start: 'top 80%' },
-      });
-      gsap.from('.partners-sub', {
-        y: 25, opacity: 0, duration: 0.6,
-        scrollTrigger: { trigger: '#partners', start: 'top 75%' },
-      });
-      gsap.from('.partner-logo', {
-        y: 30, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out',
-        scrollTrigger: { trigger: '#partners', start: 'top 75%' },
-      });
-
-      /* ── Distribution ───────────────────────────── */
-      gsap.from('.dist-heading', {
-        y: 40, opacity: 0, duration: 0.7,
-        scrollTrigger: { trigger: '#distribution', start: 'top 75%' },
-      });
-      gsap.from('.dist-sub', {
-        y: 25, opacity: 0, duration: 0.6,
-        scrollTrigger: { trigger: '#distribution', start: 'top 70%' },
-      });
-      gsap.from('.location-chip', {
-        y: 25, opacity: 0, duration: 0.4, stagger: 0.07, ease: 'power2.out',
-        scrollTrigger: { trigger: '.location-chips', start: 'top 85%' },
-      });
-
-      /* ── Order form ─────────────────────────────── */
-      gsap.from('.form-heading', {
-        y: 40, opacity: 0, duration: 0.7,
-        scrollTrigger: { trigger: '#quote', start: 'top 80%' },
-      });
-      gsap.from('.form-sub', {
-        y: 25, opacity: 0, duration: 0.6,
-        scrollTrigger: { trigger: '#quote', start: 'top 75%' },
-      });
-      gsap.from('.form-card', {
-        y: 40, opacity: 0, duration: 0.8, ease: 'power2.out',
-        scrollTrigger: { trigger: '#quote', start: 'top 70%' },
+      panels.forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== key;
       });
     }
 
-    /* ── Mobile nav toggle ──────────────────────── */
+    setPanel('advertise');
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => setPanel(btn.dataset.tab || 'advertise'));
+    });
+
+    /* ── 2. Routing ─────────────────────────────── */
+    document.querySelectorAll<HTMLElement>('[data-route]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const key = el.dataset.route;
+        if (!key) return;
+        setPanel(key);
+        const target = document.getElementById('forms');
+        if (target) {
+          window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' });
+        }
+      });
+    });
+
+    /* ── 3. Delivery radios ─────────────────────── */
+    const prefPoints = document.getElementById('pref-points');
+    document.querySelectorAll<HTMLInputElement>('input[name="delivery"]').forEach((radio) => {
+      radio.addEventListener('change', () => {
+        prefPoints?.classList.toggle('is-active', radio.checked && radio.value === 'distribute');
+      });
+    });
+
+    /* ── 4. Save toggle ─────────────────────────── */
+    const saveToggle = document.getElementById('save-toggle');
+    const saveBox = document.getElementById('save-box');
+    let saveOpen = false;
+    saveToggle?.addEventListener('click', () => {
+      saveOpen = !saveOpen;
+      saveBox?.classList.toggle('is-active', saveOpen);
+      saveToggle.classList.toggle('bg-sky', saveOpen);
+    });
+
+    /* ── 5. Form submit ──────────────────────────── */
+    document.querySelectorAll<HTMLFormElement>('.lead-form, .ad-form').forEach((form) => {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+        form.classList.add('hidden');
+        const thanks = form.parentElement?.querySelector('.form-thanks');
+        thanks?.classList.remove('hidden');
+      });
+    });
+
+    /* ── 6. Mobile nav ───────────────────────────── */
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobile-nav');
-    const navLinks  = mobileNav?.querySelectorAll('a');
-    const lines     = document.querySelectorAll('.hamburger-line');
+    const mobileNavLinks = mobileNav?.querySelectorAll('a');
+    const hamburgerLines = document.querySelectorAll<HTMLElement>('.hamburger-line');
     let navOpen = false;
 
     function openNav() {
       navOpen = true;
-      mobileNav!.classList.remove('pointer-events-none');
-      gsap.to(mobileNav, { opacity: 1, duration: 0.3 });
-      if (!reduced) {
-        gsap.from('.mobile-nav-link', { y: 20, opacity: 0, stagger: 0.06, duration: 0.3, delay: 0.1, ease: 'power2.out' });
-      }
-      gsap.to(lines[0], { rotation: 45, y: 8, duration: 0.3 });
-      gsap.to(lines[1], { opacity: 0, duration: 0.15 });
-      gsap.to(lines[2], { rotation: -45, y: -8, duration: 0.3 });
+      mobileNav?.classList.remove('opacity-0', 'pointer-events-none');
+      if (hamburgerLines[0]) hamburgerLines[0].style.transform = 'translateY(8px) rotate(45deg)';
+      if (hamburgerLines[1]) hamburgerLines[1].style.opacity = '0';
+      if (hamburgerLines[2]) hamburgerLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
       document.body.style.overflow = 'hidden';
     }
 
     function closeNav() {
       navOpen = false;
-      gsap.to(mobileNav, { opacity: 0, duration: 0.2, onComplete: () => mobileNav!.classList.add('pointer-events-none') });
-      gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3 });
-      gsap.to(lines[1], { opacity: 1, duration: 0.15 });
-      gsap.to(lines[2], { rotation: 0, y: 0, duration: 0.3 });
+      mobileNav?.classList.add('opacity-0', 'pointer-events-none');
+      if (hamburgerLines[0]) hamburgerLines[0].style.transform = '';
+      if (hamburgerLines[1]) hamburgerLines[1].style.opacity = '';
+      if (hamburgerLines[2]) hamburgerLines[2].style.transform = '';
       document.body.style.overflow = '';
     }
 
-    hamburger?.addEventListener('click', () => navOpen ? closeNav() : openNav());
-    navLinks?.forEach((a) => a.addEventListener('click', closeNav));
+    hamburger?.addEventListener('click', () => (navOpen ? closeNav() : openNav()));
+    mobileNavLinks?.forEach((a) => a.addEventListener('click', closeNav));
 
-    /* ── Contact method toggle (צור קשר / להשאיר פרטים) ── */
-    const toggleBtns = document.querySelectorAll<HTMLElement>('.contact-toggle-btn');
-    const panelQuick = document.getElementById('panel-quick');
-    const panelForm  = document.getElementById('panel-form');
-    function showPanel(which: string) {
-      const isForm = which === 'form';
-      panelForm?.classList.toggle('hidden', !isForm);
-      panelQuick?.classList.toggle('hidden', isForm);
-      toggleBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.panel === which));
-    }
-    toggleBtns.forEach((b) => b.addEventListener('click', () => showPanel(b.dataset.panel || 'form')));
+    /* ── 7. Header shadow on scroll ─────────────── */
+    const header = document.querySelector('.site-header');
+    window.addEventListener('scroll', () => {
+      header?.classList.toggle('header-scrolled', window.scrollY > 40);
+    });
 
-    /* ── Form: source tracking from CTA clicks ──── */
-    document.querySelectorAll<HTMLElement>('[data-source]').forEach((el) => {
-      el.addEventListener('click', () => {
-        const src = el.dataset.source;
-        const field = document.getElementById('form-source') as HTMLInputElement | null;
-        if (field && src) field.value = src;
-        showPanel('form'); // CTAs always land on the detailed form
-
-        if (src === 'advertiser') {
-          (document.getElementById('delivery-marva') as HTMLInputElement).checked = true;
-          updateDeliveryFields();
-        } else if (src === 'publisher') {
-          (document.getElementById('delivery-client') as HTMLInputElement).checked = true;
-          updateDeliveryFields();
-        }
+    /* ── 8. Calm scroll reveals with GSAP ───────── */
+    if (!reduced) {
+      document.querySelectorAll<HTMLElement>('main h2').forEach((h2) => {
+        gsap.from(h2, {
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: h2, start: 'top 80%' },
+        });
       });
-    });
 
-    /* ── Form: conditional delivery fields ──────── */
-    const radios      = document.querySelectorAll<HTMLInputElement>('input[name="delivery_method"]');
-    const fieldsMarva = document.getElementById('fields-marva');
-    const fieldsClient = document.getElementById('fields-client');
-
-    function updateDeliveryFields() {
-      const val = document.querySelector<HTMLInputElement>('input[name="delivery_method"]:checked')?.value;
-      fieldsMarva?.classList.toggle('is-active', val === 'marva_distributes');
-      fieldsClient?.classList.toggle('is-active', val === 'client_distributes');
+      ['.where-card', '.how-card'].forEach((selector) => {
+        const cards = document.querySelectorAll<HTMLElement>(selector);
+        if (!cards.length) return;
+        const section = cards[0].closest('section');
+        gsap.from(cards, {
+          y: 30,
+          opacity: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.1,
+          scrollTrigger: { trigger: section || cards[0], start: 'top 80%' },
+        });
+      });
     }
-
-    radios.forEach((r) => r.addEventListener('change', updateDeliveryFields));
-
-    /* ── Form: submission ───────────────────────── */
-    const form    = document.getElementById('order-form') as HTMLFormElement | null;
-    const success = document.getElementById('form-success');
-
-    form?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-
-      const data = Object.fromEntries(new FormData(form).entries());
-      console.log('Order submission:', data);
-
-      // TODO: wire to form service (provider TBD)
-      // fetch('https://YOUR_ENDPOINT', { method: 'POST', body: new FormData(form) })
-
-      form.classList.add('hidden');
-      success?.classList.remove('hidden');
-      if (!reduced) {
-        gsap.from(success, { y: 20, opacity: 0, duration: 0.5, ease: 'power2.out' });
-      }
-    });
   </script>
 </Layout>

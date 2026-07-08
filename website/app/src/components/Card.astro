@@ -1,0 +1,18 @@
+---
+interface Props {
+  accent?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const { accent, class: className, ...rest } = Astro.props;
+
+const classes = ['relative overflow-hidden bg-surface rounded-[20px] shadow-card p-8', className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class={classes} {...rest}>
+  {accent && <div class="absolute top-0 inset-x-0 h-1" style={`background:${accent}`}></div>}
+  <slot />
+</div>

@@ -1,129 +1,152 @@
 # Marva — Brand Foundation
 
-*The locked design decisions that seed the brand book, the website, and every template. This is the single source of truth — the site and docs pull from here.*
+*The locked design decisions that seed the brand book, the website, and every template.
+This is the **single source of truth** — the site and docs pull from here.*
+
+> **Reconciled 2026-07-09.** The website was built to the "Bauhaus TLV" design system and a
+> **black** text/CTA anchor is canonical. Palette swatches match the approved brand sheet
+> `Marva/primary-logo-viaGPT.png`. The token **names** below match the code exactly
+> (`app/src/styles/global.css` `@theme`) so the doc and the codebase share one vocabulary:
+> change a value in one place, update the other. Earlier drafts used a greener sage, a
+> deep-sage `#5C7A4E` anchor, and a "פרסום שמרווה" tagline — all retired.
 
 ---
 
 ## The core idea
 
-**מרווה = sage** (the Salvia plant, in Hebrew). The name, the primary color, and the logo direction all point at one thing: a fresh, natural, Tel-Aviv plant. Lean into it — it makes the brand coherent instead of arbitrary.
+**מרווה = sage** (the Salvia plant, in Hebrew). The name, the primary color, and the logo
+direction all point at one thing: a fresh, natural, Tel-Aviv plant. Lean into it — it makes
+the brand coherent instead of arbitrary.
 
 **Personality:** young · Israeli · sustainable · Tel-Aviv / coastal · fresh, not corporate.
 
 **One-line essence:** free water that carries your message — a positive, natural, city gimmick.
 
+**Tagline / descriptor (current):** *מים בחינם, המותג שלכם, בידיים של כולם.*
+
 ---
 
 ## Palette
 
-Usage ratio: **50% sage · 30% sky · 20% sand**, over an off-white base, with deep sage as the text/CTA anchor.
+Usage ratio: **45% sage · 30% sky · 15% sand · 10% black/white**, over an off-white base,
+with **black** as the text/CTA anchor.
 
-| Role | Name | HEX | Notes |
+Sage, sky, and sand are all light — they are *fills*, never text colors on light backgrounds.
+
+| Role | Token | HEX | Notes |
 |---|---|---|---|
-| Primary | Sage leaf | `#8CA87C` | Surfaces, fills, brand blocks |
-| Secondary | Sky | `#8FC2DE` | Accents, water cues, links-on-dark |
-| Neutral accent | Sand | `#E6D8B8` | Warm backgrounds, section breaks |
-| **Ink / CTA** | Deep sage | `#5C7A4E` | **Body text, buttons, headings — the contrast anchor** |
-| Base | Off-white | `#FBFAF5` | Page background (softer than #FFF) |
+| Primary | `sage` | `#A8BFAE` | Surfaces, fills, brand blocks, logo mark leaf |
+| — accent | `sage-deep` | `#7FA089` | Small accents only: links, step numerals, dates |
+| Secondary | `sky` | `#A6C9E8` | Accents, water cues, the "save costs" panel, logo lobe |
+| — deep | `sky-deep` | `#5FA8D3` | Darker sky for hover/emphasis |
+| Neutral accent | `sand` | `#E6DCC6` | Warm section backgrounds, hover on route buttons, logo base |
+| — deep | `sand-deep` | `#D8C39F` | Darker sand |
+| **Ink / CTA** | `ink` | `#111111` | **Body text, headings, buttons — the contrast anchor** |
+| Page base | `base` | `#FBFAF6` | Page background (softer than pure #FFF) |
+| Card surface | `surface` | `#FFFFFF` | Cards, the forms panel |
+| Inverse text | `inverse` | `#FBFAF6` | Text/logo on black or brand-color fills |
+| Muted text | `muted` | `#5B6660` | Secondary/placeholder-ish copy |
+| Border | `border` | `#E3E0D8` | Input borders, dividers |
+| Tints | `sage-tint` / `sky-tint` / `sand-tint` | `#EEF2EC` / `#EAF4FA` / `#F7F1E5` | Pale section backgrounds & tiles |
 
-**Accessibility rule:** sage, sky, and sand are all light — never put text directly on them in a light tone. Text = deep sage (`#5C7A4E`) or a near-black warm ink (`#2E332B`). Buttons = deep sage fill with off-white text. Check every text/background pair hits WCAG AA (4.5:1) before shipping.
+**Accessibility rule:** text is **black `#111111`** on light backgrounds; on a black or any
+brand-color fill, text and the logo go **off-white `#FBFAF6`**. Buttons are **black fill +
+off-white text** (the CTA anchor). `sage-deep #7FA089` is for *small* accents only (links,
+the 01/02/03 numerals, the distribution dates) — never long body text. Check every
+text/background pair hits WCAG AA (4.5:1) before shipping.
 
-CSS custom properties (ready to paste):
+CSS custom properties / Tailwind `@theme` (this is what `app/src/styles/global.css` ships):
 
 ```css
-:root{
-  --sage:#8CA87C;
-  --sky:#8FC2DE;
-  --sand:#E6D8B8;
-  --ink:#5C7A4E;      /* deep sage — text + CTA */
-  --ink-strong:#2E332B; /* warm near-black for long body copy */
-  --base:#FBFAF5;
+@theme {
+  --color-sage:      #A8BFAE;
+  --color-sage-deep: #7FA089;
+  --color-sky:       #A6C9E8;
+  --color-sky-deep:  #5FA8D3;
+  --color-sand:      #E6DCC6;
+  --color-sand-deep: #D8C39F;
+  --color-ink:       #111111;  /* text + CTA anchor */
+  --color-base:      #FBFAF6;  /* page background */
+  --color-surface:   #FFFFFF;  /* card surface */
+  --color-inverse:   #FBFAF6;  /* text on dark/brand fills */
+  --color-muted:     #5B6660;
+  --color-border:    #E3E0D8;
+  --color-sage-tint: #EEF2EC;
+  --color-sky-tint:  #EAF4FA;
+  --color-sand-tint: #F7F1E5;
 }
 ```
 
-Tailwind (add to `theme.extend.colors`):
-
-```js
-colors:{
-  sage:'#8CA87C', sky:'#8FC2DE', sand:'#E6D8B8',
-  ink:'#5C7A4E', 'ink-strong':'#2E332B', base:'#FBFAF5',
-}
-```
-
 ---
 
-## Typography (Hebrew-first, both free on Google Fonts)
+## Typography (Hebrew-first, all free on Google Fonts)
 
-- **Headings / logo wordmark:** **Rubik** (700 / 500) — geometric, modern, excellent Hebrew, reads young/TLV.
-- **Body / UI:** **Assistant** (400 / 600) — clean, made for Hebrew, highly legible at small sizes.
+- **Headings / logo wordmark:** **Rubik** (900 / 700 / 500 / 400) — geometric, modern,
+  excellent Hebrew, reads young/TLV. Rubik covers Hebrew, so it also carries Hebrew headings.
+- **Body / UI:** **Work Sans** (400 / 500 / 600) for Latin/UI; **Assistant** (400 / 600) for
+  Hebrew body — a proper Hebrew face (Work Sans is Latin-only, so Hebrew body needs it).
 
-Google Fonts import:
+Google Fonts import (shipped):
 
 ```css
-@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Assistant:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&family=Rubik:wght@400;500;700;900&family=Work+Sans:wght@400;500;600&display=swap');
 ```
 
-Fallback stack: `'Rubik', 'Assistant', 'Segoe UI', system-ui, sans-serif`.
+Fallback stacks: display `'Rubik','Segoe UI',system-ui,sans-serif` · body
+`'Work Sans','Assistant','Segoe UI',system-ui,sans-serif` (Latin → Work Sans, Hebrew → Assistant).
 
-**RTL is not optional.** The site and label are Hebrew — set `dir="rtl"` and `lang="he"` on the root, and check every layout mirrors correctly (nav, cards, form fields, icons that imply direction).
-
----
-
-## Logo direction *(confirmed)*
-
-Neria's rough concept — a **wordmark מרווה with a small sage leaf** — is the direction. It's already on-strategy: מרווה *means* sage, so name + color + mark all point at one idea. It just needs rebuilding cleanly (the rough version is a low-res raster in a generic font) and pulling onto the real palette.
-
-**Locked lockup:**
-- **Mark:** a single sage leaf (or small two-leaf sprig), sage green `#8CA87C`, with a subtle central vein. Must work **standalone** — that's the favicon and the Instagram avatar. On a pale-sage tile (`#EEF2E6`) for avatar use.
-- **Wordmark:** מרווה in **Rubik 700**, deep sage `#5C7A4E`. Consider a Latin "MARVA" lockup for advertiser/international decks.
-- **Placement to test:** leaf leading vs. trailing the word; single leaf vs. sprig.
-- **Deliverables for the brand book:** SVG + transparent PNG, in both the full lockup and mark-only versions.
-
-**Build workflow (mark in Recraft → wordmark in Figma):**
-1. Generate the **leaf mark only** in Recraft (Vector engine, batch of 6–8). Never let AI render the Hebrew — it mangles the glyphs.
-2. Take the best 1–2 into **Figma**, simplify the paths, fix spacing.
-3. Set **מרווה in Rubik 700** in Figma and lock it beside the mark.
-4. Export SVG + PNG. The hand-finishing is also what makes the mark properly *ownable* (see plan §5).
-
-**Recraft prompts (mark only — copy-paste):**
-
-*Primary (filled leaf):*
-> Minimalist flat vector logo mark of a single sage leaf, smooth clean geometry, soft organic almond shape gently tilted, one subtle central vein, solid sage green fill #8CA87C, no text, no letters, no wordmark, centered on transparent background, modern botanical brand icon, balanced negative space, crisp at small sizes
-
-*Variant (sage sprig):*
-> Minimalist flat vector logo mark of a small sage sprig with two or three leaves on a thin stem, clean simple curves, solid sage green #8CA87C, no text, transparent background, modern natural brand icon, works as a favicon
-
-*Variant (line style):*
-> Single continuous line-art logo mark of one sage leaf, uniform stroke weight, deep sage outline #5C7A4E, no fill, no text, transparent background, minimal elegant botanical icon
-
-*Tip:* set up a Recraft Brand Kit with the sage/sky/sand palette first, so color stays consistent across generations.
+**RTL is not optional.** The site and label are Hebrew — set `dir="rtl"` and `lang="he"` on the
+root, and check every layout mirrors correctly (nav, cards, form fields, icons that imply
+direction).
 
 ---
 
-## What this unlocks
+## Logo *(finalized 2026-07-09)*
 
-With palette + type + logo direction locked, two tracks can run in parallel:
-1. **Finish the brand book** (Phase 1) — logo finalized, mockups on the *real* label artboards, misuse rules, applications.
-2. **Scaffold the website** (Phase 3) — structure, RTL, and these exact tokens can be built now with a placeholder logo; drop the final SVG in at the end.
+The mark is a **Bauhaus-style sprout** built from three flat color blocks: a **sage leaf**
+(main, right, with a white central vein), a smaller **sky-blue lobe** (left), and a **sand
+quarter-circle base**. On-strategy — מרווה *means* sage. The approved direction is the brand
+sheet `Marva/primary-logo-viaGPT.png`.
+
+**Shipped assets** (`Marva/website/app/public/`):
+- `marva-mark.svg` — full-color mark (scalable; header, footer, label, favicon source).
+- `marva-mark-white.svg` — reversed (off-white) version for black / sage / any saturated fill.
+- `favicon.svg` — the mark, browser-tab icon.
+
+These are clean **hand-built SVGs** interpreting the approved raster sheet — crisp at any size.
+A higher-fidelity **Recraft → Figma vector master** may replace `marva-mark.svg` later with
+zero downstream breakage (header/footer/label/favicon all reference the one file).
+
+**Lockup:**
+- **Mark colors:** sage `#A8BFAE`, sky `#A6C9E8`, sand `#E6DCC6`, vein white. On a `sage-tint
+  #EEF2EC` tile for avatars; use `marva-mark-white.svg` on dark/brand fills.
+- **Wordmark:** מרווה in **Rubik 700**, **black `#111111`**; a Latin **MARVA** (Rubik 700)
+  lockup is optional for international/advertiser decks. On dark/brand fills the wordmark goes
+  off-white `#FBFAF6`.
+- **Placement — locked:** leaf **leading** (to the right of the word, first in RTL order) — as
+  implemented in `src/components/Logo.astro`.
+
+**Not producible in code (flag):** photorealistic mockups (bottle, tote, business card) carrying
+the mark — the approved sheet already shows them, but any *new* mockup needs an image-generation
+tool, not code.
 
 ---
 
-## Claude Code — session-start prompt (copy-paste to begin the build)
+## Reference implementation
 
-> I'm building a marketing landing page for **Marva** (מרווה), an Israeli company that puts advertisers' designs on free water-bottle labels. Scaffold an **Astro + Tailwind CSS** project, **Hebrew / RTL** (`dir="rtl"`, `lang="he"`), deployable to Cloudflare Pages.
->
-> **Brand tokens** (add to Tailwind config): sage `#8CA87C`, sky `#8FC2DE`, sand `#E6D8B8`, ink `#5C7A4E` (text + CTA), ink-strong `#2E332B`, base `#FBFAF5`. Fonts via Google Fonts: **Rubik** (700/500, headings) + **Assistant** (400/600, body). Base background is off-white `#FBFAF5`; buttons are deep-sage fill with off-white text.
->
-> **Page structure (single landing page):**
-> 1. Hero — headline, subhead, primary CTA, sage-leaf logo placeholder.
-> 2. How it works — 3 steps (choose design → we produce & give away free → your brand gets seen).
-> 3. A fork into two audience sections: **למפרסמים** (advertisers — want exposure, Marva distributes) and **למשווקים** (publishers/distributors — hand bottles to their own customers). Each has its own benefits list and its own CTA into the order form.
-> 4. Social proof / distribution points (beaches, Tel Aviv promenade, Habima, Dizengoff, Sarona).
-> 5. **Order form** mirroring these fields: business name, ח.פ./ע.מ, contact, phone, email, desired bottle quantity, campaign duration, start date, delivery method (Option 1: Marva supplies to client / Option 2: Marva distributes — with the conditional sub-fields), notes. On submit, email the data to Marva (no payment processor). Pre-tag which audience section the visitor came from.
-> 6. Footer.
->
-> Teach me as you go — explain the project structure and each decision before writing the code, since I'm new to this. Start by scaffolding the project and showing me the folder layout.
+The canonical build of these tokens is the live site — treat it as the visual source of truth
+alongside this doc:
+- **Site:** `Marva/website/app/` (Astro + Tailwind, Hebrew/RTL, Cloudflare Pages). Tokens live
+  in `src/styles/global.css`; primitives in `src/components/` (`Button`, `Card`, `Input`,
+  `Badge`, `Logo`); the page is `src/pages/index.astro`.
+- **Design system handoff (point-in-time):** `Marva/marva-design-system-viaClaudeD/` — the
+  package the site was built from. Reference, not a living doc; this file supersedes it on any
+  conflict.
+
+Voice and copy rules live in `Marva_voice_and_messaging.md`; logo usage rules in
+`Marva_logo_usage.md`. Both pull palette + type from here.
 
 ---
 
-*Everything here is a starting point — adjust any value once you see it in context. The palette especially will want small tuning against the real logo.*
+*Values are locked but tunable — adjust here first, then mirror into `global.css`, so the two
+never drift.*

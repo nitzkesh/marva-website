@@ -1,0 +1,27 @@
+---
+interface Props {
+  label?: string;
+  type?: string;
+  name?: string;
+  placeholder?: string;
+  required?: boolean;
+  dir?: string;
+  class?: string;
+  [key: string]: any;
+}
+
+const { label, type = 'text', name, placeholder, required = false, dir, class: className, ...rest } = Astro.props;
+---
+
+<label class={['flex flex-col gap-1.5', className].filter(Boolean).join(' ')}>
+  {label && <span class="form-label">{label}</span>}
+  <input
+    class="form-input"
+    type={type}
+    name={name}
+    placeholder={placeholder}
+    required={required}
+    dir={dir}
+    {...rest}
+  />
+</label>

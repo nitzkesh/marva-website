@@ -1,6 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Marva">
+  <!-- sand base (quarter-circle) -->
   <path d="M52 84 H82 A30 30 0 0 1 52 114 Z" fill="#E6DCC6"/>
+  <!-- sky lobe (left) -->
   <path d="M59 33 C41 41 27 64 39 82 C44 89 54 88 59 85 Z" fill="#A6C9E8"/>
+  <!-- sage leaf (right) -->
   <path d="M86 13 C113 37 107 77 60 90 C58 53 66 29 86 13 Z" fill="#A8BFAE"/>
+  <!-- vein -->
   <path d="M61 87 C66 57 74 33 86 13" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round"/>
 </svg>

@@ -14,3 +14,7 @@ website/app/.wrangler/
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Bulky point-in-time reference (superseded by brand-book + ported code; kept locally, not vendored)
+marva-design-system-viaClaudeD/
+marva-design-system-viaClaudeD.zip

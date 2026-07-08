@@ -1,0 +1,24 @@
+---
+interface Props {
+  tone?: 'sage' | 'sky' | 'sand' | 'outline';
+  class?: string;
+  [key: string]: any;
+}
+
+const { tone = 'sage', class: className, ...rest } = Astro.props;
+
+const base = 'inline-flex items-center px-3.5 py-1.5 rounded-full text-[0.8125rem] font-semibold uppercase tracking-[0.08em]';
+
+const tones = {
+  sage: 'bg-sage text-ink',
+  sky: 'bg-sky text-ink',
+  sand: 'bg-sand text-ink',
+  outline: 'bg-transparent text-inverse border border-white/40',
+};
+
+const classes = [base, tones[tone] || tones.sage, className].filter(Boolean).join(' ');
+---
+
+<span class={classes} {...rest}>
+  <slot />
+</span>
