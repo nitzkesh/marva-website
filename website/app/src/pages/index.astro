@@ -93,8 +93,64 @@ import Logo from '../components/Logo.astro';
           </div>
         </div>
 
-        <div class="hero-image img-slot aspect-[4/5] rounded-3xl">
-          תמונה: בקבוק מרווה עם תווית מותג לדוגמה, ביד, על רקע חוף/טיילת תל אביב
+        <div class="hero-image aspect-[4/5] rounded-3xl relative overflow-hidden bg-gradient-to-br from-pale-sage to-white border border-sand/40 flex items-center justify-center p-8">
+          <svg class="bottle-illustration w-full h-full max-w-[220px]" viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="הדגמה: בקבוק 500 מ״ל עם אזור פרסום מסומן על התווית, לצד אזור התוכן החוקי המחייב">
+            <defs>
+              <pattern id="seamHatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+                <rect width="6" height="6" fill="#EEF2E6"/>
+                <line x1="0" y1="0" x2="0" y2="6" stroke="#5C7A4E" stroke-width="2"/>
+              </pattern>
+            </defs>
+
+            <!-- cap -->
+            <rect x="136" y="14" width="48" height="26" rx="6" fill="#5C7A4E"/>
+            <!-- neck -->
+            <path d="M136,40 L184,40 L200,70 L120,70 Z" fill="#8FC2DE" fill-opacity="0.35" stroke="#5C7A4E" stroke-width="1.5"/>
+            <!-- body -->
+            <path d="M120,70 C90,85 60,95 60,120 L60,320 C60,350 70,370 100,378 L220,378 C250,370 260,350 260,320 L260,120 C260,95 230,85 200,70 Z"
+                  fill="#EEF2E6" stroke="#5C7A4E" stroke-width="2"/>
+
+            <!-- label band: proportions match the real Mei Eden 210x42mm artboard
+                 (seam ~4.5% each side, ad zone ~24%, mandatory content ~65%) -->
+            <g>
+              <rect x="60" y="160" width="200" height="120" fill="#FBFAF5" stroke="#5C7A4E" stroke-width="1.5"/>
+
+              <!-- seams -->
+              <rect x="60" y="160" width="9" height="120" fill="url(#seamHatch)" opacity="0.6"/>
+              <rect x="251" y="160" width="9" height="120" fill="url(#seamHatch)" opacity="0.6"/>
+
+              <!-- mandatory regulatory content zone (abstracted — real content is dense
+                   Hebrew fine print + barcode, illegible at this scale so represented
+                   generically rather than faked) -->
+              <rect x="69" y="160" width="130" height="120" fill="#E6D8B8" fill-opacity="0.25"/>
+              <rect x="80" y="180" width="70" height="4" rx="2" fill="#2E332B" fill-opacity="0.28"/>
+              <rect x="80" y="190" width="55" height="4" rx="2" fill="#2E332B" fill-opacity="0.22"/>
+              <rect x="80" y="200" width="62" height="4" rx="2" fill="#2E332B" fill-opacity="0.22"/>
+              <rect x="80" y="210" width="45" height="4" rx="2" fill="#2E332B" fill-opacity="0.18"/>
+              <rect x="150" y="180" width="35" height="4" rx="2" fill="#2E332B" fill-opacity="0.22"/>
+              <rect x="150" y="190" width="40" height="4" rx="2" fill="#2E332B" fill-opacity="0.18"/>
+              <g fill="#2E332B" fill-opacity="0.35">
+                <rect x="90" y="255" width="2" height="16"/>
+                <rect x="94" y="255" width="1" height="16"/>
+                <rect x="97" y="255" width="3" height="16"/>
+                <rect x="102" y="255" width="1" height="16"/>
+                <rect x="105" y="255" width="2" height="16"/>
+                <rect x="109" y="255" width="1" height="16"/>
+                <rect x="112" y="255" width="2" height="16"/>
+                <rect x="116" y="255" width="1" height="16"/>
+                <rect x="120" y="255" width="3" height="16"/>
+                <rect x="125" y="255" width="1" height="16"/>
+              </g>
+
+              <!-- ad / free zone -->
+              <g class="bottle-adzone">
+                <rect x="203" y="160" width="48" height="120" fill="#FBFAF5" stroke="#8CA87C" stroke-width="2" stroke-dasharray="6 4"/>
+                <text x="227" y="205" text-anchor="middle" class="font-heading font-bold" font-size="15" fill="#E23B3B">YOUR</text>
+                <text x="227" y="225" text-anchor="middle" class="font-heading font-bold" font-size="15" fill="#E23B3B">AD</text>
+                <text x="227" y="245" text-anchor="middle" class="font-heading font-bold" font-size="15" fill="#E23B3B">HERE</text>
+              </g>
+            </g>
+          </svg>
         </div>
       </div>
     </section>
@@ -511,6 +567,24 @@ import Logo from '../components/Logo.astro';
         .from('.hero-ctas',     { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
         .from('.hero-trust',    { y: 10, opacity: 0, duration: 0.4 }, '-=0.2')
         .from('.hero-image',    { y: 40, opacity: 0, scale: 0.96, duration: 0.8 }, '-=0.6');
+
+      /* ── Demo bottle: idle float + ad-zone pulse ─── */
+      gsap.to('.bottle-illustration', {
+        y: -10,
+        duration: 2.4,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 1.4,
+      });
+      gsap.to('.bottle-adzone rect', {
+        opacity: 0.5,
+        duration: 1.3,
+        ease: 'sine.inOut',
+        yoyo: true,
+        repeat: -1,
+        delay: 1.6,
+      });
 
       /* ── Hero leaf parallax ─────────────────────── */
       document.querySelectorAll<HTMLElement>('.hero-leaf-bg').forEach((el) => {
