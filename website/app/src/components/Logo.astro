@@ -1,0 +1,23 @@
+---
+interface Props {
+  dark?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}
+const { dark = false, size = 'md' } = Astro.props;
+
+const sizes = {
+  sm: { leaf: 'w-6 h-6', text: 'text-lg' },
+  md: { leaf: 'w-8 h-8', text: 'text-2xl' },
+  lg: { leaf: 'w-12 h-12', text: 'text-4xl' },
+};
+const s = sizes[size];
+---
+
+<div class="flex items-center gap-2">
+  <img
+    src="/favicon.svg"
+    alt=""
+    class={`${s.leaf} shrink-0 ${dark ? 'brightness-0 invert' : ''}`}
+  />
+  <span class={`font-heading font-bold ${s.text} ${dark ? 'text-base' : 'text-ink'}`}>מרווה</span>
+</div>

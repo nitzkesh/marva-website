@@ -1,0 +1,16 @@
+# Website build (Astro app has its own nested .gitignore too, this covers the whole project)
+website/app/node_modules/
+website/app/dist/
+website/app/.astro/
+website/app/.wrangler/
+
+# OS / editor
+.DS_Store
+.idea/
+
+# env/secrets
+.env
+.env.production
+.dev.vars*
+!.dev.vars.example
+!.env.example

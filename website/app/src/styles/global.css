@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Assistant:wght@400;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-sage: #8CA87C;
+  --color-sage-light: #a3bc96;
+  --color-sky: #8FC2DE;
+  --color-sky-light: #b5d6e9;
+  --color-sand: #E6D8B8;
+  --color-pale-sage: #EEF2E6;
+  --color-ink: #5C7A4E;
+  --color-ink-strong: #2E332B;
+  --color-base: #FBFAF5;
+
+  --font-heading: 'Rubik', 'Assistant', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Assistant', 'Segoe UI', system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-base);
+  color: var(--color-ink-strong);
+  font-family: var(--font-body);
+}
+
+/* Skip-to-content link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  right: 1rem;
+  background: var(--color-ink);
+  color: var(--color-base);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
+  z-index: 100;
+  font-weight: 600;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Header scroll state */
+.header-scrolled {
+  box-shadow: 0 1px 12px rgba(46, 51, 43, 0.08);
+}
+
+/* Placeholder image slot */
+.img-slot {
+  background: repeating-linear-gradient(135deg, var(--color-pale-sage), var(--color-pale-sage) 10px, #ffffff 10px, #ffffff 20px);
+  border: 1.5px dashed var(--color-sage);
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 1rem;
+}
+
+/* Form inputs */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--color-sand);
+  border-radius: 0.75rem;
+  background: var(--color-base);
+  color: var(--color-ink-strong);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-sage);
+  box-shadow: 0 0 0 3px rgba(140, 168, 124, 0.15);
+}
+.form-input::placeholder {
+  color: var(--color-ink-strong);
+  opacity: 0.35;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 0.375rem;
+}
+
+/* Radio button custom style */
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border: 1.5px solid var(--color-sand);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.radio-option:has(input:checked) {
+  border-color: var(--color-sage);
+  background: var(--color-pale-sage);
+}
+.radio-option input[type="radio"] {
+  accent-color: var(--color-ink);
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+/* Conditional form fields */
+.conditional-fields {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease;
+}
+.conditional-fields.is-active {
+  max-height: 500px;
+  opacity: 1;
+}

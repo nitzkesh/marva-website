@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head><meta charset="utf-8"><style>
+  :root{
+    --sage:#8CA87C; --sky:#8FC2DE; --sand:#E6D8B8;
+    --ink:#5C7A4E; --ink-strong:#2E332B; --base:#FBFAF5;
+  }
+  body{margin:0;background:var(--base);font-family:'Segoe UI',Arial,sans-serif;padding:40px;direction:rtl;}
+  h1{color:var(--ink);font-size:22px;margin:0 0 6px;}
+  .note{color:#777;font-size:13px;margin:0 0 30px;max-width:1000px;line-height:1.6;}
+  .note b{color:var(--ink-strong);}
+  .board{margin-bottom:60px;}
+  .board h2{color:var(--ink-strong);font-size:16px;margin:0 0 4px;}
+  .board .dims{color:#888;font-size:12px;margin:0 0 14px;}
+  .label{position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.1);overflow:hidden;}
+  .seam{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(45deg,#00000022,#00000022 4px,transparent 4px,transparent 8px);
+        border-left:1px dashed rgba(0,0,0,0.3);border-right:1px dashed rgba(0,0,0,0.3);}
+  .free-zone{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;
+             align-items:center;justify-content:center;gap:6px;padding:6px;box-sizing:border-box;}
+  .free-zone .fz-label{position:absolute;top:5px;right:8px;font-size:10px;color:rgba(255,255,255,0.85);font-weight:700;}
+  .adv-logo{background:#fff;border-radius:6px;padding:6px 16px;font-weight:700;color:var(--ink);font-size:14px;}
+  .adv-tag{font-size:10px;color:rgba(255,255,255,0.9);font-style:italic;}
+  .adv-coupon{background:rgba(255,255,255,0.9);border-radius:4px;padding:2px 8px;font-size:9px;color:#5a4d2e;}
+  .content-panel{position:absolute;top:2mm;bottom:2mm;background:rgba(255,255,255,0.93);border-radius:4px;
+               display:grid;gap:1px;box-sizing:border-box;padding:4px;}
+  .cp-label{position:absolute;top:4px;left:8px;font-size:9px;color:#888;font-weight:700;z-index:2;}
+  .chip{background:transparent;display:flex;align-items:center;justify-content:center;
+        text-align:center;font-size:7.5px;line-height:1.2;color:#333;padding:1px;overflow:hidden;}
+  .legend{display:flex;gap:24px;margin-top:10px;font-size:11px;color:#555;}
+  .legend .sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-inline-end:5px;vertical-align:-2px;}
+</style></head>
+<body>
+<h1>מרווה — הצעת פריסה לתווית מותאמת אישית (נבנה מקבצי הספק האמיתיים)</h1>
+<p class="note">נבנה ישירות מקבצי הדפוס האמיתיים של נריה: מי עדן (<b>שבלונה מי עדן.pdf</b>) ועין גדי (<b>שבלונה עין גדי.pdf</b>) —
+המידות המדויקות במ״מ וכל פריט תוכן חובה אומתו מתוך הקבצים. <b>תיקון מגרסה קודמת:</b> הקבצים האמיתיים מראים שתוכן החובה תופס
+כמעט את כל רוחב התווית, ולא רק את ה״שליש הימני״. ההדמיה הזו מניחה שמרווה מזמינה <b>פריסת תווית חדשה ומותאמת אישית</b> לכל לקוח
+(אותו מפרט פיזי, אותו תוכן חובה, בסידור חופשי) — יש לאמת הנחה זו מול נריה לפני שרואים בה סופית. קנה מידה: 12 פיקסל למ״מ.</p>
+
+<div class="board" id="board-mei-eden">
+  <h2>מי עדן — פריסה מוצעת</h2>
+  <p class="dims">210×42 מ״מ · דפוס 6 צבעים (CMYK + פנטון 281c + בסיס לבן + שקוף) · מפרט סטודיו מרחב, 8.1.2025</p>
+  <div class="label" style="width:2520px;height:504px;background:linear-gradient(225deg,var(--sage),var(--ink));">
+    <div class="seam" style="right:0;width:114px;"></div>
+    <div class="free-zone" style="right:114px;width:600px;">
+      <div class="fz-label">אזור מיתוג הלקוח</div>
+      <div class="adv-logo">לוגו הלקוח</div>
+      <div class="adv-tag">סלוגן קמפיין</div>
+      <div class="adv-coupon">קוד קופון · QR</div>
+    </div>
+    <div class="content-panel" style="right:738px;left:114px;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(2,1fr);">
+      <div class="cp-label">תוכן חובה (מי עדן) — אומת מהקובץ המקורי</div>
+      <div class="chip">מים מינרליים<br>טבעיים</div>
+      <div class="chip">ממולא<br>על ידי מרווה</div>
+      <div class="chip">חייב בפיקדון<br>30 אג׳</div>
+      <div class="chip">PET · NSF ♻</div>
+      <div class="chip">500 מ״ל</div>
+      <div class="chip">עדיף לפני<br>תאריך ע״ג הבקבוק</div>
+      <div class="chip">לשמור במקום<br>קריר ויבש</div>
+      <div class="chip">כשר לפסח<br>+ לוגו רבנות</div>
+      <div class="chip">הרכב מינרלי<br>סידן,נתרן,מגנזיום…</div>
+      <div class="chip">ערך הגבה<br>pH 8.2</div>
+      <div class="chip" style="grid-column:span 2;">ברקוד<br>7290000688077</div>
+    </div>
+    <div class="seam" style="left:0;width:114px;"></div>
+  </div>
+</div>
+
+<div class="board" id="board-ein-gedi">
+  <h2>עין גדי — פריסה מוצעת (דורש החלטה נוספת — ראו הערה)</h2>
+  <p class="dims">214×41 מ״מ · תלת-לשוני: הצהרה בעברית + בלוק ערבית + ברקוד מסובב + קוד אצווה — צפוף יותר ממי עדן</p>
+  <div class="label" style="width:2568px;height:492px;background:linear-gradient(225deg,var(--sky),var(--ink));">
+    <div class="seam" style="right:0;width:60px;"></div>
+    <div class="free-zone" style="right:60px;width:480px;">
+      <div class="fz-label">אזור מיתוג הלקוח</div>
+      <div class="adv-logo">לוגו הלקוח</div>
+      <div class="adv-tag">סלוגן קמפיין</div>
+    </div>
+    <div class="content-panel" style="right:540px;left:60px;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(2,1fr);">
+      <div class="cp-label">תוכן חובה (עין גדי) — כולל בלוק ערבית</div>
+      <div class="chip">כשר לפסח<br>למהדרין</div>
+      <div class="chip">PET · NSF ♻</div>
+      <div class="chip">ברקוד<br>(מסובב)</div>
+      <div class="chip">הרכב מינרלי<br>(עברית)</div>
+      <div class="chip" style="grid-column:span 2;">הצהרה מלאה<br>(ערבית)</div>
+      <div class="chip">קוד אצווה</div>
+    </div>
+    <div class="seam" style="left:0;width:60px;"></div>
+  </div>
+  <p class="note" style="margin-top:10px;max-width:2568px;"><b>שאלה פתוחה לנריה:</b> בלוק הערבית של עין גדי תופס רוחב משמעותי —
+  כדאי לבדוק אם מרווה מתמקדת רק במי עדן (פשוט יותר, יותר מקום למיתוג לקוח) או תומכת בשני הספקים.</p>
+</div>
+
+<div class="legend">
+  <span><span class="sw" style="background:linear-gradient(225deg,var(--sage),var(--ink));"></span>אזור מיתוג הלקוח (רקע + לוגו, בתכנון)</span>
+  <span><span class="sw" style="background:#fff;border:1px solid #ccc;"></span>פאנל תוכן חובה (אומת מקבצי הספק האמיתיים)</span>
+  <span><span class="sw" style="background:repeating-linear-gradient(45deg,#0002,#0002 4px,transparent 4px,transparent 8px);"></span>מרווח תפר / גלישה</span>
+</div>
+</body></html>
