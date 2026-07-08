@@ -124,3 +124,44 @@ body {
   max-height: 500px;
   opacity: 1;
 }
+
+/* Contact method toggle (segmented pill) */
+.contact-toggle {
+  display: inline-flex;
+  gap: 0.25rem;
+  padding: 0.3rem;
+  background: #fff;
+  border: 1.5px solid var(--color-sand);
+  border-radius: 9999px;
+}
+.contact-toggle-btn {
+  padding: 0.6rem 1.6rem;
+  border: none;
+  background: transparent;
+  border-radius: 9999px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.contact-toggle-btn.is-active {
+  background: var(--color-ink);
+  color: var(--color-base);
+}
+
+/* Content placeholder (dashed) — for sections whose content comes later */
+.placeholder-box {
+  border: 1.5px dashed var(--color-sage);
+  border-radius: 1rem;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  opacity: 0.75;
+}

@@ -66,7 +66,7 @@ import Logo from '../components/Logo.astro';
       <div class="max-w-6xl mx-auto px-6 pt-20 pb-24 md:pt-28 md:pb-32 grid md:grid-cols-[1.15fr_0.85fr] gap-10 md:gap-14 items-center">
         <div>
           <p class="hero-eyebrow font-body font-semibold text-sage text-sm md:text-base mb-4 tracking-wide">
-            מים מינרליים בחינם · פרסום שמרווה
+            מים מינרליים בחינם
           </p>
           <h1 class="hero-title font-heading font-bold text-ink" style="font-size:clamp(2.75rem, 5vw + 1rem, 4.5rem); line-height:1.08">
             המותג שלכם,<br />ביד של כולם
@@ -221,6 +221,52 @@ import Logo from '../components/Logo.astro';
       </div>
     </section>
 
+    <!-- ── wave: base → pale-sage ── -->
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-8 md:h-12 block -my-px bg-base fill-pale-sage" aria-hidden="true">
+      <path d="M0,60 C360,10 1080,10 1440,60 Z"/>
+    </svg>
+
+    <!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+    <section id="testimonials" class="bg-pale-sage py-20 md:py-28">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="testi-heading font-heading font-bold text-ink text-center mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
+          לקוחות ממליצים
+        </h2>
+        <p class="testi-sub text-center text-ink-strong/60 max-w-lg mx-auto mb-14">
+          המלצות מלקוחות מרווה יתווספו כאן בקרוב.
+        </p>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="testi-card placeholder-box min-h-[190px]">מקום להמלצת לקוח</div>
+          <div class="testi-card placeholder-box min-h-[190px]">מקום להמלצת לקוח</div>
+          <div class="testi-card placeholder-box min-h-[190px]">מקום להמלצת לקוח</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── wave: pale-sage → base ── -->
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-8 md:h-12 block -my-px bg-pale-sage fill-base" aria-hidden="true">
+      <path d="M0,60 C240,5 960,5 1440,60 Z"/>
+    </svg>
+
+    <!-- ═══════════════ PARTNERS ═══════════════ -->
+    <section id="partners" class="bg-base py-20 md:py-28">
+      <div class="max-w-6xl mx-auto px-6 text-center">
+        <h2 class="partners-heading font-heading font-bold text-ink mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
+          שותפים ומותגים
+        </h2>
+        <p class="partners-sub text-ink-strong/60 max-w-lg mx-auto mb-14">
+          מותגים ועסקים שעובדים עם מרווה יופיעו כאן.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-5">
+          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
+          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
+          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
+          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
+          <div class="partner-logo img-slot aspect-[3/2] rounded-xl">לוגו</div>
+        </div>
+      </div>
+    </section>
+
     <!-- ── wave: base → ink ── -->
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none" class="w-full h-10 md:h-14 block -my-px bg-base fill-ink" aria-hidden="true">
       <path d="M0,60 C480,8 960,8 1440,60 Z"/>
@@ -235,7 +281,7 @@ import Logo from '../components/Logo.astro';
 
       <div class="max-w-6xl mx-auto px-6 text-center relative">
         <h2 class="dist-heading font-heading font-bold mb-6" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
-          איפה נמצא אותנו
+          איפה למצוא אותנו
         </h2>
         <p class="dist-sub max-w-xl mx-auto mb-14 text-base/80 leading-relaxed">
           נקודות חלוקה בכל רחבי תל אביב והמרכז — במקומות שבהם אנשים כבר נמצאים, לא רק שרואים פרסומת.
@@ -264,10 +310,34 @@ import Logo from '../components/Logo.astro';
         <h2 class="form-heading font-heading font-bold text-ink text-center mb-4" style="font-size:clamp(1.75rem, 3vw + 0.5rem, 2.75rem)">
           מוכנים להתחיל?
         </h2>
-        <p class="form-sub text-center text-ink-strong/65 mb-12 max-w-md mx-auto">
-          השאירו פרטים ונחזור אליכם עם הצעת מחיר מותאמת אישית לקמפיין שלכם.
+        <p class="form-sub text-center text-ink-strong/65 mb-8 max-w-md mx-auto">
+          בחרו איך תרצו ליצור איתנו קשר — פנייה מהירה או השארת פרטים לקבלת הצעת מחיר.
         </p>
 
+        <!-- Contact method toggle -->
+        <div class="contact-switch text-center mb-10">
+          <div class="contact-toggle">
+            <button type="button" class="contact-toggle-btn" data-panel="quick">צור קשר</button>
+            <button type="button" class="contact-toggle-btn is-active" data-panel="form">להשאיר פרטים</button>
+          </div>
+        </div>
+
+        <!-- Panel: quick contact — email + WhatsApp (placeholder for now) -->
+        <div id="panel-quick" class="contact-panel hidden">
+          <div class="bg-white rounded-3xl p-7 md:p-10 shadow-sm border border-sand/40 space-y-5 max-w-xl mx-auto">
+            <div>
+              <p class="form-label">אימייל</p>
+              <div class="placeholder-box">כתובת המייל תתווסף כאן בקרוב</div>
+            </div>
+            <div>
+              <p class="form-label">וואטסאפ</p>
+              <div class="placeholder-box">מספר הוואטסאפ יתווסף כאן בקרוב</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: detailed form -->
+        <div id="panel-form" class="contact-panel">
         <form id="order-form" class="form-card bg-white rounded-3xl p-7 md:p-10 shadow-sm border border-sand/40" novalidate>
           <input type="hidden" name="source" id="form-source" value="general" />
 
@@ -403,6 +473,7 @@ import Logo from '../components/Logo.astro';
           <h3 class="font-heading font-bold text-2xl text-ink mb-3">הבקשה נשלחה בהצלחה</h3>
           <p class="text-ink-strong/65 max-w-sm mx-auto">קיבלנו את הפרטים שלכם ונחזור אליכם בהקדם עם הצעת מחיר מותאמת.</p>
         </div>
+        </div><!-- /#panel-form -->
       </div>
     </section>
 
@@ -417,7 +488,6 @@ import Logo from '../components/Logo.astro';
   <footer class="py-12 bg-base">
     <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
       <Logo size="sm" />
-      <p class="font-body font-semibold text-sage text-sm">פרסום שמרווה</p>
       <p class="text-xs text-ink-strong/40">© {new Date().getFullYear()} מרווה · כל הזכויות שמורות</p>
     </div>
   </footer>
@@ -493,6 +563,34 @@ import Logo from '../components/Logo.astro';
         scrollTrigger: { trigger: '#audience', start: 'top 65%' },
       });
 
+      /* ── Testimonials ───────────────────────────── */
+      gsap.from('.testi-heading', {
+        y: 40, opacity: 0, duration: 0.7,
+        scrollTrigger: { trigger: '#testimonials', start: 'top 80%' },
+      });
+      gsap.from('.testi-sub', {
+        y: 25, opacity: 0, duration: 0.6,
+        scrollTrigger: { trigger: '#testimonials', start: 'top 75%' },
+      });
+      gsap.from('.testi-card', {
+        y: 40, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power2.out',
+        scrollTrigger: { trigger: '#testimonials', start: 'top 70%' },
+      });
+
+      /* ── Partners ───────────────────────────────── */
+      gsap.from('.partners-heading', {
+        y: 40, opacity: 0, duration: 0.7,
+        scrollTrigger: { trigger: '#partners', start: 'top 80%' },
+      });
+      gsap.from('.partners-sub', {
+        y: 25, opacity: 0, duration: 0.6,
+        scrollTrigger: { trigger: '#partners', start: 'top 75%' },
+      });
+      gsap.from('.partner-logo', {
+        y: 30, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out',
+        scrollTrigger: { trigger: '#partners', start: 'top 75%' },
+      });
+
       /* ── Distribution ───────────────────────────── */
       gsap.from('.dist-heading', {
         y: 40, opacity: 0, duration: 0.7,
@@ -554,12 +652,25 @@ import Logo from '../components/Logo.astro';
     hamburger?.addEventListener('click', () => navOpen ? closeNav() : openNav());
     navLinks?.forEach((a) => a.addEventListener('click', closeNav));
 
+    /* ── Contact method toggle (צור קשר / להשאיר פרטים) ── */
+    const toggleBtns = document.querySelectorAll<HTMLElement>('.contact-toggle-btn');
+    const panelQuick = document.getElementById('panel-quick');
+    const panelForm  = document.getElementById('panel-form');
+    function showPanel(which: string) {
+      const isForm = which === 'form';
+      panelForm?.classList.toggle('hidden', !isForm);
+      panelQuick?.classList.toggle('hidden', isForm);
+      toggleBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.panel === which));
+    }
+    toggleBtns.forEach((b) => b.addEventListener('click', () => showPanel(b.dataset.panel || 'form')));
+
     /* ── Form: source tracking from CTA clicks ──── */
     document.querySelectorAll<HTMLElement>('[data-source]').forEach((el) => {
       el.addEventListener('click', () => {
         const src = el.dataset.source;
         const field = document.getElementById('form-source') as HTMLInputElement | null;
         if (field && src) field.value = src;
+        showPanel('form'); // CTAs always land on the detailed form
 
         if (src === 'advertiser') {
           (document.getElementById('delivery-marva') as HTMLInputElement).checked = true;
