@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import Input from '../components/Input.astro';
+import {
+  distributorsHero,
+  whyDistribute,
+  distributorTypesHeading,
+  distributorTypes,
+  distributorTypesClosing,
+  distForm,
+} from '../data/content';
+
+const accentVars: Record<string, string> = {
+  sage: 'var(--color-sage)',
+  sky: 'var(--color-sky)',
+  sand: 'var(--color-sand)',
+};
+
+const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
+---
+
+<Layout title="מרווה — למשווקים" description={distributorsHero.sub}>
+
+  <Header />
+
+  <main id="main-content">
+
+    <!-- ═══════════════════ A. HERO ═══════════════════ -->
+    <section class="relative overflow-hidden bg-base py-16 md:py-20">
+      <!-- sky-leaning wave shapes (differentiates from the advertiser page's sage) -->
+      <svg class="absolute bottom-0 inset-x-0 w-full h-20 md:h-28 z-0" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,85 C240,50 480,125 720,90 C960,55 1200,120 1440,80 L1440,160 L0,160 Z" fill="var(--color-sky)" opacity="0.35"></path>
+        <path d="M0,120 C240,150 480,95 720,120 C960,145 1200,95 1440,125 L1440,160 L0,160 Z" fill="var(--color-sky-deep)" opacity="0.15"></path>
+      </svg>
+
+      <div class="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[1.1fr_0.6fr] gap-10 md:gap-8 items-center">
+        <div class="hero-copy max-w-[560px]">
+          <h1 class="font-display font-black text-ink text-[clamp(2.25rem,4vw+1rem,3.75rem)] leading-[1.1]">
+            {distributorsHero.h1}
+          </h1>
+          <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4 mb-8">
+            {distributorsHero.sub}
+          </p>
+          <Button href={distributorsHero.ctaHref} size="l">{distributorsHero.ctaLabel}</Button>
+        </div>
+
+        <div class="hero-visual relative w-full max-w-[200px] justify-self-center">
+          <img src="/hero-bottle.png" alt="בקבוק מרווה עם תווית מותג" class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ B. WHY WORK WITH US ═══════════════ -->
+    <section class="bg-sky-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          למה לעבוד איתנו?
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12">
+          {whyDistribute.map((w, i) => (
+            <Card accent={accentVars[w.accent]} class="why-card">
+              <!-- oversized pale decorative numeral behind the keyword -->
+              <span class="absolute -top-4 end-2 font-display font-black text-[7rem] leading-none text-ink/5 select-none pointer-events-none" aria-hidden="true">{i + 1}</span>
+              <h3 class="relative font-display font-black text-ink text-3xl mb-3">{w.keyword}</h3>
+              <p class="relative font-body text-ink/80">{w.body}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ C. WHO CAN DISTRIBUTE ═══════════════ -->
+    <section class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {distributorTypesHeading}
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mt-12">
+          {distributorTypes.map((t, i) => (
+            <div class={`tile-card flex items-center justify-center text-center rounded-[14px] px-4 py-6 font-body font-semibold text-ink ${tintClasses[i % tintClasses.length]}`}>
+              {t}
+            </div>
+          ))}
+        </div>
+        <p class="font-body text-muted text-center max-w-xl mx-auto mt-10">
+          {distributorTypesClosing}
+        </p>
+      </div>
+    </section>
+
+    <!-- ═══════════════ D. DISTRIBUTOR FORM ═══════════════ -->
+    <section id="dist-form" class="bg-sand-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          בואו נתחיל
+        </h2>
+
+        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-10 max-w-[780px] mx-auto mt-8">
+          <form class="dist-form marva-form" data-subject={distForm.subject}>
+            <input type="hidden" name="from_page" value={distForm.fromPage} />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+              <Input label="שם העסק" name="business_name" placeholder="לדוגמה: קפה השכונה" required />
+              <Input label="סוג העסק" name="business_type" placeholder="לדוגמה: בית קפה, חדר כושר" />
+              <Input label="איש קשר" name="contact" placeholder="שם מלא" required />
+              <Input label="טלפון" name="phone" type="tel" dir="ltr" placeholder="050-1234567" required />
+              <Input label="אימייל" name="email" type="email" dir="ltr" placeholder="name@company.co.il" />
+              <Input label="מיקום העסק" name="location" placeholder="עיר · כתובת" />
+              <Input label="כמות בקבוקים משוערת לחודש" name="qty" placeholder="לדוגמה: 500" class="sm:col-span-2" />
+              <label class="flex flex-col gap-1.5 sm:col-span-2">
+                <span class="form-label">הערות</span>
+                <textarea name="notes" class="form-input" rows="4" placeholder="ספרו לנו על העסק והקהל שלכם"></textarea>
+              </label>
+            </div>
+            <Button size="l" class="w-full" type="submit">שליחת פנייה</Button>
+          </form>
+          <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">{distForm.thanks}</div>
+          <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">{distForm.error}</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+
+  <script>
+    import { heroSpring } from '../scripts/hero-spring';
+
+    /* Task E — hero entrance (Motion spring, same pattern as home). */
+    heroSpring();
+  </script>
+</Layout>

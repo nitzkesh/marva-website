@@ -1,0 +1,49 @@
+---
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { navLinks } from '../data/content';
+---
+
+<!-- ═══════════════════ HEADER ═══════════════════ -->
+<header class="site-header sticky top-0 z-50 bg-base/85 backdrop-blur-sm border-b border-border transition-shadow">
+  <div class="relative max-w-6xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center">
+    <!-- Hamburger: fixed physical LEFT at all sizes (Freewater-style), opens full-screen overlay -->
+    <button
+      id="hamburger"
+      type="button"
+      aria-label="תפריט ניווט"
+      aria-expanded="false"
+      aria-controls="nav-overlay"
+      class="absolute left-0 flex flex-col justify-center items-center gap-[6px] w-10 h-10 z-10 cursor-pointer"
+    >
+      <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
+      <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-opacity duration-200"></span>
+      <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
+    </button>
+
+    <a href="/" class="mx-auto" aria-label="מרווה — לדף הבית">
+      <Logo size="sm" />
+    </a>
+
+    <Button href="/#inquiry" size="m" class="absolute right-0 !px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-base">
+      צור קשר
+    </Button>
+  </div>
+</header>
+
+<!-- ═══════════════ FULL-SCREEN NAV OVERLAY (all viewport sizes) ═══════════════ -->
+<div
+  id="nav-overlay"
+  class="fixed inset-0 z-40 bg-ink/95 backdrop-blur-md flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300"
+  role="dialog"
+  aria-modal="true"
+  aria-label="תפריט ניווט"
+>
+  <nav class="flex flex-col items-center gap-7">
+    {navLinks.map((l) => (
+      <a href={l.href} class="nav-overlay-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">
+        {l.label}
+      </a>
+    ))}
+  </nav>
+</div>

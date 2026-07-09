@@ -23,5 +23,8 @@ const { title, description } = Astro.props;
   <body class="bg-base text-ink font-body overflow-x-hidden">
     <a href="#main-content" class="skip-link">דלג לתוכן</a>
     <slot />
+    <script>
+      import '../scripts/shared.ts';
+    </script>
   </body>
 </html>

@@ -1,141 +1,149 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Logo from '../components/Logo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import Input from '../components/Input.astro';
+import Badge from '../components/Badge.astro';
+import ExpandCard from '../components/ExpandCard.astro';
+import {
+  homeHero,
+  conveyorLabel,
+  conveyorChips,
+  whoStatement,
+  howSteps,
+  whereCards,
+  findSpotsHeading,
+  findSpots,
+  testimonials,
+  bigButtons,
+  inquiryTopics,
+  inquiryForm,
+} from '../data/content';
 
-const whereCards = [
-  { title: 'נקודות חלוקה אסטרטגיות', body: 'חופים, טיילות ומוקדים חמים בתל אביב.', accent: 'var(--color-sage)' },
-  { title: 'בתי עסק', body: 'הבקבוקים מגיעים ישירות לסניפי הרשת.', accent: 'var(--color-sky)' },
-  { title: 'אירועים', body: 'אירועי ספורט ותרבות, כנסים, הרצאות, סמינרים וחתונות.', accent: 'var(--color-sand)' },
-  { title: 'סופרמרקטים "הצינור"', body: 'על המדפים בסניפי הרשת.', accent: 'var(--color-sage)' },
-];
+/* Simple hand-drawn line icons (stroke, currentColor, ~40px) for the "how it works" steps. */
+const icons: Record<string, string> = {
+  document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M14 6h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M28 6v8h8"/><path d="M17 26h14"/><path d="M17 32h14"/><path d="M17 20h6"/></svg>`,
+  megaphone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M6 20v8a3 3 0 0 0 3 3h3l14 9V8L12 17H9a3 3 0 0 0-3 3Z"/><path d="M26 17a7 7 0 0 1 0 14"/><path d="M33 12a15 15 0 0 1 0 24"/></svg>`,
+  rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M24 4c6 4 9 11 9 18 0 4-1 8-3 11l-6 5-6-5c-2-3-3-7-3-11 0-7 3-14 9-18Z"/><circle cx="24" cy="18" r="3.5"/><path d="M17 30l-6 4 2-8"/><path d="M31 30l6 4-2-8"/><path d="M20 38h8l-4 6-4-6Z"/></svg>`,
+};
 
-const howSteps = [
-  { n: '01', title: 'קבלת הצעת מחיר', body: 'הצעה לפי פרטי הקמפיין שלכם.' },
-  { n: '02', title: 'עיצוב התווית', body: 'מעצבים את התווית — הרקע ואזור עיצוב מוגדר הם שלכם.' },
-  { n: '03', title: 'יוצאים לדרך!', body: 'מגיעים ליד של קהל היעד שלכם.' },
-];
+/* Flat vector illustrations (Bauhaus-flat, brand palette, no text) for the "where" cards. */
+const illustrations: Record<string, string> = {
+  beach: `<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="180" fill="var(--color-sky-tint)"/><circle cx="264" cy="40" r="24" fill="var(--color-sand-deep)"/><rect x="0" y="120" width="320" height="60" fill="var(--color-sand)"/><path d="M0,120 Q80,95 160,120 T320,120 V145 H0 Z" fill="var(--color-sage)"/><rect x="70" y="68" width="4" height="52" fill="var(--color-ink)"/><path d="M40,68 a32,20 0 0 1 64,0 Z" fill="var(--color-sage-deep)"/></svg>`,
+  storefront: `<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="180" fill="var(--color-sage-tint)"/><rect x="70" y="60" width="180" height="100" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="2"/><path d="M60,60 L160,20 L260,60 Z" fill="var(--color-sky-deep)"/><rect x="150" y="100" width="30" height="60" fill="var(--color-ink)"/><rect x="95" y="85" width="30" height="30" fill="var(--color-sand)"/><rect x="195" y="85" width="30" height="30" fill="var(--color-sand)"/></svg>`,
+  event: `<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="180" fill="var(--color-sand-tint)"/><rect x="40" y="120" width="240" height="24" fill="var(--color-sage-deep)"/><rect x="60" y="50" width="14" height="70" fill="var(--color-sky)"/><rect x="246" y="50" width="14" height="70" fill="var(--color-sky)"/><circle cx="67" cy="45" r="8" fill="var(--color-sand-deep)"/><circle cx="253" cy="45" r="8" fill="var(--color-sand-deep)"/><path d="M110,120 L160,60 L210,120 Z" fill="var(--color-sky-deep)"/></svg>`,
+  supermarket: `<svg viewBox="0 0 320 180" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"><rect width="320" height="180" fill="var(--color-sky-tint)"/><rect x="30" y="40" width="260" height="8" fill="var(--color-ink)"/><rect x="30" y="95" width="260" height="8" fill="var(--color-ink)"/><rect x="30" y="150" width="260" height="8" fill="var(--color-ink)"/><rect x="45" y="20" width="22" height="20" fill="var(--color-sage)"/><rect x="80" y="20" width="22" height="20" fill="var(--color-sky-deep)"/><rect x="115" y="20" width="22" height="20" fill="var(--color-sand-deep)"/><rect x="150" y="20" width="22" height="20" fill="var(--color-sage)"/><rect x="45" y="75" width="22" height="20" fill="var(--color-sand-deep)"/><rect x="80" y="75" width="22" height="20" fill="var(--color-sage)"/><rect x="115" y="75" width="22" height="20" fill="var(--color-sky-deep)"/><rect x="150" y="75" width="22" height="20" fill="var(--color-sand-deep)"/></svg>`,
+};
 
-const routeButtons = [
-  { key: 'business', label: 'אני רוצה בקבוקים לעסק שלי' },
-  { key: 'find', label: 'איפה תמצאו אותנו?' },
-  { key: 'advertise', label: 'אני רוצה לפרסם' },
-];
+const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
 
-const tabs = [
-  { key: 'business', label: 'בקבוקים לעסק שלי' },
-  { key: 'find', label: 'איפה תמצאו אותנו?' },
-  { key: 'advertise', label: 'אני רוצה לפרסם' },
-];
-
-const findSpots = [
-  { date: 'א׳, 12.7', loc: 'טיילת תל אביב · מול גורדון' },
-  { date: 'ג׳, 14.7', loc: 'חוף פרישמן' },
-  { date: 'ה׳, 16.7', loc: 'כיכר הבימה' },
-  { date: 'ו׳, 17.7', loc: 'שרונה מרקט' },
-  { date: 'ש׳, 18.7', loc: 'דיזנגוף סנטר' },
-];
+const bigButtonTints: Record<string, { bg: string; hover: string }> = {
+  sage: { bg: 'bg-sage-tint', hover: 'hover:bg-sage' },
+  sky: { bg: 'bg-sky-tint', hover: 'hover:bg-sky' },
+  sand: { bg: 'bg-sand-tint', hover: 'hover:bg-sand' },
+};
 ---
 
 <Layout title="מרווה — מים בחינם" description="מפרסמים משלמים על הבקבוקים, אנשים שותים בחינם. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם.">
 
-  <!-- ═══════════════════ HEADER ═══════════════════ -->
-  <header class="site-header sticky top-0 z-50 bg-base/85 backdrop-blur-sm border-b border-border transition-shadow">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <Logo size="sm" />
-      <nav class="hidden md:flex items-center gap-7 font-body text-ink">
-        <a href="#who" class="hover:text-sage-deep transition-colors">מי אנחנו</a>
-        <a href="#where" class="hover:text-sage-deep transition-colors">לאן מגיעים</a>
-        <a href="#how" class="hover:text-sage-deep transition-colors">איך זה עובד</a>
-      </nav>
-      <Button href="#forms" size="m" data-route="advertise" class="hidden md:inline-flex">אני רוצה לפרסם</Button>
-      <button id="hamburger" class="md:hidden relative flex flex-col justify-center items-center gap-[6px] w-10 h-10" aria-label="תפריט ניווט">
-        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
-        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-opacity duration-200"></span>
-        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
-      </button>
-    </div>
-  </header>
-
-  <!-- ═══════════════ MOBILE NAV OVERLAY ═══════════════ -->
-  <div id="mobile-nav" class="fixed inset-0 z-40 bg-ink/95 backdrop-blur-md flex flex-col items-center justify-center opacity-0 pointer-events-none md:hidden transition-opacity duration-300">
-    <nav class="flex flex-col items-center gap-7">
-      <a href="#who" class="mobile-nav-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">מי אנחנו</a>
-      <a href="#where" class="mobile-nav-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">לאן מגיעים</a>
-      <a href="#how" class="mobile-nav-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">איך זה עובד</a>
-      <Button href="#forms" size="l" data-route="advertise" class="mobile-nav-link mt-6 !bg-base !text-ink !border-base">אני רוצה לפרסם</Button>
-    </nav>
-  </div>
+  <Header />
 
   <main id="main-content">
 
-    <!-- ═══════════════════ §1 HERO ═══════════════════ -->
-    <section class="relative overflow-hidden bg-base py-20 md:py-28">
-      <div class="absolute -top-16 [inset-inline-start:-60px] w-64 h-64 bg-sage opacity-50 rounded-[0_0_100%_0] z-0"></div>
-      <div class="absolute bottom-10 [inset-inline-end:80px] w-32 h-32 bg-sky opacity-45 rounded-full z-0"></div>
-      <div class="absolute -bottom-10 [inset-inline-end:-40px] w-44 h-44 bg-sand opacity-55 z-0"></div>
+    <!-- ═══════════════════ A. HERO ═══════════════════ -->
+    <section class="relative overflow-hidden bg-base pt-16 pb-0 md:pt-20">
+      <div class="relative px-6 pb-16 md:pb-20">
+        <!-- soft sun disc -->
+        <div class="absolute top-6 start-6 w-40 h-40 rounded-full bg-sand opacity-40 blur-2xl z-0" aria-hidden="true"></div>
 
-      <div class="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[1.05fr_0.9fr] gap-10 md:gap-8 items-center">
-        <div class="hero-copy max-w-[560px]">
-          <h1 class="font-display font-black text-ink text-[clamp(2.75rem,5vw+1rem,4.5rem)] leading-[1.05]">
-            מים בחינם
-          </h1>
-          <p class="font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
-            המותג שלכם, בידיים של כולם
-          </p>
-          <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4 mb-8">
-            מפרסמים משלמים על הבקבוקים, אנשים שותים בחינם.
-          </p>
-          <Button href="#forms" size="l" data-route="advertise">אני רוצה לפרסם</Button>
-        </div>
+        <!-- eco-wave bands (behind content) -->
+        <svg class="absolute bottom-0 inset-x-0 w-full h-28 md:h-40 z-0" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,120 C240,180 480,60 720,100 C960,140 1200,60 1440,110 L1440,220 L0,220 Z" fill="var(--color-sand)" opacity="0.35"></path>
+          <path d="M0,150 C240,90 480,190 720,140 C960,90 1200,170 1440,130 L1440,220 L0,220 Z" fill="var(--color-sky)" opacity="0.4"></path>
+          <path d="M0,180 C240,140 480,200 720,170 C960,140 1200,200 1440,170 L1440,220 L0,220 Z" fill="var(--color-sage)" opacity="0.45"></path>
+        </svg>
 
-        <div class="hero-visual relative w-full max-w-[290px] justify-self-center">
-          <img src="/hero-bottle.png" alt="בקבוק מרווה עם תווית מותג" class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
-          <div class="absolute top-[43%] left-[34%] w-[31.5%] h-[23%] flex flex-col items-center justify-center">
-            <div class="flex flex-col items-center gap-px">
-              <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">המותג</span>
-              <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">שלכם</span>
-              <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">כאן</span>
+        <div class="relative z-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1.05fr_0.9fr] gap-10 md:gap-8 items-center">
+          <div class="hero-copy max-w-[560px]">
+            <h1 class="font-display font-black text-ink text-[clamp(2.75rem,5vw+1rem,4.5rem)] leading-[1.05]">
+              {homeHero.h1}
+            </h1>
+            <p class="font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
+              {homeHero.sub}
+            </p>
+            <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4 mb-8">
+              {homeHero.line}
+            </p>
+            <Button href={homeHero.ctaHref} size="l">{homeHero.ctaLabel}</Button>
+          </div>
+
+          <div class="hero-visual relative w-full max-w-[290px] justify-self-center">
+            <img src="/hero-bottle.png" alt="בקבוק מרווה עם תווית מותג" class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
+            <div class="absolute top-[43%] left-[34%] w-[31.5%] h-[23%] flex flex-col items-center justify-center">
+              <div class="flex flex-col items-center gap-px">
+                <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">המותג</span>
+                <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">שלכם</span>
+                <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">כאן</span>
+              </div>
+              <img src="/marva-mark.svg" alt="" class="absolute bottom-[8%] left-[6%] w-[22%] h-auto object-contain" />
             </div>
-            <img src="/marva-mark.svg" alt="" class="absolute bottom-[8%] left-[6%] w-[22%] h-auto object-contain" />
+          </div>
+        </div>
+      </div>
+
+      <!-- conveyor strip -->
+      <div class="relative z-10 border-t border-border bg-surface/70">
+        <div class="max-w-6xl mx-auto px-6 py-5">
+          <p class="font-body text-xs tracking-[0.12em] uppercase text-muted mb-3">{conveyorLabel}</p>
+          <div class="overflow-hidden conveyor-viewport">
+            <div class="conveyor-marquee">
+              <div class="conveyor-track" aria-hidden="false">
+                {conveyorChips.map((chip, i) => (
+                  chip.isCta ? (
+                    <a href={chip.href} class="conveyor-chip bg-ink text-inverse font-semibold hover:bg-[#2B2B2B] transition-colors">{chip.text}</a>
+                  ) : (
+                    <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                      <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
+                      {chip.text}
+                    </span>
+                  )
+                ))}
+              </div>
+              <!-- duplicate set — decorative, hidden from assistive tech; makes the marquee loop seamless -->
+              <div class="conveyor-track" aria-hidden="true">
+                {conveyorChips.map((chip, i) => (
+                  chip.isCta ? (
+                    <span tabindex="-1" class="conveyor-chip bg-ink text-inverse font-semibold">{chip.text}</span>
+                  ) : (
+                    <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                      <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
+                      {chip.text}
+                    </span>
+                  )
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════ §2 WHO WE ARE ═══════════════ -->
-    <section id="who" class="bg-sand-tint py-16 md:py-24">
-      <div class="max-w-2xl mx-auto px-6 text-center">
-        <h2 class="who-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)]">
-          מי אנחנו?
-        </h2>
-        <p class="font-body text-ink/80 leading-relaxed mt-5">
-          חברת מרווה היא פלטפורמה לפרסום על תוויות של בקבוקי מים. כשהבקבוקים מחולקים בחינם — כולם מרוויחים.
-        </p>
-      </div>
-    </section>
-
-    <!-- ═══════════════ §3 WHERE BOTTLES GO ═══════════════ -->
-    <section id="where" class="bg-surface py-16 md:py-24">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="where-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
-          לאן הבקבוקים מגיעים?
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto mt-12">
-          {whereCards.map((c) => (
-            <Card accent={c.accent} class="where-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
-              <h3 class="font-display font-bold text-ink text-xl mb-2.5">{c.title}</h3>
-              <p class="font-body text-ink/80">{c.body}</p>
-            </Card>
+    <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
+    <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sand-tint py-16">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <h2 class="who-heading font-display font-bold text-ink text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.25]">
+          {whoStatement.big.split(' ').map((word) => (
+            <span class="who-word inline-block">{word}&nbsp;</span>
           ))}
-        </div>
+        </h2>
+        <p class="who-sub font-body text-muted text-lg md:text-xl mt-6">{whoStatement.sub}</p>
       </div>
     </section>
 
-    <!-- ═══════════════ §4 HOW IT WORKS ═══════════════ -->
-    <section id="how" class="bg-sand-tint py-16 md:py-24">
+    <!-- ═══════════════ C. HOW IT WORKS ═══════════════ -->
+    <section id="how" class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="how-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           איך זה עובד?
@@ -143,7 +151,10 @@ const findSpots = [
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
           {howSteps.map((s) => (
             <Card class="how-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
-              <div class="font-display font-bold text-sage-deep text-5xl mb-2">{s.n}</div>
+              <div class="flex items-center gap-3 mb-4">
+                <div class="how-card-icon text-sage-deep" set:html={icons[s.icon]} />
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sage-tint font-display font-bold text-sage-deep text-sm">{s.n}</span>
+              </div>
               <h3 class="font-display font-bold text-ink text-xl mb-2.5">{s.title}</h3>
               <p class="font-body text-ink/80">{s.body}</p>
             </Card>
@@ -152,327 +163,136 @@ const findSpots = [
       </div>
     </section>
 
-    <!-- ═══════════════ §5 THREE ROUTES ═══════════════ -->
-    <section class="bg-surface py-16 md:py-24">
+    <!-- ═══════════════ D. WHERE DO WE WORK ═══════════════ -->
+    <section id="where" class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-          {routeButtons.map((o) => (
-            <button
-              type="button"
-              data-route={o.key}
-              class="py-7 px-5 rounded-[20px] cursor-pointer bg-sand-tint border border-border font-display font-bold text-lg text-ink transition-all duration-150 hover:bg-sand hover:-translate-y-0.5"
-            >
-              {o.label}
-            </button>
+        <h2 class="where-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          לאן הבקבוקים מגיעים?
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto mt-12">
+          {whereCards.map((c) => (
+            <ExpandCard id={`where-${c.key}`} class="where-card bg-surface rounded-[20px] shadow-card overflow-hidden transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
+              <div class="aspect-video w-full overflow-hidden" set:html={illustrations[c.illustration]} />
+              <div class="px-6 pt-6">
+                <h3 class="font-display font-bold text-ink text-xl mb-2">{c.title}</h3>
+                <p class="font-body text-ink/80">{c.body}</p>
+              </div>
+              <Fragment slot="trigger-label">עוד פרטים</Fragment>
+              <Fragment slot="expanded">
+                <p class="font-body text-ink/80">{c.long}</p>
+              </Fragment>
+            </ExpandCard>
           ))}
+        </div>
+
+        <!-- upcoming distribution dates/locations -->
+        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-10">
+          <h3 class="font-display font-bold text-ink text-lg mb-4">{findSpotsHeading}</h3>
+          <ul class="list-none p-0 m-0">
+            {findSpots.map((s) => (
+              <li class="flex gap-4 items-center py-3.5 border-b border-border last:border-b-0">
+                <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
+                <span class="font-body text-ink">{s.loc}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════ §6 PARTNERS ═══════════════ -->
-    <section id="partners" class="bg-sand-tint py-16 md:py-24">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="partners-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
-          שותפים
-        </h2>
-        <div class="dashed-box max-w-5xl mx-auto mt-8">בקרוב</div>
-      </div>
-    </section>
-
-    <!-- ═══════════════ §7 TESTIMONIALS ═══════════════ -->
+    <!-- ═══════════════ E. TESTIMONIALS ═══════════════ -->
     <section id="testimonials" class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="testimonials-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           ממליצים
         </h2>
-        <div class="dashed-box max-w-5xl mx-auto mt-8">בקרוב</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mt-12">
+          {testimonials.map((t, i) => (
+            <ExpandCard id={`testimonial-${i}`} triggerLabel="קראו עוד" class="testimonial-card relative bg-surface rounded-[20px] shadow-card overflow-hidden border border-border">
+              <div class="px-6 pt-6">
+                <div class="flex items-start justify-between">
+                  <span class="font-display text-5xl text-sage-deep leading-none" aria-hidden="true">”</span>
+                  <Badge tone="sand">{t.badge}</Badge>
+                </div>
+                <p class="font-display font-bold text-ink mt-1">{t.name}</p>
+                <p class="font-body text-ink/80 mt-2">{t.short}</p>
+              </div>
+              <Fragment slot="expanded">
+                <p class="font-body text-ink/80">{t.long}</p>
+              </Fragment>
+            </ExpandCard>
+          ))}
+        </div>
       </div>
     </section>
 
-    <!-- ═══════════════ §8 FORMS HUB ═══════════════ -->
-    <section id="forms" class="bg-sand-tint py-16 md:py-24">
+    <!-- ═══════════════ F. THREE BIG BUTTONS ═══════════════ -->
+    <section class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="forms-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
-          בואו נתחיל
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          {bigButtons.map((b) => (
+            <a
+              href={b.href}
+              class={`group flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}
+            >
+              <span>{b.label}</span>
+              <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 10H4"></path>
+                <path d="M9 4l-6 6 6 6"></path>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ G. GENERAL INQUIRY FORM ═══════════════ -->
+    <section id="inquiry" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {inquiryForm.heading}
         </h2>
 
-        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-10 max-w-[780px] mx-auto mt-8">
-          <!-- Tab switcher -->
-          <div class="flex gap-2 mb-7 flex-wrap">
-            {tabs.map((t) => (
-              <button
-                type="button"
-                data-tab={t.key}
-                class={`tab-btn flex-1 py-2.5 px-3.5 rounded-full cursor-pointer font-display font-semibold text-sm border transition-colors ${t.key === 'advertise' ? 'bg-ink text-inverse border-ink' : 'bg-transparent text-ink border-border'}`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-
-          <!-- Business panel -->
-          <div class="form-panel" data-panel="business" hidden>
-            <form class="lead-form">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
-                <Input label="שם העסק" name="business_name" placeholder="לדוגמה: קפה השכונה" required />
-                <Input label="איש קשר ותפקיד" name="contact" placeholder="שם מלא · תפקיד" required />
-                <Input label="טלפון" name="phone" type="tel" dir="ltr" placeholder="050-1234567" required />
-                <Input label="מיקום העסק" name="location" placeholder="עיר · כתובת" />
-                <Input label="כמות בקבוקים משוערת לחודש" name="qty" placeholder="לדוגמה: 500" class="sm:col-span-2" />
-              </div>
-              <Button size="l" class="w-full" type="submit">תחזרו אליי</Button>
-            </form>
-            <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">תודה! נחזור אליכם בקרוב.</div>
-            <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il.</div>
-          </div>
-
-          <!-- Find panel -->
-          <div class="form-panel" data-panel="find" hidden>
-            <p class="font-body text-muted mb-4">נקודות החלוקה הקרובות — מתעדכן לפי תאריכים ומיקומים.</p>
-            <ul class="list-none p-0 m-0">
-              {findSpots.map((s) => (
-                <li class="flex gap-4 items-center py-3.5 border-b border-border">
-                  <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
-                  <span class="font-body text-ink">{s.loc}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <!-- Advertise panel -->
-          <div class="form-panel" data-panel="advertise">
-            <form class="ad-form">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <Input label="שם העסק" name="business_name" placeholder="לדוגמה: קפה השכונה" required />
-                <Input label="ח.פ./ע.מ" name="tax_id" placeholder="123456789" />
-                <Input label="איש קשר" name="contact" placeholder="שם מלא" required />
-                <Input label="טלפון" name="phone" type="tel" dir="ltr" placeholder="050-1234567" required />
-                <Input label="אימייל" name="email" type="email" dir="ltr" placeholder="name@company.co.il" required />
-                <Input label="כמות בקבוקים רצויה" name="qty" placeholder="לדוגמה: 5,000" />
-                <Input label="משך קמפיין" name="duration" placeholder="לדוגמה: חודש" />
-                <Input label="תאריך התחלה רצוי" name="start_date" type="date" dir="ltr" />
-              </div>
-
-              <div class="mb-5">
-                <div class="form-label mb-2">שיטת חלוקה</div>
-                <div class="flex flex-col gap-2">
-                  <label class="radio-option">
-                    <input type="radio" name="delivery" value="supply" checked />
-                    <span>אתם מחלקים בעצמכם</span>
-                  </label>
-                  <label class="radio-option">
-                    <input type="radio" name="delivery" value="distribute" />
-                    <span>אנחנו מחלקים את הבקבוקים עבורכם</span>
-                  </label>
-                </div>
-                <div id="pref-points" class="conditional-fields">
-                  <div class="pt-3.5">
-                    <Input label="נקודות חלוקה מועדפות" name="pref_points" placeholder="לדוגמה: טיילת ת״א, חוף גורדון" />
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-6">
-                <button type="button" id="save-toggle" class="py-2.5 px-4.5 rounded-full cursor-pointer bg-transparent border border-ink text-ink font-body font-semibold text-sm transition-colors">
-                  אני רוצה לחסוך בעלויות
-                </button>
-                <div id="save-box" class="conditional-fields">
-                  <div class="mt-3.5 bg-sky-tint rounded-[10px] p-4">
-                    <p class="font-body text-ink mb-3">אפשר לפרסם על חצי תווית יחד עם מישהו אחר ולשלם פחות.</p>
-                    <label class="flex gap-2 items-start cursor-pointer font-body text-ink">
-                      <input type="checkbox" class="mt-1" />
-                      <span>אני רוצה לפרסם יחד עם מישהו אחר (לא תדעו מי המפרסם שחולק איתכם את התווית).</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              <Button size="l" class="w-full" type="submit">שליחת פנייה</Button>
-            </form>
-            <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב.</div>
-            <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il.</div>
-          </div>
+        <div class="bg-sand-tint rounded-[20px] shadow-card p-6 md:p-10 max-w-[640px] mx-auto mt-8">
+          <form class="general-form marva-form" data-subject={inquiryForm.subject}>
+            <input type="hidden" name="from_page" value={inquiryForm.fromPage} />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+              <Input label="שם מלא" name="name" placeholder="שם מלא" required class="sm:col-span-2" />
+              <Input label="אימייל" name="email" type="email" dir="ltr" placeholder="name@email.co.il" required />
+              <Input label="טלפון" name="phone" type="tel" dir="ltr" placeholder="050-1234567" />
+              <label class="flex flex-col gap-1.5 sm:col-span-2">
+                <span class="form-label">נושא</span>
+                <select name="topic" class="form-input">
+                  {inquiryTopics.map((t) => <option value={t}>{t}</option>)}
+                </select>
+              </label>
+              <label class="flex flex-col gap-1.5 sm:col-span-2">
+                <span class="form-label">הודעה</span>
+                <textarea name="message" class="form-input" rows="5" required placeholder="ספרו לנו במה נוכל לעזור"></textarea>
+              </label>
+            </div>
+            <Button size="l" class="w-full" type="submit">שליחה</Button>
+          </form>
+          <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">{inquiryForm.thanks}</div>
+          <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">{inquiryForm.error}</div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ═══════════════════ ENDING / FOOTER ═══════════════════ -->
-  <footer class="bg-base border-t border-border py-12 md:py-16">
-    <div class="max-w-6xl mx-auto px-6 flex flex-wrap gap-6 justify-between items-center">
-      <Logo size="sm" />
-
-      <div class="text-center font-body text-ink">
-        <div class="mb-1.5">לשאלות נוספות, דברו איתנו:</div>
-        <div class="flex gap-4 justify-center text-muted">
-          <span>טלפון: 000-0000000</span>
-          <span>·</span>
-          <span>info@marva.co.il</span>
-        </div>
-      </div>
-
-      <div class="flex gap-3 items-center">
-        <a href="#" aria-label="Instagram">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink">
-            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-          </svg>
-        </a>
-        <span class="w-6 h-6 rounded-full border border-dashed border-border inline-block"></span>
-        <span class="w-6 h-6 rounded-full border border-dashed border-border inline-block"></span>
-      </div>
-    </div>
-  </footer>
+  <Footer />
 
   <script>
+    import { animate, stagger } from 'motion';
     import gsap from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    import { animate, stagger } from 'motion';
 
     gsap.registerPlugin(ScrollTrigger);
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* ── 1. Panel/tab logic ─────────────────────── */
-    const tabBtns = document.querySelectorAll<HTMLElement>('.tab-btn');
-    const panels = document.querySelectorAll<HTMLElement>('.form-panel');
-
-    function setPanel(key: string) {
-      tabBtns.forEach((btn) => {
-        const active = btn.dataset.tab === key;
-        btn.classList.toggle('bg-ink', active);
-        btn.classList.toggle('text-inverse', active);
-        btn.classList.toggle('border-ink', active);
-        btn.classList.toggle('bg-transparent', !active);
-        btn.classList.toggle('text-ink', !active);
-        btn.classList.toggle('border-border', !active);
-      });
-      panels.forEach((panel) => {
-        panel.hidden = panel.dataset.panel !== key;
-      });
-    }
-
-    setPanel('advertise');
-
-    tabBtns.forEach((btn) => {
-      btn.addEventListener('click', () => setPanel(btn.dataset.tab || 'advertise'));
-    });
-
-    /* ── 2. Routing ─────────────────────────────── */
-    document.querySelectorAll<HTMLElement>('[data-route]').forEach((el) => {
-      el.addEventListener('click', () => {
-        const key = el.dataset.route;
-        if (!key) return;
-        setPanel(key);
-        const target = document.getElementById('forms');
-        if (target) {
-          window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 20, behavior: 'smooth' });
-        }
-      });
-    });
-
-    /* ── 3. Delivery radios ─────────────────────── */
-    const prefPoints = document.getElementById('pref-points');
-    document.querySelectorAll<HTMLInputElement>('input[name="delivery"]').forEach((radio) => {
-      radio.addEventListener('change', () => {
-        prefPoints?.classList.toggle('is-active', radio.checked && radio.value === 'distribute');
-      });
-    });
-
-    /* ── 4. Save toggle ─────────────────────────── */
-    const saveToggle = document.getElementById('save-toggle');
-    const saveBox = document.getElementById('save-box');
-    let saveOpen = false;
-    saveToggle?.addEventListener('click', () => {
-      saveOpen = !saveOpen;
-      saveBox?.classList.toggle('is-active', saveOpen);
-      saveToggle.classList.toggle('bg-sky', saveOpen);
-    });
-
-    /* ── 5. Form submit ──────────────────────────── */
-    const WEB3FORMS_ACCESS_KEY = 'f5ce1cab-5c12-409e-b135-3e1996fa181b';
-
-    document.querySelectorAll<HTMLFormElement>('.lead-form, .ad-form').forEach((form) => {
-      const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
-      const submitLabel = submitBtn?.textContent ?? '';
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (!form.checkValidity()) {
-          form.reportValidity();
-          return;
-        }
-
-        const errorEl = form.parentElement?.querySelector('.form-error');
-        errorEl?.classList.add('hidden');
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'שולח...';
-        }
-
-        const payload = new FormData(form);
-        payload.append('access_key', WEB3FORMS_ACCESS_KEY);
-        payload.append('subject', form.classList.contains('ad-form') ? 'פנייה חדשה מהאתר — מפרסם' : 'פנייה חדשה מהאתר — עסק');
-
-        try {
-          const res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { Accept: 'application/json' },
-            body: payload,
-          });
-          const result = await res.json();
-          if (!result.success) throw new Error(result.message || 'submit failed');
-
-          form.classList.add('hidden');
-          const thanks = form.parentElement?.querySelector('.form-thanks');
-          thanks?.classList.remove('hidden');
-        } catch {
-          errorEl?.classList.remove('hidden');
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = submitLabel;
-          }
-        }
-      });
-    });
-
-    /* ── 6. Mobile nav ───────────────────────────── */
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobile-nav');
-    const mobileNavLinks = mobileNav?.querySelectorAll('a');
-    const hamburgerLines = document.querySelectorAll<HTMLElement>('.hamburger-line');
-    let navOpen = false;
-
-    function openNav() {
-      navOpen = true;
-      mobileNav?.classList.remove('opacity-0', 'pointer-events-none');
-      if (hamburgerLines[0]) hamburgerLines[0].style.transform = 'translateY(8px) rotate(45deg)';
-      if (hamburgerLines[1]) hamburgerLines[1].style.opacity = '0';
-      if (hamburgerLines[2]) hamburgerLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeNav() {
-      navOpen = false;
-      mobileNav?.classList.add('opacity-0', 'pointer-events-none');
-      if (hamburgerLines[0]) hamburgerLines[0].style.transform = '';
-      if (hamburgerLines[1]) hamburgerLines[1].style.opacity = '';
-      if (hamburgerLines[2]) hamburgerLines[2].style.transform = '';
-      document.body.style.overflow = '';
-    }
-
-    hamburger?.addEventListener('click', () => (navOpen ? closeNav() : openNav()));
-    mobileNavLinks?.forEach((a) => a.addEventListener('click', closeNav));
-
-    /* ── 7. Header shadow on scroll ─────────────── */
-    const header = document.querySelector('.site-header');
-    window.addEventListener('scroll', () => {
-      header?.classList.toggle('header-scrolled', window.scrollY > 40);
-    });
-
-    /* ── 8. Hero spring load (Motion) ────────────── */
+    /* Hero Motion spring load — home page only */
     if (!reduced) {
       const heroCopyChildren = document.querySelectorAll<HTMLElement>('.hero-copy > *');
       const heroVisual = document.querySelector<HTMLElement>('.hero-visual');
@@ -496,32 +316,69 @@ const findSpots = [
       }
     }
 
-    /* ── 9. Calm scroll reveals with GSAP ───────── */
+    /* Who-are-we word cascade — home #who only.
+       Replaces the generic `main h2` reveal (excluded via :not(.who-heading)
+       in shared.ts) so it doesn't double-fire. */
     if (!reduced) {
-      document.querySelectorAll<HTMLElement>('main h2').forEach((h2) => {
-        gsap.from(h2, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-          scrollTrigger: { trigger: h2, start: 'top 80%' },
-        });
-      });
+      const whoSection = document.getElementById('who');
+      const whoWords = document.querySelectorAll<HTMLElement>('.who-word');
+      const whoSub = document.querySelector<HTMLElement>('.who-sub');
 
-      ['.where-card', '.how-card'].forEach((selector) => {
-        const cards = document.querySelectorAll<HTMLElement>(selector);
-        if (!cards.length) return;
-        const section = cards[0].closest('section');
-        gsap.from(cards, {
-          y: 30,
-          opacity: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-          stagger: 0.1,
-          clearProps: 'transform',
-          scrollTrigger: { trigger: section || cards[0], start: 'top 80%' },
+      if (whoSection && whoWords.length) {
+        gsap
+          .timeline({
+            scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
+          })
+          .from(whoWords, {
+            y: 24,
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power2.out',
+            stagger: 0.05,
+            clearProps: 'transform',
+          })
+          .from(
+            whoSub,
+            { y: 12, opacity: 0, duration: 0.5, ease: 'power2.out', clearProps: 'transform' },
+            '-=0.15',
+          );
+      }
+    }
+
+    /* How-it-works card sequence — home #how only.
+       Replaces the generic `.how-card` reveal (removed from shared.ts) so it
+       doesn't double-fire. Cards enter one-by-one everywhere; on desktop
+       (md+) each icon also pops in slightly after its card lands. */
+    if (!reduced) {
+      const howSection = document.getElementById('how');
+      const howCards = document.querySelectorAll<HTMLElement>('.how-card');
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
+      if (howCards.length) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: howSection || howCards[0], start: 'top 80%', once: true },
         });
-      });
+
+        howCards.forEach((card, i) => {
+          const start = i * 0.18;
+          tl.from(
+            card,
+            { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' },
+            start,
+          );
+
+          if (isDesktop) {
+            const icon = card.querySelector<HTMLElement>('.how-card-icon');
+            if (icon) {
+              tl.from(
+                icon,
+                { scale: 0.6, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' },
+                start + 0.15,
+              );
+            }
+          }
+        });
+      }
     }
   </script>
 </Layout>

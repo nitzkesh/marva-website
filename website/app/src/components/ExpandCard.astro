@@ -1,0 +1,41 @@
+---
+// Accessible click-to-expand card. Header content goes in the default slot,
+// the hidden long-form content goes in the "expanded" slot. Uses a real
+// <button> with aria-expanded, wired up generically in src/scripts/shared.ts
+// via the .expand-trigger class. Reveal animation reuses the existing
+// .conditional-fields max-height pattern from global.css.
+interface Props {
+  id: string;
+  triggerLabel?: string;
+  class?: string;
+}
+
+const { id, triggerLabel = 'עוד פרטים', class: className } = Astro.props;
+const panelId = `${id}-panel`;
+const btnId = `${id}-trigger`;
+---
+
+<div class={['expand-card', className].filter(Boolean).join(' ')}>
+  <slot />
+
+  <div class="px-6 pb-6">
+    <button
+      type="button"
+      id={btnId}
+      class="expand-trigger"
+      aria-expanded="false"
+      aria-controls={panelId}
+    >
+      <span><slot name="trigger-label">{triggerLabel}</slot></span>
+      <svg class="expand-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 6l4 4 4-4"></path>
+      </svg>
+    </button>
+
+    <div id={panelId} class="conditional-fields" role="region" aria-labelledby={btnId}>
+      <div class="expand-panel-inner">
+        <slot name="expanded" />
+      </div>
+    </div>
+  </div>
+</div>

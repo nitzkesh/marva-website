@@ -137,8 +137,99 @@ body {
   box-shadow: 0 4px 8px rgba(17, 17, 17, 0.06), 0 16px 32px rgba(17, 17, 17, 0.1);
 }
 
+/* Click-to-expand trigger (where-cards, testimonials) */
+.expand-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--color-border);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-ink);
+  text-align: inherit;
+}
+.expand-chevron {
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+.expand-trigger[aria-expanded="true"] .expand-chevron {
+  transform: rotate(180deg);
+}
+.expand-panel-inner {
+  padding-top: 12px;
+}
+
+/* Conveyor strip — infinite marquee (two identical tracks translated as one row) */
+.conveyor-marquee {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  gap: 12px;
+  animation: conveyor-scroll 35s linear infinite;
+  will-change: transform;
+}
+.conveyor-viewport:hover .conveyor-marquee,
+.conveyor-viewport:focus-within .conveyor-marquee {
+  animation-play-state: paused;
+}
+@keyframes conveyor-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* -50% = width of exactly one track, since both tracks are identical;
+       moves visually leftward, reading as "forward" against the RTL content. */
+    transform: translateX(-50%);
+  }
+}
+.conveyor-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  flex-shrink: 0;
+}
+.conveyor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+/* Label strip mockup (advertiser page — horizontally scrollable on touch;
+   .label-strip-track is auto-panned via GSAP translateX when it overflows). */
+.label-strip {
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+.label-strip-track {
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .conveyor-marquee {
+    animation: none;
+    transform: none;
+  }
+  .conveyor-marquee .conveyor-track[aria-hidden='true'] {
+    display: none;
   }
 }
