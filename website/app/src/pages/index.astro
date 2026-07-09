@@ -223,6 +223,7 @@ const findSpots = [
               <Button size="l" class="w-full" type="submit">תחזרו אליי</Button>
             </form>
             <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">תודה! נחזור אליכם בקרוב.</div>
+            <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il.</div>
           </div>
 
           <!-- Find panel -->
@@ -289,6 +290,7 @@ const findSpots = [
               <Button size="l" class="w-full" type="submit">שליחת פנייה</Button>
             </form>
             <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב.</div>
+            <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il.</div>
           </div>
         </div>
       </div>
@@ -390,16 +392,49 @@ const findSpots = [
     });
 
     /* ── 5. Form submit ──────────────────────────── */
+    const WEB3FORMS_ACCESS_KEY = 'f5ce1cab-5c12-409e-b135-3e1996fa181b';
+
     document.querySelectorAll<HTMLFormElement>('.lead-form, .ad-form').forEach((form) => {
-      form.addEventListener('submit', (e) => {
+      const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const submitLabel = submitBtn?.textContent ?? '';
+
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
-        form.classList.add('hidden');
-        const thanks = form.parentElement?.querySelector('.form-thanks');
-        thanks?.classList.remove('hidden');
+
+        const errorEl = form.parentElement?.querySelector('.form-error');
+        errorEl?.classList.add('hidden');
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'שולח...';
+        }
+
+        const payload = new FormData(form);
+        payload.append('access_key', WEB3FORMS_ACCESS_KEY);
+        payload.append('subject', form.classList.contains('ad-form') ? 'פנייה חדשה מהאתר — מפרסם' : 'פנייה חדשה מהאתר — עסק');
+
+        try {
+          const res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: payload,
+          });
+          const result = await res.json();
+          if (!result.success) throw new Error(result.message || 'submit failed');
+
+          form.classList.add('hidden');
+          const thanks = form.parentElement?.querySelector('.form-thanks');
+          thanks?.classList.remove('hidden');
+        } catch {
+          errorEl?.classList.remove('hidden');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = submitLabel;
+          }
+        }
       });
     });
 
