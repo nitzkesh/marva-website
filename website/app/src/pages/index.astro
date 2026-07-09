@@ -77,8 +77,8 @@ const findSpots = [
       <div class="absolute bottom-10 [inset-inline-end:80px] w-32 h-32 bg-sky opacity-45 rounded-full z-0"></div>
       <div class="absolute -bottom-10 [inset-inline-end:-40px] w-44 h-44 bg-sand opacity-55 z-0"></div>
 
-      <div class="relative z-10 max-w-6xl mx-auto px-6">
-        <div class="max-w-[760px]">
+      <div class="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[1.05fr_0.9fr] gap-10 md:gap-8 items-center">
+        <div class="hero-copy max-w-[560px]">
           <h1 class="font-display font-black text-ink text-[clamp(2.75rem,5vw+1rem,4.5rem)] leading-[1.05]">
             מים בחינם
           </h1>
@@ -89,6 +89,18 @@ const findSpots = [
             מפרסמים משלמים על הבקבוקים, אנשים שותים בחינם.
           </p>
           <Button href="#forms" size="l" data-route="advertise">אני רוצה לפרסם</Button>
+        </div>
+
+        <div class="hero-visual relative w-full max-w-[290px] justify-self-center">
+          <img src="/hero-bottle.png" alt="בקבוק מרווה עם תווית מותג" class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
+          <div class="absolute top-[43%] left-[34%] w-[31.5%] h-[23%] flex flex-col items-center justify-center">
+            <div class="flex flex-col items-center gap-px">
+              <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">המותג</span>
+              <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">שלכם</span>
+              <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">כאן</span>
+            </div>
+            <img src="/marva-mark.svg" alt="" class="absolute bottom-[8%] left-[6%] w-[22%] h-auto object-contain" />
+          </div>
         </div>
       </div>
     </section>
@@ -128,7 +140,7 @@ const findSpots = [
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto mt-12">
           {whereCards.map((c) => (
-            <Card accent={c.accent} class="where-card">
+            <Card accent={c.accent} class="where-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <h3 class="font-display font-bold text-ink text-xl mb-2.5">{c.title}</h3>
               <p class="font-body text-ink/80">{c.body}</p>
             </Card>
@@ -145,7 +157,7 @@ const findSpots = [
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
           {howSteps.map((s) => (
-            <Card class="how-card">
+            <Card class="how-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <div class="font-display font-bold text-sage-deep text-5xl mb-2">{s.n}</div>
               <h3 class="font-display font-bold text-ink text-xl mb-2.5">{s.title}</h3>
               <p class="font-body text-ink/80">{s.body}</p>
@@ -330,6 +342,7 @@ const findSpots = [
   <script>
     import gsap from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    import { animate, stagger } from 'motion';
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -439,7 +452,31 @@ const findSpots = [
       header?.classList.toggle('header-scrolled', window.scrollY > 40);
     });
 
-    /* ── 8. Calm scroll reveals with GSAP ───────── */
+    /* ── 8. Hero spring load (Motion) ────────────── */
+    if (!reduced) {
+      const heroCopyChildren = document.querySelectorAll<HTMLElement>('.hero-copy > *');
+      const heroVisual = document.querySelector<HTMLElement>('.hero-visual');
+
+      const springTransition = { type: 'spring' as const, stiffness: 260, damping: 24, mass: 0.9 };
+
+      if (heroCopyChildren.length) {
+        animate(
+          heroCopyChildren,
+          { opacity: [0, 1], y: [16, 0] },
+          { delay: stagger(0.08), ...springTransition },
+        );
+      }
+
+      if (heroVisual) {
+        animate(
+          heroVisual,
+          { opacity: [0, 1], scale: [0.9, 1], y: [16, 0] },
+          { delay: 0.15, ...springTransition },
+        );
+      }
+    }
+
+    /* ── 9. Calm scroll reveals with GSAP ───────── */
     if (!reduced) {
       document.querySelectorAll<HTMLElement>('main h2').forEach((h2) => {
         gsap.from(h2, {
@@ -461,6 +498,7 @@ const findSpots = [
           duration: 0.6,
           ease: 'power2.out',
           stagger: 0.1,
+          clearProps: 'transform',
           scrollTrigger: { trigger: section || cards[0], start: 'top 80%' },
         });
       });
