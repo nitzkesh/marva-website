@@ -16,9 +16,10 @@ from [Marva_brand_foundation.md](./Marva_brand_foundation.md).*
 | **Latin lockup** *(optional)* | mark + "MARVA" (Rubik 700) | Advertiser / international decks only |
 
 > **Finalized 2026-07-09:** the mark is the **three-block Bauhaus sprout** (sage leaf + sky lobe +
-> sand base + white vein), shipped as `app/public/marva-mark.svg` (full-color) and
-> `marva-mark-white.svg` (reversed). Source direction: `Marva/primary-logo-viaGPT.png`. A
-> higher-fidelity Recraft/Figma vector master may replace it later with no downstream change.
+> sand base), shipped as `app/public/marva-mark.svg` (full-color) and `marva-mark-white.svg`
+> (reversed). **Recraft-derived** — Nitzan generated it in Recraft; the 3 leaf color paths were
+> isolated from the flattened export (background + wordmark dropped) and cropped to a clean
+> viewBox. This is the real production vector — no further Figma/Recraft step is pending.
 
 **Leaf placement — *locked*:** leaf **leading** — it sits to the **right** of the wordmark
 (first in RTL reading order). The leaf-trailing (left) version is retired as an alternate;
@@ -107,13 +108,13 @@ transparency, for places SVG isn't accepted. Always prefer SVG for the web.*
 
 ## 7. Production status
 
-**The mark is finalized** as a hand-built SVG (`app/public/marva-mark.svg` + `marva-mark-white.svg`),
-derived from the approved brand sheet `Marva/primary-logo-viaGPT.png`, and is live on the site.
+**The mark is finalized and production-final** — Recraft-derived (`app/public/marva-mark.svg` +
+`marva-mark-white.svg`), isolated from Nitzan's Recraft export, and live on the site. No further
+Figma/Recraft step is pending for the mark itself.
 
-*Optional upgrade:* for a higher-fidelity vector master, redraw the mark in **Figma** (or generate
-a vector base in **Recraft**, Vector engine, then hand-finish in Figma — never let AI render the
-Hebrew; set **מרווה in Rubik 700** as real text). Export SVG + PNG and drop the SVG in over
-`marva-mark.svg`; nothing downstream breaks (header/footer/label/favicon all reference the one file).
+The wordmark (מרווה, Rubik 700, set as real text — never AI-rendered Hebrew) is separate from the
+mark file and lives directly in `Logo.astro`; nothing downstream breaks if `marva-mark.svg` is
+ever swapped for a future revision (header/footer/label/favicon all reference the one file).
 
 ---
 

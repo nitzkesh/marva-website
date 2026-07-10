@@ -18,3 +18,11 @@ website/app/.wrangler/
 # Bulky point-in-time reference (superseded by brand-book + ported code; kept locally, not vendored)
 marva-design-system-viaClaudeD/
 marva-design-system-viaClaudeD.zip
+
+# Raw source photos (large originals; optimized WebP copies actually used by the site
+# live in website/app/public/photos/ and are committed there)
+photos-for-website/
+
+# Brand book PDF build artifacts (build-pdf.js regenerates these; not source)
+brand-book/.chrome-profile/
+brand-book/_build_temp.html

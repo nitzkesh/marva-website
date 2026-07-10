@@ -113,9 +113,11 @@ sheet `Marva/primary-logo-viaGPT.png`.
 - `marva-mark-white.svg` — reversed (off-white) version for black / sage / any saturated fill.
 - `favicon.svg` — the mark, browser-tab icon.
 
-These are clean **hand-built SVGs** interpreting the approved raster sheet — crisp at any size.
-A higher-fidelity **Recraft → Figma vector master** may replace `marva-mark.svg` later with
-zero downstream breakage (header/footer/label/favicon all reference the one file).
+**These are Recraft-derived (2026-07-09, Session 7)** — Nitzan generated the mark in Recraft,
+delivered as a flattened lockup (background + leaf + wordmark baked together); the 3 leaf color
+paths were isolated and cropped to a clean viewBox, dropping the background and wordmark. This
+superseded the earlier hand-built placeholder SVG. It's the real production vector, not a
+stand-in — no further Figma/Recraft step is pending.
 
 **Lockup:**
 - **Mark colors:** sage `#A8BFAE`, sky `#A6C9E8`, sand `#E6DCC6`, vein white. On a `sage-tint

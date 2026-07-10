@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="he"><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&family=Assistant:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&family=Work+Sans:wght@400;500;600&family=Assistant:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --sage:#8CA87C; --sky:#8FC2DE; --sand:#E6D8B8;
-    --ink:#5C7A4E; --ink-strong:#2E332B; --base:#FBFAF5;
+    --sage:#A8BFAE; --sage-deep:#7FA089;
+    --sky:#A6C9E8; --sky-deep:#5FA8D3;
+    --sand:#E6DCC6; --sand-deep:#D8C39F;
+    --ink:#111111; --ink-strong:#111111; --base:#FBFAF6;
   }
   @page{ size: A4; margin: 0; }
   *{box-sizing:border-box;}
-  body{margin:0;font-family:'Assistant','Segoe UI',sans-serif;color:var(--ink-strong);direction:rtl;}
+  body{margin:0;font-family:'Work Sans','Assistant','Segoe UI',sans-serif;color:var(--ink-strong);direction:rtl;}
   .page{width:210mm;height:297mm;position:relative;overflow:hidden;page-break-after:always;background:var(--base);padding:18mm;}
   .page:last-child{page-break-after:auto;}
   h1{font-family:'Rubik';font-weight:700;color:var(--ink);font-size:30px;margin:0 0 4px;}
   h2{font-family:'Rubik';font-weight:700;color:var(--ink);font-size:20px;margin:0 0 18px;border-bottom:2px solid var(--sand);padding-bottom:8px;}
-  .kicker{font-family:'Assistant';font-weight:600;color:var(--sage);font-size:13px;margin-bottom:6px;}
+  .kicker{font-family:'Assistant';font-weight:600;color:var(--sage-deep);font-size:13px;margin-bottom:6px;}
   .pagenum{position:absolute;bottom:10mm;right:18mm;font-size:10px;color:#aaa;}
   .footer-brand{position:absolute;bottom:10mm;left:18mm;font-size:10px;color:#aaa;}
   .leaf-svg{display:inline-block;}
@@ -27,7 +29,7 @@
   .cover .lockup{display:flex;align-items:center;gap:20px;margin-bottom:26px;}
   .cover .word{font-family:'Rubik';font-weight:700;font-size:80px;color:var(--ink);}
   .cover .doctitle{font-size:18px;color:var(--ink-strong);margin-top:8px;}
-  .cover .tagline{font-family:'Assistant';font-weight:600;color:var(--sage);font-size:16px;margin-top:30px;}
+  .cover .tagline{font-family:'Assistant';font-weight:600;color:var(--sage-deep);font-size:16px;margin-top:30px;}
   .cover .meta{grid-row:3;align-self:end;justify-self:center;font-size:11px;color:#999;padding-bottom:8mm;}
 
   /* TOC */
@@ -37,7 +39,7 @@
 
   /* Logo page */
   .lockup-row{display:flex;align-items:center;gap:24px;background:#fff;border:1px solid #e5e0d0;border-radius:8px;padding:24px;margin-bottom:16px;}
-  .lockup-row.dark{background:var(--sage);}
+  .lockup-row.dark{background:var(--ink);}
   .lockup-row .leaf-svg svg{height:60px;width:auto;}
   .lockup-row .word{font-family:'Rubik';font-weight:700;font-size:52px;color:var(--ink);}
   .lockup-row.dark .word{color:var(--base);}
@@ -47,19 +49,20 @@
   .misuse-item .x{color:#c0524a;font-weight:700;}
 
   /* Palette */
-  .swatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .swatch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .swatch{border:1px solid #eee;border-radius:8px;overflow:hidden;}
-  .swatch .chip{height:70px;}
-  .swatch .info{padding:10px 14px;font-size:12px;background:#fff;}
-  .swatch .info b{font-family:'Rubik';font-size:14px;display:block;margin-bottom:4px;}
+  .swatch .chip{height:56px;}
+  .swatch .info{padding:9px 14px;font-size:11.5px;background:#fff;}
+  .swatch .info b{font-family:'Rubik';font-size:13px;display:block;margin-bottom:3px;}
   .swatch .info .approx{color:#aaa;font-size:10px;}
 
   /* Typography */
-  .type-row{margin-bottom:26px;}
+  .type-row{margin-bottom:22px;}
   .type-row .label{font-size:11px;color:#999;margin-bottom:4px;}
-  .type-row .sample-rubik{font-family:'Rubik';font-weight:700;font-size:44px;color:var(--ink-strong);}
-  .type-row .sample-assistant{font-family:'Assistant';font-weight:400;font-size:22px;color:var(--ink-strong);}
-  .weights{display:flex;gap:20px;margin-top:8px;font-size:13px;color:#666;}
+  .type-row .sample-rubik{font-family:'Rubik';font-weight:700;font-size:40px;color:var(--ink-strong);}
+  .type-row .sample-worksans{font-family:'Work Sans';font-weight:500;font-size:26px;color:var(--ink-strong);}
+  .type-row .sample-assistant{font-family:'Assistant';font-weight:400;font-size:20px;color:var(--ink-strong);}
+  .weights{display:flex;gap:20px;margin-top:8px;font-size:12.5px;color:#666;}
 
   /* Voice */
   table.dodont{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
@@ -72,10 +75,10 @@
   .callout{background:#fff;border-inline-start:4px solid #c9a15a;border-radius:4px;padding:10px 14px;font-size:11.5px;color:#555;margin-top:10px;}
 
   /* Closing */
-  .status-list{list-style:none;padding:0;font-size:13px;}
-  .status-list li{padding:8px 0;border-bottom:1px solid #eee;display:flex;gap:10px;}
+  .status-list{list-style:none;padding:0;font-size:12.5px;}
+  .status-list li{padding:7px 0;border-bottom:1px solid #eee;display:flex;gap:10px;}
   .tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;color:#fff;flex-shrink:0;height:fit-content;}
-  .tag.done{background:var(--sage);}
+  .tag.done{background:var(--sage-deep);}
   .tag.pending{background:#c9a15a;}
 </style>
 </head>
@@ -91,7 +94,7 @@
     <div class="doctitle">ספר המותג</div>
     <div class="tagline">מים מינרליים בחינם</div>
   </div>
-  <div class="meta">טיוטה — גרסה 0.3 · נבנה עם ניצן</div>
+  <div class="meta">טיוטה — גרסה 0.4 · נבנה עם ניצן</div>
 </div>
 
 <!-- TOC -->
@@ -128,10 +131,10 @@
   <div class="kicker">זהות</div>
   <h2>לוגו — הרכב ראשי</h2>
   <div class="lockup-row"><span class="leaf-svg">__LEAF_SVG__</span><div class="word">מרווה</div></div>
-  <p class="caption">הרכב ראשי — העלה מוביל (מימין, בהתאם לכיוון הקריאה בעברית). כיתוב השם בגופן מודגש בגוון מרווה עמוק.
-  העלה הוא הבחירה מריקראפט (אפשרות 1); ממתין לניקוי וקטורי סופי בפיגמה.<br><span class="ltr">Rubik Bold · #5C7A4E</span></p>
+  <p class="caption">הרכב ראשי — שלושה גושי צבע בהשראת <span class="ltr">Bauhaus</span> (עלה מרווה, אונת שמיים, בסיס חול), מוביל מימין בהתאם לכיוון הקריאה בעברית.
+  הסימן מבוסס על עיצוב <span class="ltr">Recraft</span>, נוקה ואומת כווקטור סופי — זהו הסימן החי באתר, לא טיוטה.<br><span class="ltr">Rubik 700 · #111111</span></p>
   <div class="lockup-row dark"><span class="leaf-svg" style="filter:brightness(0) invert(1);">__LEAF_SVG__</span><div class="word">מרווה</div></div>
-  <p class="caption">על רקע בצבע המותג — הסימן והכיתוב הופכים ללבן-שבור לצורך ניגודיות (לפי תקן נגישות).<br><span class="ltr">WCAG AA</span></p>
+  <p class="caption">על רקע כהה — הכיתוב הופך ללבן-שבור לצורך ניגודיות (לפי תקן נגישות). קובץ נפרד (מתהפך) משמש בפועל באתר לרקעים כהים/רוויי-צבע.<br><span class="ltr">WCAG AA</span></p>
   <div style="margin-top:10px;">
     <div class="kicker">שימוש לא נכון — לעולם לא לעשות</div>
     <div class="misuse-grid">
@@ -150,16 +153,19 @@
 <div class="page">
   <div class="kicker">זהות</div>
   <h2>פלטת צבעים</h2>
-  <p style="font-size:12px;color:#888;margin-top:-10px;">יחס שימוש: 50% מרווה · 30% שמיים · 20% חול, על גבי רקע לבן-שבור.
+  <p style="font-size:12px;color:#888;margin-top:-10px;">יחס שימוש: 45% מרווה · 30% שמיים · 15% חול · 10% שחור/לבן, על גבי רקע לבן-שבור.
   ערכי ה-<span class="ltr">CMYK</span> שלהלן הם קירוב (מחושבים מ-<span class="ltr">RGB</span>) — יש לאמת ערכי דפוס מדויקים מול בית הדפוס לפני הזמנת ריצת תוויות.</p>
   <div class="swatch-grid">
-    <div class="swatch"><div class="chip" style="background:#8CA87C;"></div><div class="info"><b>מרווה (ראשי)</b><span class="ltr">#8CA87C · RGB 140,168,124</span><br><span class="approx ltr">CMYK ≈ 17,0,26,34</span></div></div>
-    <div class="swatch"><div class="chip" style="background:#8FC2DE;"></div><div class="info"><b>שמיים (משני)</b><span class="ltr">#8FC2DE · RGB 143,194,222</span><br><span class="approx ltr">CMYK ≈ 36,13,0,13</span></div></div>
-    <div class="swatch"><div class="chip" style="background:#E6D8B8;"></div><div class="info"><b>חול (ניטרלי)</b><span class="ltr">#E6D8B8 · RGB 230,216,184</span><br><span class="approx ltr">CMYK ≈ 0,6,20,10</span></div></div>
-    <div class="swatch"><div class="chip" style="background:#5C7A4E;"></div><div class="info"><b>מרווה עמוק (טקסט/כפתורים)</b><span class="ltr">#5C7A4E · RGB 92,122,78</span><br><span class="approx ltr">CMYK ≈ 25,0,36,52</span></div></div>
-    <div class="swatch"><div class="chip" style="background:#2E332B;"></div><div class="info"><b>דיו כהה</b><span class="ltr">#2E332B · RGB 46,51,43</span><br><span class="approx ltr">CMYK ≈ 10,0,16,80</span></div></div>
-    <div class="swatch"><div class="chip" style="background:#FBFAF5;border-bottom:1px solid #eee;"></div><div class="info"><b>לבן-שבור (בסיס)</b><span class="ltr">#FBFAF5 · RGB 251,250,245</span><br><span class="approx ltr">CMYK ≈ 0,0,2,2</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#A8BFAE;"></div><div class="info"><b>מרווה (ראשי)</b><span class="ltr">#A8BFAE · RGB 168,191,174</span><br><span class="approx ltr">CMYK ≈ 12,0,9,25</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#7FA089;"></div><div class="info"><b>מרווה עמוק (הדגשות קטנות)</b><span class="ltr">#7FA089 · RGB 127,160,137</span><br><span class="approx ltr">CMYK ≈ 21,0,14,37</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#A6C9E8;"></div><div class="info"><b>שמיים (משני)</b><span class="ltr">#A6C9E8 · RGB 166,201,232</span><br><span class="approx ltr">CMYK ≈ 28,13,0,9</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#5FA8D3;"></div><div class="info"><b>שמיים עמוק (הובר/הדגשה)</b><span class="ltr">#5FA8D3 · RGB 95,168,211</span><br><span class="approx ltr">CMYK ≈ 55,20,0,17</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#E6DCC6;"></div><div class="info"><b>חול (ניטרלי)</b><span class="ltr">#E6DCC6 · RGB 230,220,198</span><br><span class="approx ltr">CMYK ≈ 0,4,14,10</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#D8C39F;"></div><div class="info"><b>חול עמוק</b><span class="ltr">#D8C39F · RGB 216,195,159</span><br><span class="approx ltr">CMYK ≈ 0,10,26,15</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#111111;"></div><div class="info"><b>דיו (טקסט/עוגן כפתורים)</b><span class="ltr">#111111 · RGB 17,17,17</span><br><span class="approx ltr">CMYK ≈ 0,0,0,93</span></div></div>
+    <div class="swatch"><div class="chip" style="background:#FBFAF6;border-bottom:1px solid #eee;"></div><div class="info"><b>לבן-שבור (בסיס)</b><span class="ltr">#FBFAF6 · RGB 251,250,246</span><br><span class="approx ltr">CMYK ≈ 0,0,2,2</span></div></div>
   </div>
+  <p style="font-size:11px;color:#999;margin-top:14px;">כלל נגישות: מרווה/שמיים/חול הם גוונים בהירים — טקסט תמיד בשחור מעליהם.<br><span class="ltr">#111111</span><br>על רקע שחור או צבע רווי, הטקסט/הלוגו עוברים ללבן-שבור. כפתורים: מילוי שחור + טקסט לבן-שבור.</p>
   <div class="pagenum">05</div><div class="footer-brand">מרווה — ספר המותג</div>
 </div>
 
@@ -168,20 +174,27 @@
   <div class="kicker">זהות</div>
   <h2>טיפוגרפיה</h2>
   <div class="type-row">
-    <div class="label">כותרות / כיתוב שם<br><span class="ltr">Rubik 700</span></div>
+    <div class="label">כותרות / כיתוב שם<br><span class="ltr">Rubik 700 / 900</span></div>
     <div class="sample-rubik">מרווה <span class="ltr">Rubik</span></div>
-    <div class="weights"><span class="ltr">Light · Regular · Medium · Bold · ExtraBold</span> — גופן גיאומטרי ומודרני, תמיכה חזקה בעברית</div>
+    <div class="weights"><span class="ltr">Regular · Medium · Bold · Black</span> — גופן גיאומטרי ומודרני, תמיכה חזקה בעברית</div>
   </div>
   <div class="type-row">
-    <div class="label">טקסט גוף / ממשק<br><span class="ltr">Assistant 400 / 600</span></div>
-    <div class="sample-assistant">מרווה מייצרת מים מינרליים שהתווית שלהם היא שטח הפרסום שלכם</div>
-    <div class="weights"><span class="ltr">Regular · SemiBold · Bold</span> — נקי, מותאם לעברית, קריא בגדלים קטנים</div>
+    <div class="label">טקסט גוף / ממשק — לועזית<br><span class="ltr">Work Sans 400 / 500 / 600</span></div>
+    <div class="sample-worksans">Marva — free water, your brand</div>
+    <div class="weights"><span class="ltr">Regular · Medium · SemiBold</span> — נקי ומודרני; <b>אין לו תמיכה בעברית</b>, לכן טקסט עברי נופל אוטומטית ל-Assistant</div>
   </div>
-  <div style="margin-top:20px;padding:16px 20px;background:#fff;border:1px solid #eee;border-radius:8px;font-size:12px;color:#666;">
-    שני הגופנים חינמיים ומאושרים לשימוש מסחרי ולאתרים, וזמינים דרך:<br>
+  <div class="type-row">
+    <div class="label">טקסט גוף / ממשק — עברית<br><span class="ltr">Assistant 400 / 600</span></div>
+    <div class="sample-assistant">מרווה מייצרת מים מינרליים שהתווית שלהם היא שטח הפרסום שלכם</div>
+    <div class="weights"><span class="ltr">Regular · SemiBold</span> — נקי, מותאם לעברית, קריא בגדלים קטנים</div>
+  </div>
+  <div style="margin-top:18px;padding:16px 20px;background:#fff;border:1px solid #eee;border-radius:8px;font-size:12px;color:#666;">
+    שלושת הגופנים חינמיים ומאושרים לשימוש מסחרי ולאתרים, וזמינים דרך:<br>
     <span class="ltr">Google Fonts</span><br><br>
-    שרשרת הגיבוי של הגופנים:<br>
-    <span class="ltr">'Rubik','Assistant','Segoe UI',system-ui,sans-serif</span><br><br>
+    שרשרת הגיבוי — כותרות:<br>
+    <span class="ltr">'Rubik','Segoe UI',system-ui,sans-serif</span><br><br>
+    שרשרת הגיבוי — גוף (לועזית → עברית):<br>
+    <span class="ltr">'Work Sans','Assistant','Segoe UI',system-ui,sans-serif</span><br><br>
     כתיבה מימין לשמאל אינה אופציונלית — יש להגדיר בשורש האתר, ולוודא שכל פריסה משתקפת נכון:<br>
     <span class="ltr">dir="rtl" lang="he"</span>
   </div>
@@ -211,9 +224,9 @@
   <div class="kicker">יישומים</div>
   <h2>אילוצי התווית ולוחות עיצוב</h2>
   <p style="font-size:12px;color:#666;">נבנה ישירות מקבצי הדפוס האמיתיים של נריה (מי עדן 210×42 מ״מ, עין גדי 214×41 מ״מ) —
-  המידות המדויקות וכל פריט תוכן חובה אומתו. <b>תיקון לעומת טיוטה קודמת:</b> הקבצים האמיתיים מראים שתוכן החובה תופס כמעט
-  את כל התווית, ולא רק את ה״שליש הימני״. לוח העיצוב הזה מציע פריסת תווית מותאמת אישית לכל לקוח (אותו מפרט פיזי + אותו
-  תוכן חובה, בסידור חופשי) במקום דחיסת לוגו לתוך שטח שנותר.</p>
+  המידות המדויקות וכל פריט תוכן חובה אומתו. תוכן החובה תופס כמעט את כל התווית, ולא רק שוליים.
+  לוח העיצוב מציע פריסת תווית מותאמת אישית לכל לקוח (אותו מפרט פיזי + אותו תוכן חובה, בסידור חופשי)
+  במקום דחיסת לוגו לתוך שטח שנותר.</p>
   <img class="label-img" src="data:image/png;base64,__LABEL_PNG_B64__">
   <div class="callout"><b>נושא פתוח:</b> יש לאמת מול נריה שהנחת הפריסה המותאמת אישית נכונה, ולבדוק אם עין גדי (שמוסיפה
   בלוק הצהרה מלא בערבית) נכללת יחד עם מי עדן.</div>
@@ -225,17 +238,21 @@
   <div class="kicker">סטטוס</div>
   <h2>מה הושלם ומה פתוח</h2>
   <ul class="status-list">
-    <li><span class="tag done">הושלם</span> מסמך קול ומסרים</li>
-    <li><span class="tag done">הושלם</span> כללי שימוש בלוגו (מרחב הגנה, גודל מינימלי, שימוש לא נכון)</li>
-    <li><span class="tag done">הושלם</span> כיתוב השם מרווה — אומתה תצוגה תקינה (פרטי הגופן בעמוד 04)</li>
+    <li><span class="tag done">הושלם</span> מסמך קול ומסרים + כללי שימוש בלוגו</li>
+    <li><span class="tag done">הושלם</span> סימן הלוגו הסופי — מבוסס <span class="ltr">Recraft</span>, שלושה גושי צבע, בשימוש באתר החי</li>
     <li><span class="tag done">הושלם</span> לוחות עיצוב לתווית — נבנו מקבצי הספק האמיתיים של מי עדן / עין גדי</li>
-    <li><span class="tag pending">ממתין</span> ניקוי וקטורי סופי לעלה מריקראפט (דורש פיגמה — כרגע חסום עקב מגבלת שימוש)</li>
+    <li><span class="tag done">הושלם</span> האתר באוויר — שלושה עמודים (בית / למפרסמים / למשווקים), טפסים מחוברים למייל.<br><span class="ltr">marva-website.pages.dev</span></li>
+    <li><span class="tag done">הושלם</span> צילום אמת בעמוד הבית (טיילת ת״א, בית קפה, אירוע, סופרמרקט) — במקום איורים גנריים</li>
     <li><span class="tag pending">ממתין</span> לאמת מול נריה את הנחת פריסת התווית המותאמת אישית</li>
-    <li><span class="tag pending">ממתין</span> הדמיית יישום אמיתית על בקבוק (עטיפת תווית מעוגלת — דורשת כלי הדמיה אמיתי)</li>
-    <li><span class="tag pending">ממתין</span> מערכת אייקונים ודוגמאות מעבר לסימן העלה</li>
+    <li><span class="tag pending">ממתין</span> להחליט אם עין גדי (בלוק הצהרה בערבית) נכלל יחד עם מי עדן</li>
+    <li><span class="tag pending">ממתין</span> הדמיית יישום אמיתית על בקבוק (עטיפת תווית מעוגלת — דורשת כלי הדמיה ייעודי)</li>
+    <li><span class="tag pending">ממתין</span> תוכן אמיתי: המלצות לקוחות, לוגואי שותפים, טלפון ופרטי קשר בפוטר</li>
+    <li><span class="tag pending">ממתין</span> תבניות משפטיות (הצעת מחיר / הסכם סודיות / הסכם קניין רוחני לפרסום) — ממתין לעורך דין</li>
+    <li><span class="tag pending">ממתין</span> ערכת סושיאל לאינסטגרם ורכישת דומיין מותאם.<br><span class="ltr">.co.il</span></li>
   </ul>
-  <p style="font-size:11px;color:#999;margin-top:30px;">זוהי טיוטת עבודה גרסה 0.3 — לא ספר המותג הסופי לייצור.
-  יש להחליף את ההרכב הסופי מפיגמה ולהוסיף הדמיית בקבוק אמיתית לפני שרואים בזו גרסה סופית הניתנת לשחזור על ידי גורם חיצוני.</p>
+  <p style="font-size:11px;color:#999;margin-top:20px;">זוהי טיוטת עבודה גרסה 0.4 — לא ספר המותג הסופי לייצור.
+  הלוגו וזהות הבסיס נעולים ובשימוש חי; יש להוסיף הדמיית בקבוק אמיתית ולסגור את הנושאים הפתוחים מול נריה
+  לפני שרואים בזו גרסה סופית הניתנת לשחזור על ידי גורם חיצוני.</p>
   <div class="pagenum">09</div><div class="footer-brand">מרווה — ספר המותג</div>
 </div>
 
