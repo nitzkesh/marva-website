@@ -42,13 +42,12 @@ const ui: ContentBundle['ui'] = {
 
 const homeMeta: ContentBundle['homeMeta'] = {
   title: 'מרווה — מים בחינם',
-  description: 'המפרסמים משלמים על המוצר — אתם שותים בחינם. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם',
+  description: 'המפרסמים משלמים על הבקבוק — אתם שותים. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם',
 };
 
 const homeHero: ContentBundle['homeHero'] = {
   h1: 'מים בחינם',
-  sub: 'המפרסמים משלמים על המוצר — אתם שותים בחינם',
-  line: 'פרסום חיובי, מים בחינם — כולם מרוויחים',
+  sub: 'המפרסמים משלמים על הבקבוק — אתם שותים',
   ctaLabel: 'אני רוצה לפרסם',
   ctaHref: '/advertisers',
   bottleLabelLines: ['המותג', 'שלכם', 'כאן'],

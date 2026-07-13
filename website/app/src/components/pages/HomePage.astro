@@ -87,10 +87,12 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
             <p class="font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
               {homeHero.sub}
             </p>
-            <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4 mb-8">
-              {homeHero.line}
-            </p>
-            <Button href={homeHero.ctaHref} size="l">{homeHero.ctaLabel}</Button>
+            {homeHero.line && (
+              <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4">
+                {homeHero.line}
+              </p>
+            )}
+            <Button href={homeHero.ctaHref} size="l" class="mt-8">{homeHero.ctaLabel}</Button>
           </div>
 
           <div class="hero-visual relative w-full max-w-[290px] justify-self-center">

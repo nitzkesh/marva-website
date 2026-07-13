@@ -52,7 +52,8 @@ export interface UiStrings {
 export interface HomeHero {
   h1: string;
   sub: string;
-  line: string;
+  /** Optional lighter line under the sub; omit to render sub → CTA directly. */
+  line?: string;
   ctaLabel: string;
   ctaHref: string;
   /** 3 short lines overlaid on the hero bottle's label mockup. */

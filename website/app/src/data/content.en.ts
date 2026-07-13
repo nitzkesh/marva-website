@@ -45,13 +45,12 @@ const ui: ContentBundle['ui'] = {
 
 const homeMeta: ContentBundle['homeMeta'] = {
   title: 'Marva — Free Water',
-  description: 'Advertisers pay for the product — you drink for free. Free mineral water whose label is your ad space',
+  description: 'Advertisers pay for the bottle — you drink. Free mineral water whose label is your ad space',
 };
 
 const homeHero: ContentBundle['homeHero'] = {
   h1: 'Free Water',
-  sub: 'Advertisers pay for the product — you drink for free',
-  line: 'Positive advertising, free water — everyone wins',
+  sub: 'Advertisers pay for the bottle — you drink',
   ctaLabel: 'I want to advertise',
   ctaHref: '/en/advertisers',
   bottleLabelLines: ['YOUR', 'BRAND', 'HERE'],
