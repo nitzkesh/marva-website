@@ -258,7 +258,7 @@ export function getContent(locale: Locale): ContentBundle {
 
 /* ───────────────────── Locale-independent constants ───────────────────── */
 
-export const web3formsAccessKey = 'f5ce1cab-5c12-409e-b135-3e1996fa181b';
+export const web3formsAccessKey = 'eea51799-a797-45ab-8f7e-1021844d2bc7';
 export const web3formsEndpoint = 'https://api.web3forms.com/submit';
 
 /* ───────────────────── Route ↔ locale path mapping ─────────────────────
