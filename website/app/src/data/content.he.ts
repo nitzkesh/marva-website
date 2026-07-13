@@ -10,7 +10,7 @@ const navLinks: ContentBundle['navLinks'] = [
   { label: 'בית', href: '/' },
   { label: 'למפרסמים', href: '/advertisers' },
   { label: 'למשווקים', href: '/distributors' },
-  { label: 'איפה תמצאו אותנו?', href: '/#where' },
+  { label: 'איפה תמצאו אותנו?', href: '/#upcoming' },
   { label: 'צור קשר', href: '/#inquiry' },
 ];
 
@@ -74,8 +74,8 @@ const whoStatement = {
 const howHeading = 'איך זה עובד?';
 
 const howSteps: ContentBundle['howSteps'] = [
-  { n: '01', icon: 'document', title: 'קבלת הצעה', body: 'הצעה לפי פרטי הקמפיין שלכם' },
-  { n: '02', icon: 'megaphone', title: 'עיצוב התווית', body: 'עיצוב התווית שלכם' },
+  { n: '01', icon: 'document', title: 'קבלת הצעה', body: 'לפי פרטי הקמפיין שלכם' },
+  { n: '02', icon: 'bottle', title: 'עיצוב התווית', body: 'מעצבים את התווית עבורכם כיצד שתרצו' },
   { n: '03', icon: 'rocket', title: 'יוצאים לדרך!', body: 'מגיעים לידיים של קהל היעד שלכם' },
 ];
 
@@ -95,7 +95,7 @@ const whereCards: ContentBundle['whereCards'] = [
     illustration: 'storefront',
     title: 'בתי עסק',
     body: 'רוצים בקבוקי מים בחינם בעסק שלכם?',
-    long: 'רוצים לשדרג את חוויית הלקוח שלכם? דברו איתנו ותקבלו מים מינרליים בחינם ישירות לעסק שלכם, לחלוקה ללקוחות',
+    long: 'רוצים לשדרג את חוויית הלקוח שלכם? דברו איתנו ותקבלו מים מינרליים בחינם ישירות לעסק שלכם',
     photoAlt: 'בקבוקי מים על דלפק בית קפה',
   },
   {
@@ -116,14 +116,18 @@ const whereCards: ContentBundle['whereCards'] = [
   },
 ];
 
-const findSpotsHeading = 'החלוקות הקרובות';
+const findSpotsHeading = 'נקודות חלוקה יפורסמו בקרוב';
+
+/** Placeholder row — real dates/venues can be restored by editing this file only. */
+const findSpotPlaceholder: ContentBundle['findSpots'][number] = { date: 'בקרוב', loc: 'מיקום יעודכן' };
 
 const findSpots: ContentBundle['findSpots'] = [
-  { date: 'א׳, 12.7', loc: 'טיילת תל אביב · מול גורדון' },
-  { date: 'ג׳, 14.7', loc: 'חוף פרישמן' },
-  { date: 'ה׳, 16.7', loc: 'כיכר הבימה' },
-  { date: 'ו׳, 17.7', loc: 'שרונה מרקט' },
-  { date: 'ש׳, 18.7', loc: 'דיזנגוף סנטר' },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
 ];
 
 const testimonialsHeading = 'ממליצים';
@@ -189,8 +193,8 @@ const labelPromo: ContentBundle['labelPromo'] = {
 };
 
 const advertiserOptions: ContentBundle['advertiserOptions'] = [
-  { title: 'חופש עיצובי מלא', body: 'אפשר לשים על התווית כל מה שבא לכם. כל רקע שתבחרו — לוגו, סלוגן, קוד קופון, ברקוד הנחה, תמונה, או כל דבר אחר' },
-  { title: 'חצי תווית, חצי עלות', body: 'אפשר לחלוק את התווית עם מפרסם אחר ולשלם פחות' },
+  { title: 'חופש עיצובי מלא', body: 'אפשר לשים על התווית כל מה שבא לכם. כל רקע שתבחרו, ובשטח הפרסום — לוגו, סלוגן, קוד קופון, ברקוד הנחה, תמונה, או כל דבר אחר' },
+  { title: 'חוסכים בעלויות, מתחלקים בתווית', body: 'אפשר לחלוק את התווית עם מפרסם אחר ולשלם פחות' },
   { title: 'אתם בוחרים איך להפיץ', body: 'אנחנו מחלקים בנקודות שתבחרו, או שאתם מקבלים את הבקבוקים ומחלקים בעצמכם' },
 ];
 
@@ -199,7 +203,7 @@ const whyAdvertiseHeading = 'למה לפרסם איתנו?';
 const whyAdvertise: ContentBundle['whyAdvertise'] = [
   { icon: 'crowd', title: 'ביקוש גבוה אצל כולם', body: 'הביקוש למים מינרליים בחינם גבוה וקבוע, בלי תלות בקהל יעד ספציפי' },
   { icon: 'target', title: 'קהל ממוקד באמת', body: 'אתם בוחרים איפה, מתי ולמי הבקבוקים מחולקים — עד רמת נקודת החלוקה' },
-  { icon: 'megaphone', title: 'פרסומת שזוכרים', body: 'החשיפה שלכם עוברת דרך מי שמחזיק בבקבוק, הסביבה הקרובה שלו והתקשורת' },
+  { icon: 'megaphone', title: 'פרסומת שזוכרים', body: 'החשיפה שלכם עוברת דרך מי שמחזיק בבקבוק, הסביבה הקרובה שלו והמדיה' },
   { icon: 'label', title: 'במה בלעדית', body: 'הבמה כולה שלכם. בלי פיד עמוס, בלי מודעות מתחרות באותו מסך' },
 ];
 
@@ -218,7 +222,7 @@ const adForm: ContentBundle['adForm'] = {
     duration: { label: 'משך קמפיין', placeholder: 'לדוגמה: חודש' },
     startDate: { label: 'תאריך התחלה רצוי' },
     deliveryLabel: 'שיטת חלוקה',
-    deliveryOptionSupply: 'אתם מקבלים את הבקבוקים ישירות אליכם, בלי חלוקה מצד מרווה',
+    deliveryOptionSupply: 'אתם מקבלים את הבקבוקים ישירות אליכם',
     deliveryOptionDistribute: 'אנחנו מחלקים את הבקבוקים עבורכם',
     prefPoints: { label: 'נקודות חלוקה מועדפות', placeholder: 'לדוגמה: טיילת ת״א, חוף גורדון' },
     saveToggleLabel: 'אני רוצה לחסוך בעלויות',
@@ -231,8 +235,8 @@ const adForm: ContentBundle['adForm'] = {
 /* ─────────────────────────── DISTRIBUTORS ──────────────────────────────── */
 
 const distributorsHero: ContentBundle['distributorsHero'] = {
-  h1: 'המים עלינו. הלקוחות שלכם',
-  sub: 'קבלו בקבוקי מים ממותגים בחינם, חלקו ללקוחות שלכם — ותנו להם סיבה טובה לחזור',
+  h1: ['המים עלינו.', 'הלקוחות שלכם'],
+  sub: 'בקבוק מים ביד הוא פרסומת שאי אפשר להתעלם ממנה — והקהל עוד אומר תודה',
   ctaLabel: 'אני רוצה לחלק',
   ctaHref: '#dist-form',
 };

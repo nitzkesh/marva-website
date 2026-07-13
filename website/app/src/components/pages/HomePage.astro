@@ -38,7 +38,7 @@ const {
 /* Simple hand-drawn line icons (stroke, currentColor, ~40px) for the "how it works" steps. */
 const icons: Record<string, string> = {
   document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M14 6h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M28 6v8h8"/><path d="M17 26h14"/><path d="M17 32h14"/><path d="M17 20h6"/></svg>`,
-  megaphone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M6 20v8a3 3 0 0 0 3 3h3l14 9V8L12 17H9a3 3 0 0 0-3 3Z"/><path d="M26 17a7 7 0 0 1 0 14"/><path d="M33 12a15 15 0 0 1 0 24"/></svg>`,
+  bottle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M19 4L29 4L29 9L27 9L27 14Q35 17 35 23L35 38Q35 42 31 42L17 42Q13 42 13 38L13 23Q13 17 21 14L21 9L19 9Z"/><path d="M15 27h18"/><path d="M15 34h18"/></svg>`,
   rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M24 4c6 4 9 11 9 18 0 4-1 8-3 11l-6 5-6-5c-2-3-3-7-3-11 0-7 3-14 9-18Z"/><circle cx="24" cy="18" r="3.5"/><path d="M17 30l-6 4 2-8"/><path d="M31 30l6 4-2-8"/><path d="M20 38h8l-4 6-4-6Z"/></svg>`,
 };
 
@@ -198,10 +198,16 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
             </ExpandCard>
           ))}
         </div>
+      </div>
+    </section>
 
-        <!-- upcoming distribution dates/locations -->
-        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-10">
-          <h3 class="font-display font-bold text-ink text-lg mb-4">{findSpotsHeading}</h3>
+    <!-- ═══════════════ D2. UPCOMING DISTRIBUTION POINTS ═══════════════ -->
+    <section id="upcoming" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {findSpotsHeading}
+        </h2>
+        <div class="bg-sand-tint rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-12">
           <ul class="list-none p-0 m-0">
             {findSpots.map((s) => (
               <li class="flex gap-4 items-center py-3.5 border-b border-border last:border-b-0">

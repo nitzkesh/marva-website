@@ -67,7 +67,7 @@ export interface ConveyorChip {
 
 export interface HowStep {
   n: string;
-  icon: 'document' | 'megaphone' | 'rocket';
+  icon: 'document' | 'bottle' | 'rocket';
   title: string;
   body: string;
 }
@@ -123,7 +123,8 @@ export interface InquiryForm {
 /* ─────────────────────────── ADVERTISERS ──────────────────────────────── */
 
 export interface HeroContent {
-  h1: string;
+  /** Plain string for a single-line hero, or a 2-tuple for a deliberate two-line render. */
+  h1: string | [string, string];
   sub: string;
   ctaLabel: string;
   ctaHref: string;

@@ -24,6 +24,11 @@ const {
   adForm,
 } = getContent(locale);
 
+/* Label-demo mockup visibility. Flip to true to bring back the label-
+   proportions mockup + caption in the promo section below — markup is left
+   in place, this const is the only thing gating whether it renders. */
+const showLabelDemo = false;
+
 /* Inline stroke-style vector icons for the why-advertise items (same style as
    the how-icons on the home page: currentColor, ~40px, 2px stroke). */
 const whyIcons: Record<string, string> = {
@@ -72,6 +77,7 @@ const whyIcons: Record<string, string> = {
           {labelPromo.heading}
         </h2>
 
+        {showLabelDemo && (<>
         <!-- Label strip mockup: full flat label at true 210:42 proportions.
              .label-strip viewport = overflow-x auto (touch-scrollable now,
              animator pans it later). min-width on the SVG keeps proportions
@@ -104,6 +110,7 @@ const whyIcons: Record<string, string> = {
           </svg>
         </div>
         <p class="font-body text-sm text-muted text-center mt-4">{labelPromo.caption}</p>
+        </>)}
 
         <!-- 3 option cards — plain, no animation -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mt-12">

@@ -13,7 +13,7 @@ const navLinks: ContentBundle['navLinks'] = [
   { label: 'Home', href: '/en/' },
   { label: 'For Advertisers', href: '/en/advertisers' },
   { label: 'For Distributors', href: '/en/distributors' },
-  { label: 'Where to find us', href: '/en/#where' },
+  { label: 'Where to find us', href: '/en/#upcoming' },
   { label: 'Contact', href: '/en/#inquiry' },
 ];
 
@@ -77,8 +77,8 @@ const whoStatement = {
 const howHeading = 'How does it work?';
 
 const howSteps: ContentBundle['howSteps'] = [
-  { n: '01', icon: 'document', title: 'Get a quote', body: 'A quote based on your campaign details' },
-  { n: '02', icon: 'megaphone', title: 'Design the label', body: 'Your label, designed' },
+  { n: '01', icon: 'document', title: 'Get a quote', body: 'Based on your campaign details' },
+  { n: '02', icon: 'bottle', title: 'Design the label', body: 'We design the label for you, exactly how you want it' },
   { n: '03', icon: 'rocket', title: 'Off we go!', body: "Straight into your audience's hands" },
 ];
 
@@ -98,7 +98,7 @@ const whereCards: ContentBundle['whereCards'] = [
     illustration: 'storefront',
     title: 'Businesses',
     body: 'Want free water bottles at your business?',
-    long: 'Want to upgrade your customer experience? Talk to us and get free mineral water straight to your business, to hand out to customers',
+    long: 'Want to upgrade your customer experience? Talk to us and get free mineral water straight to your business',
     photoAlt: 'Water bottles on a coffee shop counter',
   },
   {
@@ -119,14 +119,18 @@ const whereCards: ContentBundle['whereCards'] = [
   },
 ];
 
-const findSpotsHeading = 'Coming up next';
+const findSpotsHeading = 'Distribution points coming soon';
+
+/** Placeholder row — real dates/venues can be restored by editing this file only. */
+const findSpotPlaceholder: ContentBundle['findSpots'][number] = { date: 'Soon', loc: 'Location TBA' };
 
 const findSpots: ContentBundle['findSpots'] = [
-  { date: 'Sun, Jul 12', loc: 'Tel Aviv Promenade · opposite Gordon' },
-  { date: 'Tue, Jul 14', loc: 'Frishman Beach' },
-  { date: 'Thu, Jul 16', loc: 'Habima Square' },
-  { date: 'Fri, Jul 17', loc: 'Sarona Market' },
-  { date: 'Sat, Jul 18', loc: 'Dizengoff Center' },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
+  { ...findSpotPlaceholder },
 ];
 
 const testimonialsHeading = 'What people say';
@@ -192,8 +196,8 @@ const labelPromo: ContentBundle['labelPromo'] = {
 };
 
 const advertiserOptions: ContentBundle['advertiserOptions'] = [
-  { title: 'Full creative freedom', body: 'Put whatever you want on your zone of the label. Any background you choose — logo, slogan, coupon code, discount barcode, image, or anything else' },
-  { title: 'Half the label, half the cost', body: 'Split the label with another advertiser and pay less' },
+  { title: 'Full creative freedom', body: 'Put whatever you want on the label. Any background you choose, and in the ad zone — logo, slogan, coupon code, discount barcode, image, or anything else' },
+  { title: 'Save on costs, share the label', body: 'Split the label with another advertiser and pay less' },
   { title: 'You choose how to distribute', body: 'We hand them out at the points you choose, or you get the bottles and distribute them yourself' },
 ];
 
@@ -221,7 +225,7 @@ const adForm: ContentBundle['adForm'] = {
     duration: { label: 'Campaign length', placeholder: 'e.g. one month' },
     startDate: { label: 'Preferred start date' },
     deliveryLabel: 'Distribution method',
-    deliveryOptionSupply: 'You receive the bottles directly, with no distribution from Marva',
+    deliveryOptionSupply: 'You receive the bottles directly',
     deliveryOptionDistribute: 'We distribute the bottles for you',
     prefPoints: { label: 'Preferred distribution points', placeholder: 'e.g. Tel Aviv Promenade, Gordon Beach' },
     saveToggleLabel: "I'd like to cut costs",
@@ -234,8 +238,8 @@ const adForm: ContentBundle['adForm'] = {
 /* ─────────────────────────── DISTRIBUTORS ──────────────────────────────── */
 
 const distributorsHero: ContentBundle['distributorsHero'] = {
-  h1: "The water's on us. The customers are yours",
-  sub: 'Get free branded water bottles, hand them to your customers — and give them a good reason to come back',
+  h1: ["The water's on us.", 'The customers are yours'],
+  sub: "A water bottle in hand is an ad you can't ignore — and the audience says thank you for it",
   ctaLabel: 'I want to distribute',
   ctaHref: '#dist-form',
 };
