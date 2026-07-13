@@ -28,7 +28,7 @@ const footerContent: ContentBundle['footerContent'] = {
   ctaLine: 'Got more questions? Talk to us:',
   phoneLabel: 'Phone',
   phone: '054-5244339',
-  email: 'info@marva.co.il',
+  email: 'marvawater.info@gmail.com',
   navHeading: 'Navigation',
   navAriaLabel: 'Footer navigation',
 };
@@ -160,7 +160,7 @@ const inquiryForm: ContentBundle['inquiryForm'] = {
   subject: 'New website inquiry — General',
   fromPage: 'home',
   thanks: "Thanks! We've got your message and will be in touch soon",
-  error: 'Something went wrong sending this. Try again or email us at info@marva.co.il',
+  error: 'Something went wrong sending this. Try again or email us at marvawater.info@gmail.com',
   fields: {
     name: { label: 'Full name', placeholder: 'Full name' },
     email: { label: 'Email', placeholder: 'name@email.com' },
@@ -213,7 +213,7 @@ const adForm: ContentBundle['adForm'] = {
   subject: 'New website inquiry — Advertiser',
   fromPage: 'advertisers',
   thanks: "Thanks! We've got your message and will be in touch soon",
-  error: 'Something went wrong sending this. Try again or email us at info@marva.co.il',
+  error: 'Something went wrong sending this. Try again or email us at marvawater.info@gmail.com',
   fields: {
     businessName: { label: 'Business name', placeholder: 'e.g. Corner Café' },
     taxId: { label: 'Business ID', placeholder: '123456789' },
@@ -279,7 +279,7 @@ const distForm: ContentBundle['distForm'] = {
   subject: 'New website inquiry — Distributor',
   fromPage: 'distributors',
   thanks: "Thanks! We've got your message and will be in touch soon",
-  error: 'Something went wrong sending this. Try again or email us at info@marva.co.il',
+  error: 'Something went wrong sending this. Try again or email us at marvawater.info@gmail.com',
   fields: {
     businessName: { label: 'Business name', placeholder: 'e.g. Corner Café' },
     businessType: { label: 'Business type', placeholder: 'e.g. café, gym' },

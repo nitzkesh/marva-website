@@ -25,7 +25,7 @@ const footerContent: ContentBundle['footerContent'] = {
   ctaLine: 'לשאלות נוספות, דברו איתנו:',
   phoneLabel: 'טלפון',
   phone: '054-5244339',
-  email: 'info@marva.co.il',
+  email: 'marvawater.info@gmail.com',
   navHeading: 'ניווט',
   navAriaLabel: 'ניווט בפוטר',
 };
@@ -157,7 +157,7 @@ const inquiryForm: ContentBundle['inquiryForm'] = {
   subject: 'פנייה חדשה מהאתר — פנייה כללית',
   fromPage: 'home',
   thanks: 'תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב',
-  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il',
+  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־marvawater.info@gmail.com',
   fields: {
     name: { label: 'שם מלא', placeholder: 'שם מלא' },
     email: { label: 'אימייל', placeholder: 'name@email.co.il' },
@@ -210,7 +210,7 @@ const adForm: ContentBundle['adForm'] = {
   subject: 'פנייה חדשה מהאתר — מפרסם',
   fromPage: 'advertisers',
   thanks: 'תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב',
-  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il',
+  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־marvawater.info@gmail.com',
   fields: {
     businessName: { label: 'שם העסק', placeholder: 'לדוגמה: קפה השכונה' },
     taxId: { label: 'ח.פ./ע.מ', placeholder: '123456789' },
@@ -276,7 +276,7 @@ const distForm: ContentBundle['distForm'] = {
   subject: 'פנייה חדשה מהאתר — משווק',
   fromPage: 'distributors',
   thanks: 'תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב',
-  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il',
+  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־marvawater.info@gmail.com',
   fields: {
     businessName: { label: 'שם העסק', placeholder: 'לדוגמה: קפה השכונה' },
     businessType: { label: 'סוג העסק', placeholder: 'לדוגמה: בית קפה, חדר כושר' },
