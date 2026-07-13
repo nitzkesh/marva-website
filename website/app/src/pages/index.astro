@@ -46,7 +46,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
 };
 ---
 
-<Layout title="מרווה — מים בחינם" description="מפרסמים משלמים על הבקבוקים, אנשים שותים בחינם. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם.">
+<Layout title="מרווה — מים בחינם" description="המפרסמים משלמים על המוצר — אתם שותים בחינם. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם">
 
   <Header />
 
@@ -138,7 +138,6 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
             <span class="who-word inline-block">{word}&nbsp;</span>
           ))}
         </h2>
-        <p class="who-sub font-body text-muted text-lg md:text-xl mt-6">{whoStatement.sub}</p>
       </div>
     </section>
 
@@ -324,26 +323,18 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     if (!reduced) {
       const whoSection = document.getElementById('who');
       const whoWords = document.querySelectorAll<HTMLElement>('.who-word');
-      const whoSub = document.querySelector<HTMLElement>('.who-sub');
 
       if (whoSection && whoWords.length) {
-        gsap
-          .timeline({
-            scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
-          })
-          .from(whoWords, {
-            y: 24,
-            opacity: 0,
-            duration: 0.5,
-            ease: 'power2.out',
-            stagger: 0.05,
-            clearProps: 'transform',
-          })
-          .from(
-            whoSub,
-            { y: 12, opacity: 0, duration: 0.5, ease: 'power2.out', clearProps: 'transform' },
-            '-=0.15',
-          );
+        gsap.timeline({
+          scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
+        }).from(whoWords, {
+          y: 24,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.05,
+          clearProps: 'transform',
+        });
       }
     }
 

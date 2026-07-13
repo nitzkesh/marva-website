@@ -6,9 +6,9 @@ interface Props {
 const { size = 'md', class: className } = Astro.props;
 
 const sizes = {
-  sm: { mark: 'h-8 w-8', text: 'text-lg' },
-  md: { mark: 'h-10 w-10', text: 'text-2xl' },
-  lg: { mark: 'h-14 w-14', text: 'text-4xl' },
+  sm: { mark: 'h-7 w-7', text: 'text-2xl' },
+  md: { mark: 'h-9 w-9', text: 'text-3xl' },
+  lg: { mark: 'h-12 w-12', text: 'text-5xl' },
 };
 const s = sizes[size] || sizes.md;
 ---

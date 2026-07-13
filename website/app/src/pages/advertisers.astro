@@ -16,10 +16,10 @@ import {
 /* Inline stroke-style vector icons for the why-advertise items (same style as
    the how-icons on the home page: currentColor, ~40px, 2px stroke). */
 const whyIcons: Record<string, string> = {
-  hand: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><path d="M16 24V10a3 3 0 0 1 6 0v12"/><path d="M22 22v-4a3 3 0 0 1 6 0v4"/><path d="M28 22v-2a3 3 0 0 1 6 0v6"/><path d="M34 26v-1a3 3 0 0 1 6 0v9a12 12 0 0 1-12 12h-4c-4 0-7-1.5-9.5-4.5L8 33a3 3 0 0 1 4.5-4L16 33"/></svg>`,
   target: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><circle cx="24" cy="24" r="18"/><circle cx="24" cy="24" r="11"/><circle cx="24" cy="24" r="4"/></svg>`,
-  'sun-heart': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><path d="M24 4v5"/><path d="M9.9 9.9l3.5 3.5"/><path d="M38.1 9.9l-3.5 3.5"/><path d="M4 22h5"/><path d="M39 22h5"/><path d="M24 34c-4.5-4-8-6.7-8-10.5a4.7 4.7 0 0 1 8-3.4 4.7 4.7 0 0 1 8 3.4C32 27.3 28.5 30 24 34Z"/><path d="M12 40h24"/></svg>`,
   label: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><rect x="6" y="14" width="36" height="20" rx="3"/><path d="M34 14v20"/><path d="M12 22h14"/><path d="M12 27h9"/><circle cx="38" cy="24" r="1.5"/></svg>`,
+  crowd: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><circle cx="24" cy="15" r="5"/><path d="M14 35c0-6 4.5-10 10-10s10 4 10 10"/><circle cx="9" cy="19" r="4"/><path d="M3 35c0-4.5 2.5-8 6-9.3"/><circle cx="39" cy="19" r="4"/><path d="M45 35c0-4.5-2.5-8-6-9.3"/></svg>`,
+  megaphone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><path d="M6 20v8a3 3 0 0 0 3 3h3l14 9V8L12 17H9a3 3 0 0 0-3 3Z"/><path d="M26 17a7 7 0 0 1 0 14"/><path d="M33 12a15 15 0 0 1 0 24"/></svg>`,
 };
 ---
 
@@ -152,7 +152,7 @@ const whyIcons: Record<string, string> = {
               <div class="flex flex-col gap-2">
                 <label class="radio-option">
                   <input type="radio" name="delivery" value="supply" checked />
-                  <span>אתם מחלקים בעצמכם</span>
+                  <span>אתם מקבלים את הבקבוקים ישירות אליכם, בלי חלוקה מצד מרווה</span>
                 </label>
                 <label class="radio-option">
                   <input type="radio" name="delivery" value="distribute" />
@@ -172,10 +172,10 @@ const whyIcons: Record<string, string> = {
               </button>
               <div id="save-box" class="conditional-fields">
                 <div class="mt-3.5 bg-sky-tint rounded-[10px] p-4">
-                  <p class="font-body text-ink mb-3">אפשר לפרסם על חצי תווית יחד עם מישהו אחר ולשלם פחות.</p>
+                  <p class="font-body text-ink mb-3">אפשר לפרסם על חצי תווית יחד עם מישהו אחר ולשלם פחות</p>
                   <label class="flex gap-2 items-start cursor-pointer font-body text-ink">
                     <input type="checkbox" name="split_label" class="mt-1" />
-                    <span>אני רוצה לפרסם יחד עם מישהו אחר (לא תדעו מי המפרסם שחולק איתכם את התווית).</span>
+                    <span>אני רוצה לפרסם יחד עם מישהו אחר (לא תדעו מי המפרסם שחולק איתכם את התווית)</span>
                   </label>
                 </div>
               </div>
