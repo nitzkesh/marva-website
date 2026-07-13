@@ -83,6 +83,8 @@ saveToggle?.addEventListener('click', () => {
 });
 
 /* ── 5. Generalized form submit handler — every .marva-form on any page ── */
+const sendingLabel = document.documentElement.lang === 'en' ? 'Sending…' : 'שולח...';
+
 document.querySelectorAll<HTMLFormElement>('.marva-form').forEach((form) => {
   const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
   const submitLabel = submitBtn?.textContent ?? '';
@@ -98,7 +100,7 @@ document.querySelectorAll<HTMLFormElement>('.marva-form').forEach((form) => {
     errorEl?.classList.add('hidden');
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = 'שולח...';
+      submitBtn.textContent = sendingLabel;
     }
 
     const payload = new FormData(form);

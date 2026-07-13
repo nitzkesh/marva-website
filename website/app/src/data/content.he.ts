@@ -1,0 +1,328 @@
+/**
+ * Hebrew copy — the default locale. Values moved verbatim from the original
+ * (pre-i18n) content.ts; this file must not change the rendered Hebrew output.
+ */
+import type { ContentBundle } from './content';
+
+/* ─────────────────────────── Shared / chrome ─────────────────────────── */
+
+const navLinks: ContentBundle['navLinks'] = [
+  { label: 'בית', href: '/' },
+  { label: 'למפרסמים', href: '/advertisers' },
+  { label: 'למשווקים', href: '/distributors' },
+  { label: 'איפה תמצאו אותנו?', href: '/#where' },
+  { label: 'צור קשר', href: '/#inquiry' },
+];
+
+const headerContent: ContentBundle['headerContent'] = {
+  menuAriaLabel: 'תפריט ניווט',
+  logoAriaLabel: 'מרווה — לדף הבית',
+  ctaLabel: 'צור קשר',
+  ctaHref: '/#inquiry',
+};
+
+const footerContent: ContentBundle['footerContent'] = {
+  ctaLine: 'לשאלות נוספות, דברו איתנו:',
+  phoneLabel: 'טלפון',
+  phone: '000-0000000',
+  email: 'info@marva.co.il',
+  navHeading: 'ניווט',
+  navAriaLabel: 'ניווט בפוטר',
+};
+
+const heroBottleAlt = 'בקבוק מרווה עם תווית מותג';
+const formStartHeading = 'בואו נתחיל';
+
+const ui: ContentBundle['ui'] = {
+  moreDetailsLabel: 'עוד פרטים',
+  readMoreLabel: 'קראו עוד',
+};
+
+/* ─────────────────────────────── HOME ──────────────────────────────── */
+
+const homeMeta: ContentBundle['homeMeta'] = {
+  title: 'מרווה — מים בחינם',
+  description: 'המפרסמים משלמים על המוצר — אתם שותים בחינם. מים מינרליים בחינם שהתווית שלהם היא שטח הפרסום שלכם',
+};
+
+const homeHero: ContentBundle['homeHero'] = {
+  h1: 'מים בחינם',
+  sub: 'המפרסמים משלמים על המוצר — אתם שותים בחינם',
+  line: 'פרסום חיובי, מים בחינם — כולם מרוויחים',
+  ctaLabel: 'אני רוצה לפרסם',
+  ctaHref: '/advertisers',
+  bottleLabelLines: ['המותג', 'שלכם', 'כאן'],
+};
+
+const conveyorLabel = 'השותפים והלקוחות שלנו';
+
+const conveyorChips: ContentBundle['conveyorChips'] = [
+  { text: 'בקרוב' },
+  { text: 'בקרוב' },
+  { text: 'בקרוב' },
+  { text: 'בקרוב' },
+  { text: 'בקרוב' },
+  { text: 'בקרוב' },
+  { text: 'בקרוב' },
+  { text: 'רוצים להיות כאן? דברו איתנו', href: '/#inquiry', isCta: true },
+];
+
+const whoStatement = {
+  big: 'מרווה היא פלטפורמת פרסום חדשה: מים מינרליים בחינם, שהתווית שלהם היא שטח הפרסום שלכם',
+};
+
+const howHeading = 'איך זה עובד?';
+
+const howSteps: ContentBundle['howSteps'] = [
+  { n: '01', icon: 'document', title: 'קבלת הצעה', body: 'הצעה לפי פרטי הקמפיין שלכם' },
+  { n: '02', icon: 'megaphone', title: 'עיצוב התווית', body: 'עיצוב התווית שלכם' },
+  { n: '03', icon: 'rocket', title: 'יוצאים לדרך!', body: 'מגיעים לידיים של קהל היעד שלכם' },
+];
+
+const whereHeading = 'לאן הבקבוקים מגיעים?';
+
+const whereCards: ContentBundle['whereCards'] = [
+  {
+    key: 'spots',
+    illustration: 'beach',
+    title: 'נקודות חלוקה אסטרטגיות',
+    body: 'טיילות, חופים, כיכרות ומוקדים מרכזיים',
+    long: 'אנחנו מציבים עמדות חלוקה במוקדים הכי מרכזיים של קהל היעד שלכם',
+    photoAlt: 'הטיילת בתל אביב לאורך החוף',
+  },
+  {
+    key: 'business',
+    illustration: 'storefront',
+    title: 'בתי עסק',
+    body: 'רוצים בקבוקי מים בחינם בעסק שלכם?',
+    long: 'רוצים לשדרג את חוויית הלקוח שלכם? דברו איתנו ותקבלו מים מינרליים בחינם ישירות לעסק שלכם, לחלוקה ללקוחות',
+    photoAlt: 'בקבוקי מים על דלפק בית קפה',
+  },
+  {
+    key: 'events',
+    illustration: 'event',
+    title: 'אירועים',
+    body: 'אירועי ספורט ותרבות, כנסים, הרצאות, סמינרים וחתונות',
+    long: 'בקבוקי מים בהתאמה אישית לאירוע הבא שלכם',
+    photoAlt: 'אנשים מרימים כוסית באירוע',
+  },
+  {
+    key: 'market',
+    illustration: 'supermarket',
+    title: 'סופרמרקטים "הצינור"',
+    body: 'על המדפים בסניפי הרשת',
+    long: 'שימו את המותג שלכם על המדפים בסופרמרקטים של רשת "הצינור"',
+    photoAlt: 'מדף משקאות בסופרמרקט',
+  },
+];
+
+const findSpotsHeading = 'החלוקות הקרובות';
+
+const findSpots: ContentBundle['findSpots'] = [
+  { date: 'א׳, 12.7', loc: 'טיילת תל אביב · מול גורדון' },
+  { date: 'ג׳, 14.7', loc: 'חוף פרישמן' },
+  { date: 'ה׳, 16.7', loc: 'כיכר הבימה' },
+  { date: 'ו׳, 17.7', loc: 'שרונה מרקט' },
+  { date: 'ש׳, 18.7', loc: 'דיזנגוף סנטר' },
+];
+
+const testimonialsHeading = 'ממליצים';
+
+const testimonialPlaceholder: ContentBundle['testimonials'][number] = {
+  badge: 'בקרוב',
+  name: '◦ ◦ ◦',
+  short: 'הסיפורים של הלקוחות הראשונים שלנו יופיעו כאן בקרוב',
+  long: 'אנחנו בשלבי השקה — הממליצים הראשונים בדרך. רוצים להיות בין הראשונים? דברו איתנו',
+};
+
+const testimonials: ContentBundle['testimonials'] = [
+  { ...testimonialPlaceholder },
+  { ...testimonialPlaceholder },
+  { ...testimonialPlaceholder },
+];
+
+const bigButtons: ContentBundle['bigButtons'] = [
+  { label: 'אני רוצה לפרסם', href: '/advertisers', tint: 'sage' },
+  { label: 'אני רוצה לחלק בקבוקים', href: '/distributors', tint: 'sky' },
+  { label: 'יש לי שאלה אחרת', href: '/#inquiry', tint: 'sand' },
+];
+
+const inquiryTopics: string[] = ['פנייה כללית', 'פרסום', 'חלוקת בקבוקים', 'שיתופי פעולה', 'אחר'];
+
+const inquiryForm: ContentBundle['inquiryForm'] = {
+  heading: 'בואו נדבר',
+  subject: 'פנייה חדשה מהאתר — פנייה כללית',
+  fromPage: 'home',
+  thanks: 'תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב',
+  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il',
+  fields: {
+    name: { label: 'שם מלא', placeholder: 'שם מלא' },
+    email: { label: 'אימייל', placeholder: 'name@email.co.il' },
+    phone: { label: 'טלפון', placeholder: '050-1234567' },
+    topicLabel: 'נושא',
+    message: { label: 'הודעה', placeholder: 'ספרו לנו במה נוכל לעזור' },
+    submitLabel: 'שליחה',
+  },
+};
+
+/* ─────────────────────────── ADVERTISERS ──────────────────────────────── */
+
+const advertisersHero: ContentBundle['advertisersHero'] = {
+  h1: 'התווית הבאה היא שלכם',
+  sub: 'בקבוק מים ביד הוא מדיה שאי אפשר להתעלם ממנה — והקהל עוד אומר תודה',
+  ctaLabel: 'להצעת מחיר',
+  ctaHref: '#ad-form',
+};
+
+const advertisersMeta: ContentBundle['advertisersMeta'] = {
+  title: 'מרווה — למפרסמים',
+  description: advertisersHero.sub,
+};
+
+const labelPromo: ContentBundle['labelPromo'] = {
+  heading: 'כל התווית — הבמה שלכם',
+  caption: 'פרופורציות אמיתיות של תווית 210×42 מ״מ, כולל אזורי החובה',
+  ariaLabel: 'הדמיית תווית בקבוק בפרופורציות אמיתיות של 210 על 42 מילימטר: אזור המותג שלכם תופס את רוב התווית, ואזור החובה הרגולטורי בקצה',
+  regulatoryZoneLabel: 'אזור חובה',
+  brandZoneLabel: 'אזור המותג שלכם',
+  brandZonePlaceholder: 'העיצוב שלכם כאן',
+};
+
+const advertiserOptions: ContentBundle['advertiserOptions'] = [
+  { title: 'חופש עיצובי מלא', body: 'אפשר לשים על התווית כל מה שבא לכם. כל רקע שתבחרו — לוגו, סלוגן, קוד קופון, ברקוד הנחה, תמונה, או כל דבר אחר' },
+  { title: 'חצי תווית, חצי עלות', body: 'אפשר לחלוק את התווית עם מפרסם אחר ולשלם פחות' },
+  { title: 'אתם בוחרים איך להפיץ', body: 'אנחנו מחלקים בנקודות שתבחרו, או שאתם מקבלים את הבקבוקים ומחלקים בעצמכם' },
+];
+
+const whyAdvertiseHeading = 'למה לפרסם איתנו?';
+
+const whyAdvertise: ContentBundle['whyAdvertise'] = [
+  { icon: 'crowd', title: 'ביקוש גבוה אצל כולם', body: 'הביקוש למים מינרליים בחינם גבוה וקבוע, בלי תלות בקהל יעד ספציפי' },
+  { icon: 'target', title: 'קהל ממוקד באמת', body: 'אתם בוחרים איפה, מתי ולמי הבקבוקים מחולקים — עד רמת נקודת החלוקה' },
+  { icon: 'megaphone', title: 'פרסומת שזוכרים', body: 'החשיפה שלכם עוברת דרך מי שמחזיק בבקבוק, הסביבה הקרובה שלו והתקשורת' },
+  { icon: 'label', title: 'במה בלעדית', body: 'הבמה כולה שלכם. בלי פיד עמוס, בלי מודעות מתחרות באותו מסך' },
+];
+
+const adForm: ContentBundle['adForm'] = {
+  subject: 'פנייה חדשה מהאתר — מפרסם',
+  fromPage: 'advertisers',
+  thanks: 'תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב',
+  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il',
+  fields: {
+    businessName: { label: 'שם העסק', placeholder: 'לדוגמה: קפה השכונה' },
+    taxId: { label: 'ח.פ./ע.מ', placeholder: '123456789' },
+    contact: { label: 'איש קשר', placeholder: 'שם מלא' },
+    phone: { label: 'טלפון', placeholder: '050-1234567' },
+    email: { label: 'אימייל', placeholder: 'name@company.co.il' },
+    qty: { label: 'כמות בקבוקים רצויה', placeholder: 'לדוגמה: 5,000' },
+    duration: { label: 'משך קמפיין', placeholder: 'לדוגמה: חודש' },
+    startDate: { label: 'תאריך התחלה רצוי' },
+    deliveryLabel: 'שיטת חלוקה',
+    deliveryOptionSupply: 'אתם מקבלים את הבקבוקים ישירות אליכם, בלי חלוקה מצד מרווה',
+    deliveryOptionDistribute: 'אנחנו מחלקים את הבקבוקים עבורכם',
+    prefPoints: { label: 'נקודות חלוקה מועדפות', placeholder: 'לדוגמה: טיילת ת״א, חוף גורדון' },
+    saveToggleLabel: 'אני רוצה לחסוך בעלויות',
+    saveBoxCopy: 'אפשר לפרסם על חצי תווית יחד עם מישהו אחר ולשלם פחות',
+    splitLabelCheckbox: 'אני רוצה לפרסם יחד עם מישהו אחר (לא תדעו מי המפרסם שחולק איתכם את התווית)',
+    submitLabel: 'שליחת פנייה',
+  },
+};
+
+/* ─────────────────────────── DISTRIBUTORS ──────────────────────────────── */
+
+const distributorsHero: ContentBundle['distributorsHero'] = {
+  h1: 'המים עלינו. הלקוחות שלכם',
+  sub: 'קבלו בקבוקי מים ממותגים בחינם, חלקו ללקוחות שלכם — ותנו להם סיבה טובה לחזור',
+  ctaLabel: 'אני רוצה לחלק',
+  ctaHref: '#dist-form',
+};
+
+const distributorsMeta: ContentBundle['distributorsMeta'] = {
+  title: 'מרווה — למשווקים',
+  description: distributorsHero.sub,
+};
+
+const whyDistributeHeading = 'למה לעבוד איתנו?';
+
+const whyDistribute: ContentBundle['whyDistribute'] = [
+  { keyword: 'אפס עלות', body: 'המפרסמים כבר שילמו על הבקבוקים. אתם רק מגישים אותם — בלי לקנות מלאי ובלי סיכון', accent: 'sage' },
+  { keyword: 'לקוחות מרוצים', body: 'מים קרים בחינם הם שדרוג שירות שאנשים זוכרים — ומספרים עליו הלאה', accent: 'sky' },
+  { keyword: 'תנועה וחשיפה', body: 'נקודת חלוקה מושכת אליה קהל. יותר אנשים בדלת שלכם, יותר הזדמנויות למכור', accent: 'sand' },
+];
+
+const distributorTypesHeading = 'מי יכול לחלק?';
+
+const distributorTypes: string[] = [
+  'חדרי כושר וסטודיו',
+  'מסעדות ובתי קפה',
+  'מפיקי אירועים',
+  'מלונות והוסטלים',
+  'אוניברסיטאות ומכללות',
+  'משרדים וחללי עבודה',
+  'מועדוני ספורט וחוגים',
+  'חנויות ומרכזי קניות',
+  'בריכות וחופים',
+  'פסטיבלים ושווקים',
+  'מרפאות ומכוני בריאות',
+  'מספרות ומכוני יופי',
+];
+
+const distributorTypesClosing = 'לא מצאתם את עצמכם ברשימה? אם יש לכם קהל — דברו איתנו';
+
+const distForm: ContentBundle['distForm'] = {
+  subject: 'פנייה חדשה מהאתר — משווק',
+  fromPage: 'distributors',
+  thanks: 'תודה! קיבלנו את הפנייה ונחזור אליכם בקרוב',
+  error: 'משהו השתבש בשליחה. נסו שוב או כתבו לנו ל־info@marva.co.il',
+  fields: {
+    businessName: { label: 'שם העסק', placeholder: 'לדוגמה: קפה השכונה' },
+    businessType: { label: 'סוג העסק', placeholder: 'לדוגמה: בית קפה, חדר כושר' },
+    contact: { label: 'איש קשר', placeholder: 'שם מלא' },
+    phone: { label: 'טלפון', placeholder: '050-1234567' },
+    email: { label: 'אימייל', placeholder: 'name@company.co.il' },
+    location: { label: 'מיקום העסק', placeholder: 'עיר · כתובת' },
+    qty: { label: 'כמות בקבוקים משוערת לחודש', placeholder: 'לדוגמה: 500' },
+    notes: { label: 'הערות', placeholder: 'ספרו לנו על העסק והקהל שלכם' },
+    submitLabel: 'שליחת פנייה',
+  },
+};
+
+export const heContent: ContentBundle = {
+  heroBottleAlt,
+  formStartHeading,
+  ui,
+  navLinks,
+  headerContent,
+  footerContent,
+  homeMeta,
+  homeHero,
+  conveyorLabel,
+  conveyorChips,
+  whoStatement,
+  howHeading,
+  howSteps,
+  whereHeading,
+  whereCards,
+  findSpotsHeading,
+  findSpots,
+  testimonialsHeading,
+  testimonials,
+  bigButtons,
+  inquiryTopics,
+  inquiryForm,
+  advertisersMeta,
+  advertisersHero,
+  labelPromo,
+  advertiserOptions,
+  whyAdvertiseHeading,
+  whyAdvertise,
+  adForm,
+  distributorsMeta,
+  distributorsHero,
+  whyDistributeHeading,
+  whyDistribute,
+  distributorTypesHeading,
+  distributorTypes,
+  distributorTypesClosing,
+  distForm,
+};

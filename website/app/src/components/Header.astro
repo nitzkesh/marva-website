@@ -1,7 +1,20 @@
 ---
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import { navLinks } from '../data/content';
+import { getContent, altLocaleHref, canonicalHref, type Locale, type PageKey } from '../data/content';
+
+interface Props {
+  locale: Locale;
+  page: PageKey;
+}
+
+const { locale, page } = Astro.props;
+const { navLinks, headerContent } = getContent(locale);
+
+const toggleHref = altLocaleHref(page, locale);
+const toggleLabel = locale === 'he' ? 'EN' : 'עברית';
+const toggleAriaLabel = locale === 'he' ? 'Switch to English' : 'עבור לעברית';
+const homeHref = canonicalHref('home', locale);
 ---
 
 <!-- ═══════════════════ HEADER ═══════════════════ -->
@@ -11,7 +24,7 @@ import { navLinks } from '../data/content';
     <button
       id="hamburger"
       type="button"
-      aria-label="תפריט ניווט"
+      aria-label={headerContent.menuAriaLabel}
       aria-expanded="false"
       aria-controls="nav-overlay"
       class="absolute left-0 flex flex-col justify-center items-center gap-[6px] w-10 h-10 z-10 cursor-pointer"
@@ -21,12 +34,12 @@ import { navLinks } from '../data/content';
       <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
     </button>
 
-    <a href="/" class="mx-auto" aria-label="מרווה — לדף הבית">
-      <Logo size="sm" />
+    <a href={homeHref} class="mx-auto" aria-label={headerContent.logoAriaLabel}>
+      <Logo size="sm" locale={locale} />
     </a>
 
-    <Button href="/#inquiry" size="m" class="absolute right-0 !px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-base">
-      צור קשר
+    <Button href={headerContent.ctaHref} size="m" class="absolute right-0 !px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-base">
+      {headerContent.ctaLabel}
     </Button>
   </div>
 </header>
@@ -37,7 +50,7 @@ import { navLinks } from '../data/content';
   class="fixed inset-0 z-40 bg-ink/95 backdrop-blur-md flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300"
   role="dialog"
   aria-modal="true"
-  aria-label="תפריט ניווט"
+  aria-label={headerContent.menuAriaLabel}
 >
   <nav class="flex flex-col items-center gap-7">
     {navLinks.map((l) => (
@@ -45,5 +58,8 @@ import { navLinks } from '../data/content';
         {l.label}
       </a>
     ))}
+    <a href={toggleHref} aria-label={toggleAriaLabel} class="nav-overlay-link font-display font-bold text-2xl text-inverse/60 hover:text-sage transition-colors">
+      {toggleLabel}
+    </a>
   </nav>
 </div>

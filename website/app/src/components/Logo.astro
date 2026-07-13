@@ -1,9 +1,12 @@
 ---
+import type { Locale } from '../data/content';
+
 interface Props {
   size?: 'sm' | 'md' | 'lg';
   class?: string;
+  locale?: Locale;
 }
-const { size = 'md', class: className } = Astro.props;
+const { size = 'md', class: className, locale = 'he' } = Astro.props;
 
 const sizes = {
   sm: { mark: 'h-7 w-7', text: 'text-2xl' },
@@ -11,9 +14,10 @@ const sizes = {
   lg: { mark: 'h-12 w-12', text: 'text-5xl' },
 };
 const s = sizes[size] || sizes.md;
+const wordmark = locale === 'en' ? 'MARVA' : 'מרווה';
 ---
 
 <div class={['flex items-center gap-2.5', className].filter(Boolean).join(' ')}>
-  <img src="/marva-mark.svg" alt="מרווה" class={`${s.mark} object-contain`} />
-  <span class={`font-display font-bold text-ink ${s.text}`}>מרווה</span>
+  <img src="/marva-mark.svg" alt={wordmark} class={`${s.mark} object-contain`} />
+  <span class={`font-display font-bold text-ink ${s.text}`}>{wordmark}</span>
 </div>

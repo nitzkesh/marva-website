@@ -1,0 +1,390 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import Button from '../Button.astro';
+import Card from '../Card.astro';
+import Input from '../Input.astro';
+import Badge from '../Badge.astro';
+import ExpandCard from '../ExpandCard.astro';
+import { getContent, type Locale } from '../../data/content';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const {
+  heroBottleAlt,
+  ui,
+  homeMeta,
+  homeHero,
+  conveyorLabel,
+  conveyorChips,
+  whoStatement,
+  howHeading,
+  howSteps,
+  whereHeading,
+  whereCards,
+  findSpotsHeading,
+  findSpots,
+  testimonialsHeading,
+  testimonials,
+  bigButtons,
+  inquiryTopics,
+  inquiryForm,
+} = getContent(locale);
+
+/* Simple hand-drawn line icons (stroke, currentColor, ~40px) for the "how it works" steps. */
+const icons: Record<string, string> = {
+  document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M14 6h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M28 6v8h8"/><path d="M17 26h14"/><path d="M17 32h14"/><path d="M17 20h6"/></svg>`,
+  megaphone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M6 20v8a3 3 0 0 0 3 3h3l14 9V8L12 17H9a3 3 0 0 0-3 3Z"/><path d="M26 17a7 7 0 0 1 0 14"/><path d="M33 12a15 15 0 0 1 0 24"/></svg>`,
+  rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M24 4c6 4 9 11 9 18 0 4-1 8-3 11l-6 5-6-5c-2-3-3-7-3-11 0-7 3-14 9-18Z"/><circle cx="24" cy="18" r="3.5"/><path d="M17 30l-6 4 2-8"/><path d="M31 30l6 4-2-8"/><path d="M20 38h8l-4 6-4-6Z"/></svg>`,
+};
+
+/* Real photography for the "where" cards (replaces the earlier flat-SVG placeholders).
+   Alt text is locale-dependent (from content), src is not. */
+const cardPhotoSrc: Record<string, string> = {
+  beach: '/photos/tlv-vibes.webp',
+  storefront: '/photos/coffee-shop.webp',
+  event: '/photos/social-event.webp',
+  supermarket: '/photos/supermarket.webp',
+};
+
+const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
+
+const bigButtonTints: Record<string, { bg: string; hover: string }> = {
+  sage: { bg: 'bg-sage-tint', hover: 'hover:bg-sage' },
+  sky: { bg: 'bg-sky-tint', hover: 'hover:bg-sky' },
+  sand: { bg: 'bg-sand-tint', hover: 'hover:bg-sand' },
+};
+---
+
+<Layout title={homeMeta.title} description={homeMeta.description} locale={locale} page="home">
+
+  <Header locale={locale} page="home" />
+
+  <main id="main-content">
+
+    <!-- ═══════════════════ A. HERO ═══════════════════ -->
+    <section class="relative overflow-hidden bg-base pt-16 pb-0 md:pt-20">
+      <div class="relative px-6 pb-16 md:pb-20">
+        <!-- soft sun disc -->
+        <div class="absolute top-6 start-6 w-40 h-40 rounded-full bg-sand opacity-40 blur-2xl z-0" aria-hidden="true"></div>
+
+        <!-- eco-wave bands (behind content) -->
+        <svg class="absolute bottom-0 inset-x-0 w-full h-28 md:h-40 z-0" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,120 C240,180 480,60 720,100 C960,140 1200,60 1440,110 L1440,220 L0,220 Z" fill="var(--color-sand)" opacity="0.35"></path>
+          <path d="M0,150 C240,90 480,190 720,140 C960,90 1200,170 1440,130 L1440,220 L0,220 Z" fill="var(--color-sky)" opacity="0.4"></path>
+          <path d="M0,180 C240,140 480,200 720,170 C960,140 1200,200 1440,170 L1440,220 L0,220 Z" fill="var(--color-sage)" opacity="0.45"></path>
+        </svg>
+
+        <div class="relative z-10 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[1.05fr_0.9fr] gap-10 md:gap-8 items-center">
+          <div class="hero-copy max-w-[560px]">
+            <h1 class="font-display font-black text-ink text-[clamp(2.75rem,5vw+1rem,4.5rem)] leading-[1.05]">
+              {homeHero.h1}
+            </h1>
+            <p class="font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
+              {homeHero.sub}
+            </p>
+            <p class="font-body text-ink/80 text-lg max-w-[520px] mt-4 mb-8">
+              {homeHero.line}
+            </p>
+            <Button href={homeHero.ctaHref} size="l">{homeHero.ctaLabel}</Button>
+          </div>
+
+          <div class="hero-visual relative w-full max-w-[290px] justify-self-center">
+            <img src="/hero-bottle.png" alt={heroBottleAlt} class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
+            <div class="absolute top-[43%] left-[34%] w-[31.5%] h-[23%] flex flex-col items-center justify-center">
+              <div class="flex flex-col items-center gap-px">
+                {homeHero.bottleLabelLines.map((line) => (
+                  <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">{line}</span>
+                ))}
+              </div>
+              <img src="/marva-mark.svg" alt="" class="absolute bottom-[8%] left-[6%] w-[22%] h-auto object-contain" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- conveyor strip -->
+      <div class="relative z-10 border-t border-border bg-surface/70">
+        <div class="max-w-6xl mx-auto px-6 py-5">
+          <p class="font-body text-xs tracking-[0.12em] uppercase text-muted mb-3">{conveyorLabel}</p>
+          <div class="overflow-hidden conveyor-viewport">
+            <div class="conveyor-marquee">
+              <div class="conveyor-track" aria-hidden="false">
+                {conveyorChips.map((chip, i) => (
+                  chip.isCta ? (
+                    <a href={chip.href} class="conveyor-chip bg-ink text-inverse font-semibold hover:bg-[#2B2B2B] transition-colors">{chip.text}</a>
+                  ) : (
+                    <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                      <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
+                      {chip.text}
+                    </span>
+                  )
+                ))}
+              </div>
+              <!-- duplicate set — decorative, hidden from assistive tech; makes the marquee loop seamless -->
+              <div class="conveyor-track" aria-hidden="true">
+                {conveyorChips.map((chip, i) => (
+                  chip.isCta ? (
+                    <span tabindex="-1" class="conveyor-chip bg-ink text-inverse font-semibold">{chip.text}</span>
+                  ) : (
+                    <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                      <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
+                      {chip.text}
+                    </span>
+                  )
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
+    <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sand-tint py-16">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <h2 class="who-heading font-display font-bold text-ink text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.25]">
+          {whoStatement.big.split(' ').map((word) => (
+            <span class="who-word inline-block">{word}&nbsp;</span>
+          ))}
+        </h2>
+      </div>
+    </section>
+
+    <!-- ═══════════════ C. HOW IT WORKS ═══════════════ -->
+    <section id="how" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="how-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {howHeading}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
+          {howSteps.map((s) => (
+            <Card class="how-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="how-card-icon text-sage-deep" set:html={icons[s.icon]} />
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sage-tint font-display font-bold text-sage-deep text-sm">{s.n}</span>
+              </div>
+              <h3 class="font-display font-bold text-ink text-xl mb-2.5">{s.title}</h3>
+              <p class="font-body text-ink/80">{s.body}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ D. WHERE DO WE WORK ═══════════════ -->
+    <section id="where" class="bg-sand-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="where-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {whereHeading}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto mt-12">
+          {whereCards.map((c) => (
+            <ExpandCard id={`where-${c.key}`} triggerLabel={ui.moreDetailsLabel} class="where-card bg-surface rounded-[20px] shadow-card overflow-hidden transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
+              <div class="aspect-video w-full overflow-hidden">
+                <img src={cardPhotoSrc[c.illustration]} alt={c.photoAlt} class="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <div class="px-6 pt-6">
+                <h3 class="font-display font-bold text-ink text-xl mb-2">{c.title}</h3>
+                <p class="font-body text-ink/80">{c.body}</p>
+              </div>
+              <Fragment slot="expanded">
+                <p class="font-body text-ink/80">{c.long}</p>
+              </Fragment>
+            </ExpandCard>
+          ))}
+        </div>
+
+        <!-- upcoming distribution dates/locations -->
+        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-10">
+          <h3 class="font-display font-bold text-ink text-lg mb-4">{findSpotsHeading}</h3>
+          <ul class="list-none p-0 m-0">
+            {findSpots.map((s) => (
+              <li class="flex gap-4 items-center py-3.5 border-b border-border last:border-b-0">
+                <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
+                <span class="font-body text-ink">{s.loc}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ E. TESTIMONIALS ═══════════════ -->
+    <section id="testimonials" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="testimonials-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {testimonialsHeading}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mt-12">
+          {testimonials.map((t, i) => (
+            <ExpandCard id={`testimonial-${i}`} triggerLabel={ui.readMoreLabel} class="testimonial-card relative bg-surface rounded-[20px] shadow-card overflow-hidden border border-border">
+              <div class="px-6 pt-6">
+                <div class="flex items-start justify-between">
+                  <span class="font-display text-5xl text-sage-deep leading-none" aria-hidden="true">”</span>
+                  <Badge tone="sand">{t.badge}</Badge>
+                </div>
+                <p class="font-display font-bold text-ink mt-1">{t.name}</p>
+                <p class="font-body text-ink/80 mt-2">{t.short}</p>
+              </div>
+              <Fragment slot="expanded">
+                <p class="font-body text-ink/80">{t.long}</p>
+              </Fragment>
+            </ExpandCard>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ F. THREE BIG BUTTONS ═══════════════ -->
+    <section class="bg-sand-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+          {bigButtons.map((b) => (
+            <a
+              href={b.href}
+              class={`group flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}
+            >
+              <span>{b.label}</span>
+              <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 10H4"></path>
+                <path d="M9 4l-6 6 6 6"></path>
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ G. GENERAL INQUIRY FORM ═══════════════ -->
+    <section id="inquiry" class="bg-surface py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {inquiryForm.heading}
+        </h2>
+
+        <div class="bg-sand-tint rounded-[20px] shadow-card p-6 md:p-10 max-w-[640px] mx-auto mt-8">
+          <form class="general-form marva-form" data-subject={inquiryForm.subject}>
+            <input type="hidden" name="from_page" value={inquiryForm.fromPage} />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+              <Input label={inquiryForm.fields.name.label} name="name" placeholder={inquiryForm.fields.name.placeholder} required class="sm:col-span-2" />
+              <Input label={inquiryForm.fields.email.label} name="email" type="email" dir="ltr" placeholder={inquiryForm.fields.email.placeholder} required />
+              <Input label={inquiryForm.fields.phone.label} name="phone" type="tel" dir="ltr" placeholder={inquiryForm.fields.phone.placeholder} />
+              <label class="flex flex-col gap-1.5 sm:col-span-2">
+                <span class="form-label">{inquiryForm.fields.topicLabel}</span>
+                <select name="topic" class="form-input">
+                  {inquiryTopics.map((t) => <option value={t}>{t}</option>)}
+                </select>
+              </label>
+              <label class="flex flex-col gap-1.5 sm:col-span-2">
+                <span class="form-label">{inquiryForm.fields.message.label}</span>
+                <textarea name="message" class="form-input" rows="5" required placeholder={inquiryForm.fields.message.placeholder}></textarea>
+              </label>
+            </div>
+            <Button size="l" class="w-full" type="submit">{inquiryForm.fields.submitLabel}</Button>
+          </form>
+          <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">{inquiryForm.thanks}</div>
+          <div class="form-error hidden text-center py-4 font-body text-sm text-red-600">{inquiryForm.error}</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer locale={locale} page="home" />
+
+  <script>
+    import { animate, stagger } from 'motion';
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Hero Motion spring load — home page only */
+    if (!reduced) {
+      const heroCopyChildren = document.querySelectorAll<HTMLElement>('.hero-copy > *');
+      const heroVisual = document.querySelector<HTMLElement>('.hero-visual');
+
+      const springTransition = { type: 'spring' as const, stiffness: 260, damping: 24, mass: 0.9 };
+
+      if (heroCopyChildren.length) {
+        animate(
+          heroCopyChildren,
+          { opacity: [0, 1], y: [16, 0] },
+          { delay: stagger(0.08), ...springTransition },
+        );
+      }
+
+      if (heroVisual) {
+        animate(
+          heroVisual,
+          { opacity: [0, 1], scale: [0.9, 1], y: [16, 0] },
+          { delay: 0.15, ...springTransition },
+        );
+      }
+    }
+
+    /* Who-are-we word cascade — home #who only.
+       Replaces the generic `main h2` reveal (excluded via :not(.who-heading)
+       in shared.ts) so it doesn't double-fire. */
+    if (!reduced) {
+      const whoSection = document.getElementById('who');
+      const whoWords = document.querySelectorAll<HTMLElement>('.who-word');
+
+      if (whoSection && whoWords.length) {
+        gsap.timeline({
+          scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
+        }).from(whoWords, {
+          y: 24,
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          stagger: 0.05,
+          clearProps: 'transform',
+        });
+      }
+    }
+
+    /* How-it-works card sequence — home #how only.
+       Replaces the generic `.how-card` reveal (removed from shared.ts) so it
+       doesn't double-fire. Cards enter one-by-one everywhere; on desktop
+       (md+) each icon also pops in slightly after its card lands. */
+    if (!reduced) {
+      const howSection = document.getElementById('how');
+      const howCards = document.querySelectorAll<HTMLElement>('.how-card');
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
+      if (howCards.length) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: howSection || howCards[0], start: 'top 80%', once: true },
+        });
+
+        howCards.forEach((card, i) => {
+          const start = i * 0.18;
+          tl.from(
+            card,
+            { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' },
+            start,
+          );
+
+          if (isDesktop) {
+            const icon = card.querySelector<HTMLElement>('.how-card-icon');
+            if (icon) {
+              tl.from(
+                icon,
+                { scale: 0.6, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' },
+                start + 0.15,
+              );
+            }
+          }
+        });
+      }
+    }
+  </script>
+</Layout>

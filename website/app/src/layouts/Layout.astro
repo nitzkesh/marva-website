@@ -1,16 +1,24 @@
 ---
 import '../styles/global.css';
+import { canonicalHref, type Locale, type PageKey } from '../data/content';
 
 interface Props {
   title: string;
   description: string;
+  locale: Locale;
+  page: PageKey;
 }
 
-const { title, description } = Astro.props;
+const { title, description, locale, page } = Astro.props;
+const dir = locale === 'he' ? 'rtl' : 'ltr';
+const skipLinkLabel = locale === 'he' ? 'דלג לתוכן' : 'Skip to content';
+
+const hePath = canonicalHref(page, 'he');
+const enPath = canonicalHref(page, 'en');
 ---
 
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang={locale} dir={dir}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,10 +26,13 @@ const { title, description } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <meta name="description" content={description} />
+    <link rel="alternate" hreflang="he" href={new URL(hePath, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(enPath, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(hePath, Astro.site)} />
     <title>{title}</title>
   </head>
   <body class="bg-base text-ink font-body overflow-x-hidden">
-    <a href="#main-content" class="skip-link">דלג לתוכן</a>
+    <a href="#main-content" class="skip-link">{skipLinkLabel}</a>
     <slot />
     <script>
       import '../scripts/shared.ts';

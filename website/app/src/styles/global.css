@@ -34,11 +34,19 @@ body {
   font-family: var(--font-body);
 }
 
+/* EN pages are pure-Latin text — pin the body stack to Work Sans so a
+   missing weight in Work Sans's loaded subset (400/500/600, see the
+   @import above) can't fall through to Assistant, which was only ever
+   loaded for Hebrew glyph coverage and is irrelevant on /en/. */
+html[lang='en'] {
+  --font-body: 'Work Sans', 'Segoe UI', system-ui, sans-serif;
+}
+
 /* Skip-to-content link */
 .skip-link {
   position: absolute;
   top: -100%;
-  right: 1rem;
+  inset-inline-start: 1rem;
   background: var(--color-ink);
   color: var(--color-inverse);
   padding: 0.75rem 1.5rem;
@@ -189,6 +197,20 @@ body {
        moves visually leftward, reading as "forward" against the RTL content. */
     transform: translateX(-50%);
   }
+}
+/* EN is LTR — mirror the loop so it still reads as "forward" (rightward)
+   instead of visually reversing against left-to-right content. Same two
+   identical tracks, same duration; only the apparent direction flips. */
+@keyframes conveyor-scroll-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+html[lang='en'] .conveyor-marquee {
+  animation-name: conveyor-scroll-reverse;
 }
 .conveyor-track {
   display: flex;
