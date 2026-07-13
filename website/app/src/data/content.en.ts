@@ -27,7 +27,7 @@ const headerContent: ContentBundle['headerContent'] = {
 const footerContent: ContentBundle['footerContent'] = {
   ctaLine: 'Got more questions? Talk to us:',
   phoneLabel: 'Phone',
-  phone: '000-0000000',
+  phone: '054-5244339',
   email: 'info@marva.co.il',
   navHeading: 'Navigation',
   navAriaLabel: 'Footer navigation',
