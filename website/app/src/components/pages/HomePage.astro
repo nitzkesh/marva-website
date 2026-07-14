@@ -35,6 +35,9 @@ const {
   inquiryForm,
 } = getContent(locale);
 
+/* Testimonials section visibility — flip to true to bring the section back; markup stays in place. */
+const showTestimonials = false;
+
 /* Simple hand-drawn line icons (stroke, currentColor, ~40px) for the "how it works" steps. */
 const icons: Record<string, string> = {
   document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M14 6h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M28 6v8h8"/><path d="M17 26h14"/><path d="M17 32h14"/><path d="M17 20h6"/></svg>`,
@@ -184,8 +187,8 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
         <h2 class="where-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           {whereHeading}
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto mt-12">
-          {whereCards.map((c) => (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto mt-12">
+          {whereCards.filter((c) => c.key !== 'market').map((c) => (
             <ExpandCard id={`where-${c.key}`} triggerLabel={ui.moreDetailsLabel} class="where-card bg-surface rounded-[20px] shadow-card overflow-hidden transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <div class="aspect-video w-full overflow-hidden">
                 <img src={cardPhotoSrc[c.illustration]} alt={c.photoAlt} class="w-full h-full object-cover" loading="lazy" />
@@ -223,6 +226,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     </section>
 
     <!-- ═══════════════ E. TESTIMONIALS ═══════════════ -->
+    {showTestimonials && (
     <section id="testimonials" class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="testimonials-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -247,6 +251,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
         </div>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ F. THREE BIG BUTTONS ═══════════════ -->
     <section class="bg-sand-tint py-16 md:py-24">

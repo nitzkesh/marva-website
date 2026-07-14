@@ -118,7 +118,7 @@ const whereCards: ContentBundle['whereCards'] = [
   },
 ];
 
-const findSpotsHeading = 'Distribution points coming soon';
+const findSpotsHeading = 'Upcoming distribution points';
 
 /** Placeholder row — real dates/venues can be restored by editing this file only. */
 const findSpotPlaceholder: ContentBundle['findSpots'][number] = { date: 'Soon', loc: 'Location TBA' };

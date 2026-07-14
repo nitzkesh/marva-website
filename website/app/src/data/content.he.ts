@@ -115,7 +115,7 @@ const whereCards: ContentBundle['whereCards'] = [
   },
 ];
 
-const findSpotsHeading = 'נקודות חלוקה יפורסמו בקרוב';
+const findSpotsHeading = 'נקודות חלוקה קרובות';
 
 /** Placeholder row — real dates/venues can be restored by editing this file only. */
 const findSpotPlaceholder: ContentBundle['findSpots'][number] = { date: 'בקרוב', loc: 'מיקום יעודכן' };
