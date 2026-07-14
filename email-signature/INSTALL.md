@@ -4,7 +4,7 @@
 - **Do this after the website is deployed**, or the logo will show as a broken
   image icon until then. The signature still works either way (Gmail caches the
   HTML you paste, not the image itself) — the logo just fills in once
-  `https://marva-website.pages.dev/sig/marva-mark-sig.png` is live.
+  `https://marva-water.com/sig/marva-mark-sig.png` is live.
 - **Turn off "Plain text mode" first.** If Gmail's compose window is in plain
   text mode, pasting a formatted signature strips all the HTML — you'd get a
   jumble of unstyled text instead of the table layout. Plain text mode is a
