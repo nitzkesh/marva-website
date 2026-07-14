@@ -15,8 +15,8 @@ website/app/.wrangler/
 !.dev.vars.example
 !.env.example
 
-# Bulky point-in-time reference (superseded by brand-book + ported code; kept locally, not vendored)
-marva-design-system-viaClaudeD/
+# The design-system export (Claude Design desktop app) is Nitzan's forward design source — tracked.
+# Only its bulky .zip archive stays ignored (track the folder, not the archive).
 marva-design-system-viaClaudeD.zip
 
 # Raw source photos (large originals; optimized WebP copies actually used by the site

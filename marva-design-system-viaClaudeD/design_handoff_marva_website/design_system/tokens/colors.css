@@ -1,0 +1,47 @@
+/* Marva — Color tokens
+   Reconciled 2026-07-14 to the SHIPPED palette — website/app/src/styles/global.css @theme
+   (sourced from the primary-logo-viaGPT.png swatches). Supersedes the earlier concept-sheet
+   reading, which had a paler sky (#A3D0EC) and warmer sand (#E6D9C3).
+   Palette logic: 45% sage · 30% sky · 15% sand · 10% black/white, over an off-white base.
+*/
+:root {
+  /* Base brand hues */
+  --marva-sage: #A8BFAE;
+  --marva-sage-deep: #7FA089;      /* darker sage for hover/press, derived via oklch darken */
+  --marva-sky: #A6C9E8;
+  --marva-sky-deep: #5FA8D3;
+  --marva-sand: #E6DCC6;
+  --marva-sand-deep: #D8C39F;
+  --marva-black: #111111;
+  --marva-white: #FFFFFF;
+  --marva-off-white: #FBFAF6;      /* softer than pure white, page background */
+
+  /* Pale tints for backgrounds / tiles */
+  --marva-sage-tint: #EEF2EC;
+  --marva-sky-tint: #EAF4FA;
+  --marva-sand-tint: #F7F1E5;
+
+  /* Semantic aliases */
+  --color-bg-page: var(--marva-off-white);
+  --color-bg-surface: var(--marva-white);
+  --color-bg-sage: var(--marva-sage);
+  --color-bg-sky: var(--marva-sky);
+  --color-bg-sand: var(--marva-sand);
+  --color-bg-ink: var(--marva-black);
+
+  --color-text-primary: var(--marva-black);
+  --color-text-muted: #5B6660;
+  --color-text-inverse: var(--marva-off-white);
+  --color-text-on-brand: var(--marva-black); /* sage/sky/sand are light — keep black text for AA contrast */
+
+  --color-cta-bg: var(--marva-black);
+  --color-cta-bg-hover: #2B2B2B;
+  --color-cta-text: var(--marva-off-white);
+
+  --color-border-default: #E3E0D8;
+  --color-border-strong: var(--marva-black);
+
+  --color-accent-refreshing: var(--marva-sage); /* personality: Refreshing */
+  --color-accent-smart: var(--marva-sky);       /* personality: Smart */
+  --color-accent-urban: var(--marva-sand);      /* personality: Urban */
+}

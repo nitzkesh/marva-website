@@ -1,0 +1,27 @@
+/* Marva — Fonts (LOCKED)
+   Rubik (display/headings/Hebrew wordmark), Work Sans (Latin body/UI), and Assistant
+   (Hebrew body — Work Sans is Latin-only) are the official Marva typefaces. All three
+   load from Google Fonts via the @import below; Rubik and Work Sans also have explicit
+   @font-face blocks so the system is self-describing (Assistant loads via the @import).
+
+   OFFLINE / FULLY-SELF-HOSTED (optional, recommended for production):
+   drop the .woff2 files into assets/fonts/ and repoint the src: url(...) values at them
+   (e.g. url('../assets/fonts/Rubik-Variable.woff2') format('woff2')). Rendering is
+   identical; it just removes the runtime dependency on Google's CDN. */
+
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&family=Rubik:wght@400;500;700;900&family=Work+Sans:wght@400;500;600&display=swap');
+
+@font-face {
+  font-family: 'Rubik';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/rubik/v31/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-NYi1UA.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Work Sans';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/worksans/v23/QGYsz_wNahGAdqQ43Rh_fKDp.ttf) format('truetype');
+}

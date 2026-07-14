@@ -1,0 +1,27 @@
+/* Marva — Spacing, radius, shadow tokens */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Bauhaus geometry: quarter-circles, straight edges, soft rectangles — see brand concept sheet.
+     Corners stay modest; the brand's "roundness" lives in the leaf mark, not in UI chrome. */
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 20px;
+  --radius-pill: 999px;
+  --radius-mark: 50%; /* used for the quarter-circle / disc motifs */
+
+  --shadow-card: 0 1px 2px rgba(17,17,17,0.04), 0 8px 24px rgba(17,17,17,0.06);
+  --shadow-card-hover: 0 4px 8px rgba(17,17,17,0.06), 0 16px 32px rgba(17,17,17,0.10);
+  --shadow-none: none;
+
+  --border-w: 1px;
+  --border-w-strong: 2px;
+}

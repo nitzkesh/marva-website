@@ -1,0 +1,43 @@
+/* Marva — Typography tokens
+   Brand concept calls for "Knockout Bauhaus" (display) + "Neue Haas Grotesk" (body) —
+   both commercial, Latin-only typefaces unavailable to this project.
+   SUBSTITUTED with free Google Fonts equivalents (flagged in README "Typography" section):
+     display -> Rubik (geometric, bold, wide-set caps — closest open match to Knockout's
+                 geometric Bauhaus character, and a bonus: covers Hebrew, which the wordmark
+                 (מרווה) requires and the original brief typefaces do not)
+     body    -> Work Sans (clean neutral grotesque, closest open match to Neue Haas Grotesk)
+     hebrew  -> Assistant (Hebrew body — Work Sans is Latin-only, so Hebrew text needs it)
+   Loaded via Google Fonts CDN link in each page <head> (see any @dsCard html for the tag).
+*/
+:root {
+  --font-display: 'Rubik', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Work Sans', 'Assistant', 'Segoe UI', system-ui, sans-serif;
+  --font-hebrew: 'Rubik', 'Assistant', 'Segoe UI', system-ui, sans-serif;
+
+  /* Display scale — Bauhaus poster energy: bold, wide letter-spacing on caps.
+     Sizes step down under the media query below (no clamp(): its comma-separated
+     arguments read as extra font-family names when embedded in a font shorthand
+     custom property). */
+  --text-display-xl: 700 4.5rem/1.05 var(--font-display);
+  --text-display-l: 700 3rem/1.1 var(--font-display);
+  --text-display-m: 700 2rem/1.15 var(--font-display);
+  --text-display-s: 600 1.25rem/1.2 var(--font-display);
+
+  --text-body-l: 400 1.125rem/1.65 var(--font-body);
+  --text-body-m: 400 1rem/1.6 var(--font-body);
+  --text-body-s: 400 0.875rem/1.5 var(--font-body);
+  --text-label: 600 0.8125rem/1.3 var(--font-body);
+
+  --tracking-wide: 0.08em;   /* logo wordmark / eyebrow tracking */
+  --tracking-normal: 0;
+}
+
+/* Step display sizes down on narrow viewports — replaces clamp()-based fluid type
+   (see note above) without introducing comma-parsed values into the tokens. */
+@media (max-width: 640px) {
+  :root {
+    --text-display-xl: 700 2.75rem/1.1 var(--font-display);
+    --text-display-l: 700 2rem/1.15 var(--font-display);
+    --text-display-m: 700 1.5rem/1.2 var(--font-display);
+  }
+}
