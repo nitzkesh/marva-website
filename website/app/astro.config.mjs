@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://marva-website.pages.dev',
+  site: 'https://marva-water.com',
   devToolbar: { enabled: false },
   vite: {
     plugins: [tailwindcss()]
