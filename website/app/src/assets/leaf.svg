@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <!-- Marva mark — geometric Bauhaus sprout, brand palette -->
-  <path d="M22 42 L38 42 A16 16 0 0 1 22 58 Z" fill="#E6D9C3"/>
-  <path d="M31 50 C14 44 12 26 22 14 C30 26 33 38 31 50 Z" fill="#8CC4E7"/>
-  <path d="M33 50 C52 42 56 22 44 8 C34 22 31 36 33 50 Z" fill="#A8BFAF"/>
-  <path d="M33 49 C36 34 40 20 43 10" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round" opacity="0.5"/>
-</svg>
