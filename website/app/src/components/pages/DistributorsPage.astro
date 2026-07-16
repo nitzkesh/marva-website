@@ -77,9 +77,9 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           {whyDistributeHeading}
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12">
+        <div class="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto mt-12">
           {visible(whyDistribute).map((w, i) => (
-            <Card accent={accentVars[w.accent]} class="why-card">
+            <Card accent={accentVars[w.accent]} class="why-card w-full md:w-[calc(33.333%-1rem)]">
               <!-- oversized pale decorative numeral behind the keyword -->
               <span class="absolute -top-4 end-2 font-display font-black text-[7rem] leading-none text-ink/5 select-none pointer-events-none" aria-hidden="true">{i + 1}</span>
               <h3 class="relative font-display font-black text-ink text-3xl mb-3">{w.keyword}</h3>

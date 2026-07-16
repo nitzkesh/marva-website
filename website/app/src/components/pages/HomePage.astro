@@ -171,9 +171,9 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
         <h2 class="how-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           {howHeading}
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
+        <div class="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto mt-12">
           {visible(howSteps).map((s) => (
-            <Card class="how-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
+            <Card class="how-card w-full md:w-[calc(33.333%-1rem)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <div class="flex items-center gap-3 mb-4">
                 <div class="how-card-icon text-sage-deep" set:html={icons[s.icon]} />
                 <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sage-tint font-display font-bold text-sage-deep text-sm">{s.n}</span>
@@ -194,9 +194,10 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
         <h2 class="where-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           {whereHeading}
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto mt-12">
+        <!-- flex, not a rigid column grid — rows with hidden cards stay centered -->
+        <div class="flex flex-wrap justify-center gap-5 max-w-6xl mx-auto mt-12">
           {visible(whereCards).map((c) => (
-            <ExpandCard id={`where-${c.key}`} triggerLabel={ui.moreDetailsLabel} class="where-card bg-surface rounded-[20px] shadow-card overflow-hidden transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
+            <ExpandCard id={`where-${c.key}`} triggerLabel={ui.moreDetailsLabel} class="where-card w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)] bg-surface rounded-[20px] shadow-card overflow-hidden transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <div class="aspect-video w-full overflow-hidden">
                 <img src={cardPhotoSrc[c.illustration]} alt={c.photoAlt} class="w-full h-full object-cover" loading="lazy" />
               </div>
@@ -242,9 +243,9 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
         <h2 class="testimonials-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
           {testimonialsHeading}
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mt-12">
+        <div class="flex flex-wrap justify-center gap-5 max-w-5xl mx-auto mt-12">
           {visible(testimonials).map((t, i) => (
-            <ExpandCard id={`testimonial-${i}`} triggerLabel={ui.readMoreLabel} class="testimonial-card relative bg-surface rounded-[20px] shadow-card overflow-hidden border border-border">
+            <ExpandCard id={`testimonial-${i}`} triggerLabel={ui.readMoreLabel} class="testimonial-card w-full md:w-[calc(33.333%-0.834rem)] relative bg-surface rounded-[20px] shadow-card overflow-hidden border border-border">
               <div class="px-6 pt-6">
                 <div class="flex items-start justify-between">
                   <span class="font-display text-5xl text-sage-deep leading-none" aria-hidden="true">”</span>
@@ -267,11 +268,11 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     {sections.home.bigButtons && (
     <section class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+        <div class="flex flex-wrap justify-center gap-5 max-w-4xl mx-auto">
           {visible(bigButtons).map((b) => (
             <a
               href={b.href}
-              class={`group flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}
+              class={`group w-full md:w-[calc(33.333%-0.834rem)] flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}
             >
               <span>{b.label}</span>
               <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
