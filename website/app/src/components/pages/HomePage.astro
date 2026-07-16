@@ -7,7 +7,7 @@ import Card from '../Card.astro';
 import Input from '../Input.astro';
 import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
-import { getContent, type Locale } from '../../data/content';
+import { getContent, visible, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
 interface Props {
@@ -119,7 +119,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
           <div class="overflow-hidden conveyor-viewport">
             <div class="conveyor-marquee">
               <div class="conveyor-track" aria-hidden="false">
-                {conveyorChips.map((chip, i) => (
+                {visible(conveyorChips).map((chip, i) => (
                   chip.isCta ? (
                     <a href={chip.href} class="conveyor-chip bg-ink text-inverse font-semibold hover:bg-[#2B2B2B] transition-colors">{chip.text}</a>
                   ) : (
@@ -132,7 +132,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
               </div>
               <!-- duplicate set — decorative, hidden from assistive tech; makes the marquee loop seamless -->
               <div class="conveyor-track" aria-hidden="true">
-                {conveyorChips.map((chip, i) => (
+                {visible(conveyorChips).map((chip, i) => (
                   chip.isCta ? (
                     <span tabindex="-1" class="conveyor-chip bg-ink text-inverse font-semibold">{chip.text}</span>
                   ) : (
@@ -172,7 +172,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
           {howHeading}
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-12">
-          {howSteps.map((s) => (
+          {visible(howSteps).map((s) => (
             <Card class="how-card transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <div class="flex items-center gap-3 mb-4">
                 <div class="how-card-icon text-sage-deep" set:html={icons[s.icon]} />
@@ -195,7 +195,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
           {whereHeading}
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto mt-12">
-          {whereCards.filter((c) => c.key !== 'market').map((c) => (
+          {visible(whereCards).map((c) => (
             <ExpandCard id={`where-${c.key}`} triggerLabel={ui.moreDetailsLabel} class="where-card bg-surface rounded-[20px] shadow-card overflow-hidden transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
               <div class="aspect-video w-full overflow-hidden">
                 <img src={cardPhotoSrc[c.illustration]} alt={c.photoAlt} class="w-full h-full object-cover" loading="lazy" />
@@ -223,7 +223,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
         </h2>
         <div class="bg-sand-tint rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-12">
           <ul class="list-none p-0 m-0">
-            {findSpots.map((s) => (
+            {visible(findSpots).map((s) => (
               <li class="flex gap-4 items-center py-3.5 border-b border-border last:border-b-0">
                 <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
                 <span class="font-body text-ink">{s.loc}</span>
@@ -243,7 +243,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
           {testimonialsHeading}
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mt-12">
-          {testimonials.map((t, i) => (
+          {visible(testimonials).map((t, i) => (
             <ExpandCard id={`testimonial-${i}`} triggerLabel={ui.readMoreLabel} class="testimonial-card relative bg-surface rounded-[20px] shadow-card overflow-hidden border border-border">
               <div class="px-6 pt-6">
                 <div class="flex items-start justify-between">
@@ -268,7 +268,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     <section class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-          {bigButtons.map((b) => (
+          {visible(bigButtons).map((b) => (
             <a
               href={b.href}
               class={`group flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}

@@ -5,7 +5,7 @@ import Footer from '../Footer.astro';
 import Button from '../Button.astro';
 import Card from '../Card.astro';
 import Input from '../Input.astro';
-import { getContent, type Locale } from '../../data/content';
+import { getContent, visible, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
 interface Props {
@@ -118,7 +118,7 @@ const whyIcons: Record<string, string> = {
 
         <!-- 3 option cards — plain, no animation -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto mt-12">
-          {advertiserOptions.map((o) => (
+          {visible(advertiserOptions).map((o) => (
             <Card class="option-card">
               <h3 class="font-display font-bold text-ink text-xl mb-2.5">{o.title}</h3>
               <p class="font-body text-ink/80">{o.body}</p>
@@ -137,7 +137,7 @@ const whyIcons: Record<string, string> = {
           {whyAdvertiseHeading}
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12 max-w-4xl mx-auto mt-14">
-          {whyAdvertise.map((w) => (
+          {visible(whyAdvertise).map((w) => (
             <div class="why-card flex gap-5 items-start">
               <div class="shrink-0 w-16 h-16 rounded-full bg-sage-tint text-sage-deep flex items-center justify-center" set:html={whyIcons[w.icon]} />
               <div>

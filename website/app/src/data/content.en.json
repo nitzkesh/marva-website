@@ -141,7 +141,8 @@
       "title": "\"HaTzinor\" supermarkets",
       "body": "On the shelves chain-wide",
       "long": "Put your brand on the shelf at \"HaTzinor\" supermarkets",
-      "photoAlt": "A drinks shelf in a supermarket"
+      "photoAlt": "A drinks shelf in a supermarket",
+      "hidden": true
     }
   ],
   "findSpotsHeading": "Upcoming distribution points",

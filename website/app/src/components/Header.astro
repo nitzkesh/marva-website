@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import { getContent, altLocaleHref, canonicalHref, type Locale, type PageKey } from '../data/content';
+import { getContent, altLocaleHref, canonicalHref, visible, type Locale, type PageKey } from '../data/content';
 
 interface Props {
   locale: Locale;
@@ -53,7 +53,7 @@ const homeHref = canonicalHref('home', locale);
   aria-label={headerContent.menuAriaLabel}
 >
   <nav class="flex flex-col items-center gap-7">
-    {navLinks.map((l) => (
+    {visible(navLinks).map((l) => (
       <a href={l.href} class="nav-overlay-link font-display font-bold text-2xl text-inverse hover:text-sage transition-colors">
         {l.label}
       </a>

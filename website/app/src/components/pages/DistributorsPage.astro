@@ -5,7 +5,7 @@ import Footer from '../Footer.astro';
 import Button from '../Button.astro';
 import Card from '../Card.astro';
 import Input from '../Input.astro';
-import { getContent, type Locale } from '../../data/content';
+import { getContent, visible, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
 interface Props {
@@ -78,7 +78,7 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
           {whyDistributeHeading}
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12">
-          {whyDistribute.map((w, i) => (
+          {visible(whyDistribute).map((w, i) => (
             <Card accent={accentVars[w.accent]} class="why-card">
               <!-- oversized pale decorative numeral behind the keyword -->
               <span class="absolute -top-4 end-2 font-display font-black text-[7rem] leading-none text-ink/5 select-none pointer-events-none" aria-hidden="true">{i + 1}</span>

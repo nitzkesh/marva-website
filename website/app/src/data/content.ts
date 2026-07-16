@@ -21,6 +21,8 @@ export type PageKey = 'home' | 'advertisers' | 'distributors';
 export interface NavLink {
   label: string;
   href: string;
+  /** When true, the item is skipped at render time (set via the local editor). */
+  hidden?: boolean;
 }
 
 export interface HeaderContent {
@@ -66,6 +68,7 @@ export interface ConveyorChip {
   text: string;
   href?: string;
   isCta?: boolean;
+  hidden?: boolean;
 }
 
 export interface HowStep {
@@ -73,6 +76,7 @@ export interface HowStep {
   icon: 'document' | 'bottle' | 'rocket';
   title: string;
   body: string;
+  hidden?: boolean;
 }
 
 export interface WhereCard {
@@ -82,11 +86,13 @@ export interface WhereCard {
   body: string;
   long: string;
   photoAlt: string;
+  hidden?: boolean;
 }
 
 export interface FindSpot {
   date: string;
   loc: string;
+  hidden?: boolean;
 }
 
 export interface Testimonial {
@@ -94,12 +100,14 @@ export interface Testimonial {
   name: string;
   short: string;
   long: string;
+  hidden?: boolean;
 }
 
 export interface BigButton {
   label: string;
   href: string;
   tint: 'sage' | 'sky' | 'sand';
+  hidden?: boolean;
 }
 
 export interface FormFieldSpec {
@@ -145,12 +153,14 @@ export interface LabelPromo {
 export interface AdvertiserOption {
   title: string;
   body: string;
+  hidden?: boolean;
 }
 
 export interface WhyItem {
   icon: 'target' | 'label' | 'crowd' | 'megaphone';
   title: string;
   body: string;
+  hidden?: boolean;
 }
 
 export interface AdForm {
@@ -184,6 +194,7 @@ export interface WhyDistributeItem {
   keyword: string;
   body: string;
   accent: 'sage' | 'sky' | 'sand';
+  hidden?: boolean;
 }
 
 export interface DistForm {
@@ -259,6 +270,11 @@ const enContent = enJson as ContentBundle;
  */
 export function getContent(locale: Locale): ContentBundle {
   return locale === 'en' ? enContent : heContent;
+}
+
+/** Render-time visibility gate: drops items hidden via the editor. */
+export function visible<T extends { hidden?: boolean }>(items: T[]): T[] {
+  return items.filter((item) => !item.hidden);
 }
 
 /* ───────────────────── Locale-independent constants ───────────────────── */

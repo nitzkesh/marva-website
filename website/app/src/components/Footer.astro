@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { getContent, altLocaleHref, type Locale, type PageKey } from '../data/content';
+import { getContent, altLocaleHref, visible, type Locale, type PageKey } from '../data/content';
 
 interface Props {
   locale: Locale;
@@ -32,7 +32,7 @@ const toggleAriaLabel = locale === 'he' ? 'Switch to English' : 'עבור לעב
 
     <nav aria-label={footerContent.navAriaLabel} class="flex flex-col gap-2 font-body text-ink">
       <span class="form-label mb-1">{footerContent.navHeading}</span>
-      {navLinks.map((l) => (
+      {visible(navLinks).map((l) => (
         <a href={l.href} class="hover:text-sage-deep transition-colors">{l.label}</a>
       ))}
       <a href={toggleHref} aria-label={toggleAriaLabel} class="text-muted hover:text-ink transition-colors">{toggleLabel}</a>
