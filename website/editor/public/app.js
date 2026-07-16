@@ -10,7 +10,11 @@
 
 const MANIFEST = {
   'home/content': [
-    { heading: 'META / SEO', keys: ['homeMeta'] },
+    {
+      heading: 'META / SEO',
+      keys: ['homeMeta'],
+      hints: { homeMeta: 'SEO text for Google and link previews — not visible on the page itself' },
+    },
     { heading: 'HERO', keys: ['homeHero'] },
     { heading: 'CONVEYOR — partner chips', keys: ['conveyorLabel', 'conveyorChips'] },
     { heading: 'WHO WE ARE', keys: ['whoStatement'] },
@@ -18,7 +22,7 @@ const MANIFEST = {
     {
       heading: 'WHERE WE WORK',
       keys: ['whereHeading', 'whereCards'],
-      hints: { whereCards: 'card with key "market" is not rendered (hardcoded filter in HomePage)' },
+      hints: { whereCards: 'hidden cards apply to both languages — [x] shows, [ ] hides' },
     },
     { heading: 'UPCOMING SPOTS', keys: ['findSpotsHeading', 'findSpots'] },
     {
@@ -30,7 +34,11 @@ const MANIFEST = {
     { heading: 'INQUIRY FORM', keys: ['inquiryTopics', 'inquiryForm'] },
   ],
   'advertisers/content': [
-    { heading: 'META / SEO', keys: ['advertisersMeta'] },
+    {
+      heading: 'META / SEO',
+      keys: ['advertisersMeta'],
+      hints: { advertisersMeta: 'SEO text for Google and link previews — not visible on the page itself' },
+    },
     { heading: 'HERO', keys: ['advertisersHero'] },
     { heading: 'LABEL PROMO', keys: ['labelPromo'] },
     { heading: 'OPTIONS', keys: ['advertiserOptions'] },
@@ -38,7 +46,11 @@ const MANIFEST = {
     { heading: 'ADVERTISER FORM', keys: ['adForm'] },
   ],
   'distributors/content': [
-    { heading: 'META / SEO', keys: ['distributorsMeta'] },
+    {
+      heading: 'META / SEO',
+      keys: ['distributorsMeta'],
+      hints: { distributorsMeta: 'SEO text for Google and link previews — not visible on the page itself' },
+    },
     { heading: 'HERO', keys: ['distributorsHero'] },
     { heading: 'WHY DISTRIBUTE', keys: ['whyDistributeHeading', 'whyDistribute'] },
     {
@@ -117,7 +129,8 @@ let snapshot = { he: {}, en: {}, sections: {} };
 let initialTemplates = { he: {}, en: {} };
 let currentLocale = 'he';
 let currentNode = 'home/content';
-let statusUp = false;
+let serverReachable = true;
+let astroUp = false;
 let writeResultTimer = null;
 let viewportWidth = 'full';
 
@@ -197,8 +210,51 @@ function captureInitialTemplates() {
   }
 }
 
-function getInitialTemplate(arrayKey) {
-  return (initialTemplates[currentLocale] && initialTemplates[currentLocale][arrayKey]) || null;
+function getInitialTemplate(arrayKey, locale = currentLocale) {
+  return (initialTemplates[locale] && initialTemplates[locale][arrayKey]) || null;
+}
+
+// ---------------------------------------------------------------------------
+// Structural edits (add/delete/reorder/hide) mirror across he/en
+// ---------------------------------------------------------------------------
+//
+// he/en content arrays are parallel translations, so structural shape changes
+// must keep them aligned — but only when they're already the same length (if
+// they've drifted apart, we can't safely guess which locale is "right", so we
+// edit only the locale on screen and warn instead of silently diverging them
+// further).
+
+function tryGetPath(root, path) {
+  let cur = root;
+  for (const k of path) {
+    if (cur == null) return undefined;
+    cur = cur[k];
+  }
+  return cur;
+}
+
+function resolveArrayAtPath(root, path) {
+  const v = tryGetPath(root, path);
+  return Array.isArray(v) ? v : null;
+}
+
+function mirrorStructural(path, fn) {
+  const heArr = resolveArrayAtPath(state.he, path);
+  const enArr = resolveArrayAtPath(state.en, path);
+  if (heArr && enArr && heArr.length === enArr.length) {
+    fn(heArr, 'he');
+    fn(enArr, 'en');
+    return;
+  }
+
+  const arr = resolveArrayAtPath(currentLocaleObj(), path);
+  if (!arr) return;
+  fn(arr, currentLocale);
+  const rootKey = path[0];
+  setWriteResult(
+    `⚠ he/en out of sync at ${rootKey} — change applied to ${currentLocale.toUpperCase()} only`,
+    'warn',
+  );
 }
 
 function classify(v) {
@@ -277,6 +333,22 @@ function makeRowBtn(text, onClick, disabled) {
   btn.className = 'btn';
   btn.textContent = text;
   if (disabled) btn.disabled = true;
+  btn.addEventListener('click', onClick);
+  return btn;
+}
+
+// Per-card visibility switch — reuses the sections-toggle grammar (accent
+// mark when "on") but is itself the whole clickable control, sized to sit
+// alongside the [- DEL]/[↑]/[↓] item-card-controls buttons.
+function makeVisibilityToggleBtn(item, onClick) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'item-vis-toggle';
+  btn.setAttribute('role', 'switch');
+  btn.setAttribute('aria-label', 'visible');
+  const isVisible = !item.hidden;
+  btn.setAttribute('aria-checked', String(isVisible));
+  btn.textContent = isVisible ? '[x]' : '[ ]';
   btn.addEventListener('click', onClick);
   return btn;
 }
@@ -424,20 +496,20 @@ function renderStringArray(container, root, path, label) {
     const controls = document.createElement('div');
     controls.className = 'row-controls';
     controls.appendChild(makeRowBtn('[- DEL]', () => {
-      arr.splice(i, 1);
+      mirrorStructural(path, (a) => { a.splice(i, 1); });
       onStateMutated();
       rerenderCurrentForm();
     }));
     controls.appendChild(makeRowBtn('[↑]', () => {
       if (i > 0) {
-        [arr[i - 1], arr[i]] = [arr[i], arr[i - 1]];
+        mirrorStructural(path, (a) => { [a[i - 1], a[i]] = [a[i], a[i - 1]]; });
         onStateMutated();
         rerenderCurrentForm();
       }
     }, i === 0));
     controls.appendChild(makeRowBtn('[↓]', () => {
       if (i < arr.length - 1) {
-        [arr[i + 1], arr[i]] = [arr[i], arr[i + 1]];
+        mirrorStructural(path, (a) => { [a[i + 1], a[i]] = [a[i], a[i + 1]]; });
         onStateMutated();
         rerenderCurrentForm();
       }
@@ -449,7 +521,7 @@ function renderStringArray(container, root, path, label) {
   const addRow = document.createElement('div');
   addRow.className = 'array-add-row';
   addRow.appendChild(makeRowBtn('[+ ADD]', () => {
-    arr.push('');
+    mirrorStructural(path, (a) => { a.push(''); });
     onStateMutated();
     rerenderCurrentForm();
   }));
@@ -470,34 +542,58 @@ function renderObjectArray(container, root, path, label) {
   arr.forEach((item, i) => {
     const card = document.createElement('div');
     card.className = 'item-card';
+    if (item.hidden) card.classList.add('is-hidden');
 
     const header = document.createElement('div');
     header.className = 'item-card-header';
     const title = document.createElement('span');
     title.className = 'item-card-title';
     title.textContent = `#${String(i + 1).padStart(2, '0')} ${firstStringValue(item)}`;
+    if (item.hidden) {
+      const suffix = document.createElement('span');
+      suffix.className = 'item-hidden-suffix';
+      suffix.textContent = ' · hidden';
+      title.appendChild(suffix);
+    }
 
     const controls = document.createElement('div');
     controls.className = 'item-card-controls';
+
+    controls.appendChild(makeVisibilityToggleBtn(item, () => {
+      const willHide = !item.hidden;
+      mirrorStructural(path, (a) => {
+        const it = a[i];
+        if (!it) return;
+        if (willHide) it.hidden = true;
+        else delete it.hidden;
+      });
+      onStateMutated();
+      rerenderCurrentForm();
+    }));
+
     controls.appendChild(makeRowBtn('[- DEL]', () => {
-      arr.splice(i, 1);
+      mirrorStructural(path, (a) => { a.splice(i, 1); });
       onStateMutated();
       rerenderCurrentForm();
     }));
     controls.appendChild(makeRowBtn('[↑]', () => {
       if (i > 0) {
-        const t = arr[i - 1];
-        arr[i - 1] = arr[i];
-        arr[i] = t;
+        mirrorStructural(path, (a) => {
+          const t = a[i - 1];
+          a[i - 1] = a[i];
+          a[i] = t;
+        });
         onStateMutated();
         rerenderCurrentForm();
       }
     }, i === 0));
     controls.appendChild(makeRowBtn('[↓]', () => {
       if (i < arr.length - 1) {
-        const t = arr[i + 1];
-        arr[i + 1] = arr[i];
-        arr[i] = t;
+        mirrorStructural(path, (a) => {
+          const t = a[i + 1];
+          a[i + 1] = a[i];
+          a[i] = t;
+        });
         onStateMutated();
         rerenderCurrentForm();
       }
@@ -507,6 +603,9 @@ function renderObjectArray(container, root, path, label) {
     card.appendChild(header);
 
     for (const fieldKey of Object.keys(item)) {
+      // `hidden` is an internal visibility marker, not a real content field —
+      // it must never render as its own (confusing, duplicate) boolean toggle.
+      if (fieldKey === 'hidden') continue;
       renderField(card, root, [...path, i, fieldKey], humanize(fieldKey));
     }
 
@@ -516,10 +615,15 @@ function renderObjectArray(container, root, path, label) {
   const addRow = document.createElement('div');
   addRow.className = 'array-add-row';
   addRow.appendChild(makeRowBtn('[+ ADD]', () => {
-    const template = arr.length > 0 ? deepClone(arr[arr.length - 1]) : deepClone(getInitialTemplate(arrayKey));
-    if (!template) return;
-    emptyStringLeaves(template, arrayKey);
-    arr.push(template);
+    mirrorStructural(path, (a, locale) => {
+      const template = a.length > 0
+        ? deepClone(a[a.length - 1])
+        : deepClone(getInitialTemplate(arrayKey, locale));
+      if (!template) return;
+      delete template.hidden; // new items always start visible
+      emptyStringLeaves(template, arrayKey);
+      a.push(template);
+    });
     onStateMutated();
     rerenderCurrentForm();
   }));
@@ -784,7 +888,10 @@ function updateStatusBar() {
   document.getElementById('status-locale').textContent = currentLocale.toUpperCase();
 
   const astroEl = document.getElementById('astro-status');
-  astroEl.classList.toggle('up', statusUp);
+  astroEl.classList.toggle('up', serverReachable && astroUp);
+
+  const editorPortEl = document.getElementById('editor-port');
+  if (editorPortEl) editorPortEl.classList.toggle('err', !serverReachable);
 
   document.getElementById('btn-write').disabled = !dirty;
   document.getElementById('btn-revert').disabled = !dirty;
@@ -832,11 +939,32 @@ function reloadPreview() {
   iframe.src = iframe.src;
 }
 
+// Small monospace box-drawing helper for the offline overlay — computes its
+// own width so the two lines of text stay centered and evenly padded.
+function asciiBox(lines) {
+  const width = Math.max(...lines.map((l) => l.length));
+  const border = '─'.repeat(width + 2);
+  const pad = (l) => {
+    const total = width - l.length;
+    const left = Math.floor(total / 2);
+    const right = total - left;
+    return `│ ${' '.repeat(left)}${l}${' '.repeat(right)} │`;
+  };
+  return [`┌${border}┐`, ...lines.map(pad), `└${border}┘`].join('\n');
+}
+
 function updatePreviewAvailability() {
   const offlineEl = document.getElementById('preview-offline');
+  const offlineTextEl = document.getElementById('preview-offline-text');
   const iframe = document.getElementById('preview-iframe');
-  offlineEl.hidden = statusUp;
-  iframe.style.visibility = statusUp ? 'visible' : 'hidden';
+  const up = serverReachable && astroUp;
+  offlineEl.hidden = up;
+  iframe.style.visibility = up ? 'visible' : 'hidden';
+  if (!up && offlineTextEl) {
+    offlineTextEl.textContent = serverReachable
+      ? asciiBox(['astro dev offline', 'waiting for :4321'])
+      : asciiBox(['editor server offline', 'restart with npm start']);
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -858,6 +986,22 @@ async function putJson(url, body) {
   }
 }
 
+// Shared status-bar message helper — used by write results, the he/en
+// out-of-sync warning, and publish results, all sharing the same fade-to-dim
+// timing (kind: undefined/'ok' fades normally, 'warn' fades too, 'error'
+// stays lit until the next message).
+function setWriteResult(text, kind) {
+  const el = document.getElementById('write-result');
+  clearTimeout(writeResultTimer);
+  el.classList.remove('faded', 'error', 'warn');
+  if (kind === 'error') el.classList.add('error');
+  if (kind === 'warn') el.classList.add('warn');
+  el.textContent = text;
+  if (kind !== 'error') {
+    writeResultTimer = setTimeout(() => el.classList.add('faded'), 4000);
+  }
+}
+
 async function doWrite() {
   const flags = dirtyFlags();
   const written = [];
@@ -876,18 +1020,11 @@ async function doWrite() {
     if (r.ok) { snapshot.sections = deepClone(state.sections); written.push('sections.json'); } else if (!firstError) firstError = r.error;
   }
 
-  const writeResultEl = document.getElementById('write-result');
-  clearTimeout(writeResultTimer);
-  writeResultEl.classList.remove('faded');
-
   if (firstError) {
-    writeResultEl.classList.add('error');
-    writeResultEl.textContent = firstError;
+    setWriteResult(firstError, 'error');
   } else {
-    writeResultEl.classList.remove('error');
     const ts = new Date().toLocaleTimeString('en-GB');
-    writeResultEl.textContent = `wrote ${written.join(', ')} ${ts}`;
-    writeResultTimer = setTimeout(() => writeResultEl.classList.add('faded'), 4000);
+    setWriteResult(`wrote ${written.join(', ')} ${ts}`, 'ok');
     setTimeout(reloadPreview, 800);
   }
 
@@ -900,6 +1037,92 @@ function doRevert() {
   if (!confirmed) return;
   state = deepClone(snapshot);
   renderCurrentNode();
+}
+
+// ---------------------------------------------------------------------------
+// Publish (commit + push the three content files, deploy follows on its own)
+// ---------------------------------------------------------------------------
+
+function hidePublishStrip() {
+  const strip = document.getElementById('publish-strip');
+  strip.hidden = true;
+  strip.innerHTML = '';
+}
+
+function setPublishStripContent(message, buttons, kind) {
+  const strip = document.getElementById('publish-strip');
+  strip.innerHTML = '';
+  strip.hidden = false;
+
+  const msgSpan = document.createElement('span');
+  msgSpan.className = 'publish-strip-msg';
+  if (kind === 'error') msgSpan.classList.add('publish-strip-err');
+  msgSpan.textContent = message;
+  strip.appendChild(msgSpan);
+
+  for (const b of buttons) strip.appendChild(b);
+}
+
+function cancelBtn() {
+  return makeRowBtn('[ CANCEL ]', hidePublishStrip);
+}
+
+async function openPublishStrip() {
+  if (anyDirty()) {
+    setPublishStripContent('unsaved edits — [ WRITE ] first', [cancelBtn()]);
+    return;
+  }
+
+  setPublishStripContent('checking publish status…', []);
+
+  let statusRes;
+  try {
+    statusRes = await fetch('/api/publish/status').then((r) => r.json());
+  } catch (e) {
+    setPublishStripContent(e.message, [cancelBtn()], 'error');
+    return;
+  }
+
+  if (!statusRes || statusRes.ok === false) {
+    setPublishStripContent((statusRes && statusRes.error) || 'could not read publish status', [cancelBtn()], 'error');
+    return;
+  }
+
+  const dirtyFiles = statusRes.dirtyFiles || [];
+  const ahead = statusRes.ahead || 0;
+
+  if (dirtyFiles.length === 0 && ahead === 0) {
+    setPublishStripContent('nothing to publish — live site is up to date', [cancelBtn()]);
+    return;
+  }
+
+  const parts = [];
+  if (dirtyFiles.length) parts.push(dirtyFiles.join(', '));
+  parts.push(`${ahead} unpushed commit(s)`);
+  const msg = `publish → marva-water.com: ${parts.join(' · ')}`;
+
+  const confirmBtn = makeRowBtn('[ CONFIRM PUBLISH ]', doPublish);
+  confirmBtn.classList.add('accent');
+  setPublishStripContent(msg, [confirmBtn, cancelBtn()]);
+}
+
+async function doPublish() {
+  const strip = document.getElementById('publish-strip');
+  strip.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+  const msgEl = strip.querySelector('.publish-strip-msg');
+  if (msgEl) msgEl.textContent = 'publishing…';
+
+  try {
+    const res = await fetch('/api/publish', { method: 'POST' }).then((r) => r.json());
+    if (res && res.ok) {
+      hidePublishStrip();
+      setWriteResult(`pushed ${res.hash} · live in ~1 min`, 'ok');
+    } else {
+      setPublishStripContent((res && res.error) || 'publish failed', [cancelBtn()], 'error');
+    }
+  } catch (e) {
+    setPublishStripContent(e.message, [cancelBtn()], 'error');
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -945,9 +1168,11 @@ function showFatalError(message) {
 async function refreshStatus() {
   try {
     const res = await fetch('/api/status').then((r) => r.json());
-    statusUp = !!(res && res.astroDev);
+    serverReachable = true;
+    astroUp = !!(res && res.astroDev);
   } catch {
-    statusUp = false;
+    serverReachable = false;
+    astroUp = false;
   }
   updateStatusBar();
   updatePreviewAvailability();
@@ -956,6 +1181,7 @@ async function refreshStatus() {
 function wireStaticEvents() {
   document.getElementById('btn-write').addEventListener('click', doWrite);
   document.getElementById('btn-revert').addEventListener('click', doRevert);
+  document.getElementById('btn-publish').addEventListener('click', openPublishStrip);
   document.getElementById('locale-he').addEventListener('click', () => { currentLocale = 'he'; renderCurrentNode(); });
   document.getElementById('locale-en').addEventListener('click', () => { currentLocale = 'en'; renderCurrentNode(); });
   document.getElementById('btn-reload').addEventListener('click', reloadPreview);

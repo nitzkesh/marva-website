@@ -27,6 +27,57 @@ pane can show your changes live. You do not need to start that yourself.
 **To stop everything:** press Ctrl+C in the terminal where you ran `npm start`. This
 shuts down both the editor and the preview server it started for you.
 
+## Publishing your changes to the live site
+
+`[ PUBLISH ]` (next to `[ WRITE ]` and `[ REVERT ]` in the header) sends your saved
+edits out to the real website. Concretely, it does two things using `git` (the
+version-control tool the whole codebase is tracked with):
+
+1. **Commits** the three content files (`content.he.json`, `content.en.json`,
+   `sections.json`) — and only those three files, nothing else you or another
+   process may have touched.
+2. **Pushes** that commit to `origin/main` on GitHub.
+
+Once GitHub has the push, its existing automation (a "GitHub Actions workflow" —
+a script GitHub runs for you on every push to `main`) rebuilds and redeploys the
+site automatically. That takes about a minute, which is why the confirmation
+message says "live in ~1 min".
+
+Publish only ever acts on those three files — it will never pick up unrelated
+changes, never touch another branch, and never force-push. Clicking `[ PUBLISH ]`
+first shows you exactly what it's about to do (which files, how many commits) in a
+strip under the header; nothing is committed or pushed until you click
+`[ CONFIRM PUBLISH ]`. If you have unsaved edits (haven't clicked `[ WRITE ]` yet),
+it tells you to write first instead of publishing half-finished changes.
+
+`[ WRITE ]` and `[ PUBLISH ]` are deliberately separate: `[ WRITE ]` only saves to
+your local disk, `[ PUBLISH ]` is the one that reaches the internet.
+
+## Environment variables
+
+All of these are optional — set them before `npm start` (or `node server.mjs`) only
+if you need non-default behavior:
+
+- `MARVA_EDITOR_PORT` — which port the editor itself listens on (default `5599`).
+- `MARVA_DATA_DIR` — where to read/write the three content JSON files (default
+  `../app/src/data`, i.e. the real site's data folder).
+- `MARVA_REPO_DIR` — which git repository `[ PUBLISH ]` commits and pushes in
+  (default: this workspace's repo root). Together with `MARVA_DATA_DIR`, this is
+  what lets the automated tests run publish against a disposable, offline test
+  repo instead of your real one.
+- `MARVA_NO_DEV` — set to `1` to stop the editor from auto-starting the site's
+  preview server (`npm run dev`). Used by tests; you shouldn't need this normally.
+
+## If the site preview server keeps crashing
+
+The editor auto-starts the site's preview server (`npm run dev` in `website/app`)
+and watches it. If that preview server crashes on its own (not because you closed
+the editor), the editor will automatically restart it for you after a couple of
+seconds — up to 3 times within a 5-minute window. If it crashes a 4th time in that
+window, the editor gives up and logs `astro dev: giving up, restart me` — at that
+point something is actually wrong with the site code, and restarting the editor
+itself won't fix it until that's resolved.
+
 ## What "Node", "Express", "npm" mean (new-to-DevOps glossary)
 
 - **Node.js** — the program that runs JavaScript outside a browser, i.e. as a normal

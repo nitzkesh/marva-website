@@ -16,8 +16,11 @@
     <div class="shell-actions">
       <button type="button" class="btn" id="btn-write" disabled>[ WRITE ]</button>
       <button type="button" class="btn" id="btn-revert" disabled>[ REVERT ]</button>
+      <button type="button" class="btn" id="btn-publish">[ PUBLISH ]</button>
     </div>
   </header>
+
+  <div class="publish-strip" id="publish-strip" hidden></div>
 
   <nav class="rail" id="rail">
     <div class="rail-tree" id="rail-tree"></div>
@@ -47,7 +50,7 @@
     <div class="preview-frame-wrap" id="preview-frame-wrap">
       <iframe id="preview-iframe" title="site preview"></iframe>
       <div class="preview-offline" id="preview-offline" hidden>
-        <pre>┌─────────────────────┐
+        <pre id="preview-offline-text">┌─────────────────────┐
 │  astro dev offline  │
 │  waiting for :4321  │
 └─────────────────────┘</pre>
@@ -63,7 +66,7 @@
     </div>
     <div class="status-right">
       <span class="write-result" id="write-result"></span>
-      <span class="editor-port">editor :5599</span>
+      <span class="editor-port" id="editor-port">editor :5599</span>
       <span class="astro-status" id="astro-status">astro ●</span>
     </div>
   </footer>

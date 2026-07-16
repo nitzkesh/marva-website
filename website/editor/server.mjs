@@ -7,7 +7,8 @@
 import express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawn, spawnSync } from 'node:child_process';
+import { spawn, spawnSync, execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -18,6 +19,21 @@ const DATA_DIR = process.env.MARVA_DATA_DIR
   || path.resolve(import.meta.dirname, '../app/src/data');
 const APP_DIR = path.resolve(import.meta.dirname, '../app');
 const NO_DEV = process.env.MARVA_NO_DEV === '1';
+
+// Root of the git repository. Overridable so tests can point publish's git
+// operations at a throwaway repo instead of the real one.
+const REPO_DIR = process.env.MARVA_REPO_DIR
+  || path.resolve(import.meta.dirname, '../../');
+
+// Repo-relative paths of the three files the editor is allowed to publish.
+// Publish must NEVER touch anything outside this list.
+const CONTENT_REPO_PATHS = [
+  'website/app/src/data/content.he.json',
+  'website/app/src/data/content.en.json',
+  'website/app/src/data/sections.json',
+];
+
+const execFileAsync = promisify(execFile);
 
 const FILES = {
   he: 'content.he.json',
@@ -32,17 +48,26 @@ const FILES = {
 let devChild = null;
 let devManaged = false;
 let devLogRingBuffer = [];
+let shuttingDown = false;
+let respawnTimestamps = [];
+
+const RESPAWN_WINDOW_MS = 5 * 60 * 1000;
+const RESPAWN_MAX = 3;
 
 function pushDevLog(line) {
   devLogRingBuffer.push(line);
   if (devLogRingBuffer.length > 200) devLogRingBuffer.shift();
 }
 
+// Overridable so the smoke suite can point the probe at a dead port and get a
+// deterministic astroDev:false even while a real dev server runs on 4321.
+const ASTRO_PORT = process.env.MARVA_ASTRO_PORT || 4321;
+
 async function probeAstro() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 700);
   try {
-    await fetch('http://localhost:4321/', { signal: controller.signal });
+    await fetch(`http://localhost:${ASTRO_PORT}/`, { signal: controller.signal });
     return true;
   } catch {
     return false;
@@ -51,16 +76,7 @@ async function probeAstro() {
   }
 }
 
-async function maybeStartAstroDev() {
-  const up = await probeAstro();
-  if (up) {
-    console.log('[marva-editor] astro dev: already running on :4321');
-    return;
-  }
-  devChild = spawn('npm', ['run', 'dev'], { cwd: APP_DIR, shell: true });
-  devManaged = true;
-  console.log(`[marva-editor] astro dev: starting (pid ${devChild.pid})`);
-
+function attachDevChildHandlers(child) {
   const onOutput = (chunk) => {
     const lines = chunk.toString().split(/\r?\n/).filter((l) => l.length > 0);
     for (const line of lines) {
@@ -68,11 +84,42 @@ async function maybeStartAstroDev() {
       console.log(`[astro] ${line}`);
     }
   };
-  devChild.stdout?.on('data', onOutput);
-  devChild.stderr?.on('data', onOutput);
-  devChild.on('exit', (code, signal) => {
+  child.stdout?.on('data', onOutput);
+  child.stderr?.on('data', onOutput);
+  child.on('exit', (code, signal) => {
     pushDevLog(`[process exited] code=${code} signal=${signal}`);
+    if (shuttingDown || !devManaged) return;
+    devChild = null;
+
+    const now = Date.now();
+    respawnTimestamps = respawnTimestamps.filter((t) => now - t < RESPAWN_WINDOW_MS);
+    if (respawnTimestamps.length >= RESPAWN_MAX) {
+      console.log('[marva-editor] astro dev: giving up, restart me');
+      return;
+    }
+    respawnTimestamps.push(now);
+    console.log(`[marva-editor] astro dev: exited unexpectedly (code=${code} signal=${signal}) — respawning in 2s`);
+    setTimeout(() => {
+      if (shuttingDown) return;
+      spawnDevChild();
+    }, 2000);
   });
+}
+
+function spawnDevChild() {
+  devChild = spawn('npm', ['run', 'dev'], { cwd: APP_DIR, shell: true });
+  devManaged = true;
+  console.log(`[marva-editor] astro dev: starting (pid ${devChild.pid})`);
+  attachDevChildHandlers(devChild);
+}
+
+async function maybeStartAstroDev() {
+  const up = await probeAstro();
+  if (up) {
+    console.log('[marva-editor] astro dev: already running on :4321');
+    return;
+  }
+  spawnDevChild();
 }
 
 function killDevTree() {
@@ -89,9 +136,9 @@ function killDevTree() {
   devChild = null;
 }
 
-process.on('SIGINT', () => { killDevTree(); process.exit(0); });
-process.on('SIGTERM', () => { killDevTree(); process.exit(0); });
-process.on('exit', () => { killDevTree(); });
+process.on('SIGINT', () => { shuttingDown = true; killDevTree(); process.exit(0); });
+process.on('SIGTERM', () => { shuttingDown = true; killDevTree(); process.exit(0); });
+process.on('exit', () => { shuttingDown = true; killDevTree(); });
 
 // ---------------------------------------------------------------------------
 // File helpers
@@ -140,6 +187,59 @@ function keyDiffMessage({ missing, added }) {
   if (missing.length) parts.push(`missing keys: ${missing.join(', ')}`);
   if (added.length) parts.push(`unexpected keys: ${added.join(', ')}`);
   return parts.join('; ');
+}
+
+// ---------------------------------------------------------------------------
+// Publish (git commit + push of the three content files only)
+// ---------------------------------------------------------------------------
+
+let publishInFlight = false;
+
+async function runGit(args) {
+  return execFileAsync('git', args, {
+    cwd: REPO_DIR,
+    timeout: 60000,
+    env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
+  });
+}
+
+// Turns a caught exec error into a short, verbatim-ish message for the client:
+// prefer stderr (that's where git puts its human-readable explanation), fall
+// back to the error message, and cap it to the last few lines.
+function gitErrorMessage(e) {
+  const raw = (e && (e.stderr || e.message)) || String(e);
+  const lines = String(raw).trim().split(/\r?\n/).filter((l) => l.length > 0);
+  return lines.slice(-10).join('\n');
+}
+
+// `git status --porcelain -- <paths>` -> basenames of the dirty files among
+// just those paths.
+function parseDirtyFiles(porcelain) {
+  const files = [];
+  for (const raw of porcelain.split(/\r?\n/)) {
+    if (!raw.trim()) continue;
+    // porcelain v1: "XY <path>" (or "XY <old> -> <new>" for renames, which
+    // cannot happen for our fixed set of paths, but handle it defensively).
+    const filePart = raw.slice(3).trim();
+    const arrowIdx = filePart.indexOf(' -> ');
+    const finalPath = arrowIdx === -1 ? filePart : filePart.slice(arrowIdx + 4);
+    files.push(path.basename(finalPath));
+  }
+  return files;
+}
+
+async function getDirtyContentFiles() {
+  const { stdout } = await runGit(['status', '--porcelain', '--', ...CONTENT_REPO_PATHS]);
+  return parseDirtyFiles(stdout);
+}
+
+async function getAheadCount() {
+  try {
+    const { stdout } = await runGit(['rev-list', '--count', 'origin/main..HEAD']);
+    return { ahead: parseInt(stdout.trim(), 10) || 0 };
+  } catch (e) {
+    return { ahead: 0, aheadError: gitErrorMessage(e) };
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -258,6 +358,58 @@ app.put('/api/sections', (req, res) => {
   }
 
   res.json({ ok: true });
+});
+
+app.get('/api/publish/status', async (req, res) => {
+  try {
+    const dirtyFiles = await getDirtyContentFiles();
+    const { stdout: branchOut } = await runGit(['rev-parse', '--abbrev-ref', 'HEAD']);
+    const branch = branchOut.trim();
+    const { ahead, aheadError } = await getAheadCount();
+
+    const result = { ok: true, dirtyFiles, ahead, branch };
+    if (aheadError) result.aheadError = aheadError;
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ ok: false, error: gitErrorMessage(e) });
+  }
+});
+
+app.post('/api/publish', async (req, res) => {
+  if (publishInFlight) {
+    return res.status(409).json({ ok: false, error: 'publish already in progress' });
+  }
+  publishInFlight = true;
+
+  try {
+    const dirtyFiles = await getDirtyContentFiles();
+
+    let committed = false;
+    if (dirtyFiles.length > 0) {
+      // SAFETY: only ever stage the three known content-file paths — never
+      // `git add -A` / `git add .`, and never anything derived from the
+      // request body (this endpoint takes no body at all).
+      await runGit(['add', '--', ...CONTENT_REPO_PATHS]);
+      await runGit(['commit', '-m', `content: edits via marva-editor (${dirtyFiles.join(', ')})`]);
+      committed = true;
+    }
+
+    const { ahead } = await getAheadCount();
+    let pushed = false;
+    if (ahead > 0) {
+      // SAFETY: always the current branch to origin/main — never a force
+      // push, never any other branch.
+      await runGit(['push', 'origin', 'main']);
+      pushed = true;
+    }
+
+    const { stdout: hashOut } = await runGit(['rev-parse', '--short', 'HEAD']);
+    res.json({ ok: true, committed, pushed, hash: hashOut.trim(), dirtyFiles });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: gitErrorMessage(e) });
+  } finally {
+    publishInFlight = false;
+  }
 });
 
 app.listen(PORT, '127.0.0.1', async () => {

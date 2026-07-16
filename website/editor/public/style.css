@@ -81,6 +81,9 @@ input, textarea, select {
   color: var(--acc);
   border-color: var(--acc);
 }
+.btn.accent {
+  border-color: var(--acc);
+}
 
 .label,
 .group-label,
@@ -143,6 +146,31 @@ input, textarea, select {
   display: flex;
   gap: 8px;
   flex: 0 0 auto;
+}
+
+/* ---------------------------------------------------------------- publish strip */
+
+.publish-strip {
+  position: fixed;
+  top: 48px; /* header height */
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.publish-strip-msg {
+  flex: 1 1 auto;
+  color: var(--fg);
+}
+.publish-strip-msg.publish-strip-err {
+  color: var(--err);
 }
 
 /* ---------------------------------------------------------------- rail */
@@ -395,6 +423,9 @@ input[dir="ltr"], textarea[dir="ltr"] {
   margin-bottom: 12px;
   padding: 10px 12px 12px;
 }
+.item-card.is-hidden {
+  opacity: 0.55;
+}
 .item-card-header {
   display: flex;
   align-items: center;
@@ -410,10 +441,36 @@ input[dir="ltr"], textarea[dir="ltr"] {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.item-hidden-suffix {
+  color: var(--warn);
+}
 .item-card-controls {
   display: flex;
   gap: 4px;
   flex: 0 0 auto;
+}
+
+/* per-card visibility switch — same on/off grammar as .toggle-row/.toggle-mark
+   (dim when off, accent when on), sized like the other item-card-controls
+   bracket-token buttons. */
+.item-vis-toggle {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--dim);
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 0;
+  white-space: nowrap;
+}
+.item-vis-toggle:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+.item-vis-toggle[aria-checked="true"] {
+  color: var(--acc);
+}
+.item-vis-toggle[aria-checked="true"]:hover {
+  color: var(--bg);
 }
 
 .array-add-row {
@@ -554,6 +611,9 @@ input[dir="ltr"], textarea[dir="ltr"] {
   color: var(--acc);
   transition: color 1.2s linear;
 }
+.write-result.warn {
+  color: var(--warn);
+}
 .write-result.faded {
   color: var(--dim);
 }
@@ -570,6 +630,9 @@ input[dir="ltr"], textarea[dir="ltr"] {
 
 .editor-port {
   color: var(--dim);
+}
+.editor-port.err {
+  color: var(--err);
 }
 
 /* ---------------------------------------------------------------- scrollbars (subtle) */
