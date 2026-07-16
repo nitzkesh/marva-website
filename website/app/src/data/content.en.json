@@ -120,20 +120,21 @@
       "photoAlt": "The Tel Aviv promenade along the beach"
     },
     {
-      "key": "business",
-      "illustration": "storefront",
-      "title": "Businesses",
-      "body": "Want free water bottles at your business?",
-      "long": "Want to upgrade your customer experience? Talk to us and get free mineral water straight to your business",
-      "photoAlt": "Water bottles on a coffee shop counter"
-    },
-    {
       "key": "events",
       "illustration": "event",
       "title": "Events",
       "body": "Sports and cultural events, conferences, talks, seminars, and weddings",
       "long": "Custom-labeled water bottles for your next event",
       "photoAlt": "People raising a toast at an event"
+    },
+    {
+      "key": "business",
+      "illustration": "storefront",
+      "title": "Businesses",
+      "body": "Want free water bottles at your business?",
+      "long": "Want to upgrade your customer experience? Talk to us and get free mineral water straight to your business",
+      "photoAlt": "Water bottles on a coffee shop counter",
+      "hidden": true
     },
     {
       "key": "market",
