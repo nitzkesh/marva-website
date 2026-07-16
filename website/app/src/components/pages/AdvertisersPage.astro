@@ -6,6 +6,7 @@ import Button from '../Button.astro';
 import Card from '../Card.astro';
 import Input from '../Input.astro';
 import { getContent, type Locale } from '../../data/content';
+import sections from '../../data/sections.json';
 
 interface Props {
   locale: Locale;
@@ -46,6 +47,7 @@ const whyIcons: Record<string, string> = {
   <main id="main-content">
 
     <!-- ═══════════════════ A. HERO ═══════════════════ -->
+    {sections.advertisers.hero && (
     <section class="relative overflow-hidden bg-base py-16 md:py-20">
       <!-- 2 soft sage-leaning wave shapes, lighter than the home hero -->
       <svg class="absolute bottom-0 inset-x-0 w-full h-20 md:h-28 z-0" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
@@ -69,8 +71,10 @@ const whyIcons: Record<string, string> = {
         </div>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ B. PROMO — THE LABEL, UNROLLED ═══════════════ -->
+    {sections.advertisers.labelPromo && (
     <section class="bg-sage-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -123,8 +127,10 @@ const whyIcons: Record<string, string> = {
         </div>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ C. WHY ADVERTISE WITH US ═══════════════ -->
+    {sections.advertisers.whyAdvertise && (
     <section class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -143,8 +149,10 @@ const whyIcons: Record<string, string> = {
         </div>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ D. ADVERTISER FORM ═══════════════ -->
+    {sections.advertisers.adForm && (
     <section id="ad-form" class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -206,6 +214,7 @@ const whyIcons: Record<string, string> = {
         </div>
       </div>
     </section>
+    )}
 
   </main>
 

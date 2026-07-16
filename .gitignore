@@ -4,6 +4,11 @@ website/app/dist/
 website/app/.astro/
 website/app/.wrangler/
 
+# Local content editor (website/editor) — dependencies only; the editor itself is tracked.
+# Must stay ignored: Tailwind v4's content auto-scan walks the git root and would
+# otherwise sweep these node_modules into the site's generated CSS.
+website/editor/node_modules/
+
 # OS / editor
 .DS_Store
 .idea/

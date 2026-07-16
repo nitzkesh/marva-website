@@ -6,6 +6,7 @@ import Button from '../Button.astro';
 import Card from '../Card.astro';
 import Input from '../Input.astro';
 import { getContent, type Locale } from '../../data/content';
+import sections from '../../data/sections.json';
 
 interface Props {
   locale: Locale;
@@ -41,6 +42,7 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
   <main id="main-content">
 
     <!-- ═══════════════════ A. HERO ═══════════════════ -->
+    {sections.distributors.hero && (
     <section class="relative overflow-hidden bg-base py-16 md:py-20">
       <!-- sky-leaning wave shapes (differentiates from the advertiser page's sage) -->
       <svg class="absolute bottom-0 inset-x-0 w-full h-20 md:h-28 z-0" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
@@ -66,8 +68,10 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
         </div>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ B. WHY WORK WITH US ═══════════════ -->
+    {sections.distributors.whyDistribute && (
     <section class="bg-sky-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -85,8 +89,10 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
         </div>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ C. WHO CAN DISTRIBUTE ═══════════════ -->
+    {sections.distributors.whoCanDistribute && (
     <section class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -104,8 +110,10 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
         </p>
       </div>
     </section>
+    )}
 
     <!-- ═══════════════ D. DISTRIBUTOR FORM ═══════════════ -->
+    {sections.distributors.distForm && (
     <section id="dist-form" class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
         <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
@@ -135,6 +143,7 @@ const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
         </div>
       </div>
     </section>
+    )}
 
   </main>
 

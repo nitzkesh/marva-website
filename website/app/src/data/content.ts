@@ -4,12 +4,14 @@
  *
  * Locale architecture: this file holds the shared TypeScript shape (interfaces),
  * the locale-independent constants (endpoints, keys, route paths), and the
- * `getContent(locale)` accessor. The actual copy lives in `content.he.ts`
- * (verbatim Hebrew, unchanged) and `content.en.ts` (English translations).
+ * `getContent(locale)` accessor. The actual copy lives in `content.he.json`
+ * (verbatim Hebrew, unchanged) and `content.en.json` (English translations) —
+ * edited by hand or via the local editor at `website/editor`. Section-level
+ * show/hide flags live in `sections.json`, consumed by the page components.
  */
 
-import { heContent } from './content.he';
-import { enContent } from './content.en';
+import heJson from './content.he.json';
+import enJson from './content.en.json';
 
 export type Locale = 'he' | 'en';
 export type PageKey = 'home' | 'advertisers' | 'distributors';
@@ -247,6 +249,9 @@ export interface ContentBundle {
   distributorTypesClosing: string;
   distForm: DistForm;
 }
+
+const heContent = heJson as ContentBundle;
+const enContent = enJson as ContentBundle;
 
 /**
  * Returns the full typed copy bundle for a locale. Pages/components call this

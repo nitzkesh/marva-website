@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600&family=Rubik:wght@400;500;700;900&family=Work+Sans:wght@400;500;600&display=swap');
-@import "tailwindcss";
+/* source(): scope Tailwind's class scan to this app only — without it the scan
+   walks the whole git repo and sibling projects (e.g. website/editor) leak
+   stray utility classes into the site's CSS. */
+@import "tailwindcss" source("../../");
 
 /* Brand palette — Marva design system (Bauhaus TLV one-pager, source of truth).
    Sage 45% (dominant) · Sky 30% · Sand 15% · Black/White 10%. */

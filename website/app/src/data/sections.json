@@ -1,0 +1,25 @@
+{
+  "home": {
+    "hero": true,
+    "conveyor": true,
+    "who": true,
+    "how": true,
+    "where": true,
+    "upcoming": true,
+    "testimonials": false,
+    "bigButtons": true,
+    "inquiry": true
+  },
+  "advertisers": {
+    "hero": true,
+    "labelPromo": true,
+    "whyAdvertise": true,
+    "adForm": true
+  },
+  "distributors": {
+    "hero": true,
+    "whyDistribute": true,
+    "whoCanDistribute": true,
+    "distForm": true
+  }
+}
