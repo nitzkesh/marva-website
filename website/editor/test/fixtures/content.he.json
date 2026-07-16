@@ -1,0 +1,22 @@
+{
+  "heroBottleAlt": "בקבוק מרווה עם תווית ירוקה",
+  "homeMeta": {
+    "title": "מרווה — פרסום על בקבוקי מים",
+    "description": "מרווה מביאה פרסום ממותג לבקבוקי מים באירועים ברחבי הארץ."
+  },
+  "homeHero": {
+    "h1": "המים שלך. המותג שלך.",
+    "sub": "פרסום על בקבוקי מים באירועים, פסטיבלים ומקומות עבודה.",
+    "ctaLabel": "בואו נדבר",
+    "ctaHref": "/advertisers",
+    "bottleLabelLines": ["שורה 1", "שורה 2", "שורה 3"]
+  },
+  "whoStatement": {
+    "big": "אנחנו מביאים מים קרים ומותגים חכמים לכל מקום."
+  },
+  "conveyorChips": [
+    { "text": "פסטיבלים", "href": "/advertisers", "isCta": false },
+    { "text": "בואו נדבר", "href": "/advertisers", "isCta": true }
+  ],
+  "inquiryTopics": ["פרסום", "הפצה"]
+}

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>marva-editor</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="shell" id="shell-header">
+    <div class="prompt">
+      <span class="prompt-path">nitzan@marva:~/website</span>
+      <span class="prompt-sep">$</span>
+      <span class="prompt-cmd" id="prompt-cmd"></span><span class="cursor" id="header-cursor">▮</span>
+    </div>
+    <div class="shell-actions">
+      <button type="button" class="btn" id="btn-write" disabled>[ WRITE ]</button>
+      <button type="button" class="btn" id="btn-revert" disabled>[ REVERT ]</button>
+    </div>
+  </header>
+
+  <nav class="rail" id="rail">
+    <div class="rail-tree" id="rail-tree"></div>
+    <div class="rail-locale">
+      <div class="label">LOCALE</div>
+      <div class="locale-switch">
+        <button type="button" class="btn locale-btn" id="locale-he" data-locale="he">[HE]</button>
+        <button type="button" class="btn locale-btn" id="locale-en" data-locale="en">[EN]</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="center" id="center">
+    <div class="form-root" id="form-root"></div>
+  </main>
+
+  <aside class="preview-pane" id="preview-pane">
+    <div class="preview-toolbar">
+      <button type="button" class="btn" id="btn-collapse" title="collapse preview">[◫]</button>
+      <div class="viewport-presets">
+        <button type="button" class="btn vp-btn" data-w="375">[375]</button>
+        <button type="button" class="btn vp-btn" data-w="768">[768]</button>
+        <button type="button" class="btn vp-btn active" data-w="full">[FULL]</button>
+      </div>
+      <button type="button" class="btn" id="btn-reload" title="reload preview">[⟳]</button>
+    </div>
+    <div class="preview-frame-wrap" id="preview-frame-wrap">
+      <iframe id="preview-iframe" title="site preview"></iframe>
+      <div class="preview-offline" id="preview-offline" hidden>
+        <pre>┌─────────────────────┐
+│  astro dev offline  │
+│  waiting for :4321  │
+└─────────────────────┘</pre>
+      </div>
+    </div>
+  </aside>
+
+  <footer class="statusbar" id="statusbar">
+    <div class="status-left">
+      <span class="mode-chunk" id="mode-chunk">-- CLEAN --</span>
+      <span class="node-path" id="status-node-path">home/content</span>
+      <span class="node-locale" id="status-locale">HE</span>
+    </div>
+    <div class="status-right">
+      <span class="write-result" id="write-result"></span>
+      <span class="editor-port">editor :5599</span>
+      <span class="astro-status" id="astro-status">astro ●</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

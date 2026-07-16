@@ -1,0 +1,22 @@
+{
+  "heroBottleAlt": "Marva bottle with a green label",
+  "homeMeta": {
+    "title": "Marva — advertising on water bottles",
+    "description": "Marva brings branded advertising to water bottles at events across the country."
+  },
+  "homeHero": {
+    "h1": "Your water. Your brand.",
+    "sub": "Advertising on water bottles at events, festivals and workplaces.",
+    "ctaLabel": "Let's talk",
+    "ctaHref": "/en/advertisers",
+    "bottleLabelLines": ["Line 1", "Line 2", "Line 3"]
+  },
+  "whoStatement": {
+    "big": "We bring cold water and smart branding everywhere."
+  },
+  "conveyorChips": [
+    { "text": "Festivals", "href": "/en/advertisers", "isCta": false },
+    { "text": "Let's talk", "href": "/en/advertisers", "isCta": true }
+  ],
+  "inquiryTopics": ["Advertising", "Distribution"]
+}
