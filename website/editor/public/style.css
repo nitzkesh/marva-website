@@ -154,6 +154,7 @@ input, textarea, select {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 12px 10px;
 }
 
@@ -172,6 +173,10 @@ input, textarea, select {
 }
 
 .tree-btn {
+  /* block, not the button default inline-block — under the tree's
+     white-space:pre, inline-block siblings would share one unbreakable line
+     and h-scroll the rail when a button off the edge receives focus. */
+  display: block;
   background: transparent;
   border: none;
   color: var(--dim);
@@ -434,11 +439,21 @@ input[dir="ltr"], textarea[dir="ltr"] {
   overflow: hidden;
 }
 
+/* Collapsed = slim strip, not width 0 — the [◫] toggle must stay reachable
+   or the pane could never be reopened. */
 .preview-pane.collapsed {
-  width: 0 !important;
-  min-width: 0;
-  border-left: none;
-  overflow: hidden;
+  width: 42px !important;
+  min-width: 42px;
+  resize: none;
+}
+.preview-pane.collapsed .preview-frame-wrap,
+.preview-pane.collapsed .viewport-presets,
+.preview-pane.collapsed #btn-reload {
+  display: none;
+}
+.preview-pane.collapsed .preview-toolbar {
+  border-bottom: none;
+  justify-content: center;
 }
 
 .preview-toolbar {
