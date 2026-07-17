@@ -3,7 +3,9 @@
   "formStartHeading": "Let's get started",
   "ui": {
     "moreDetailsLabel": "More details",
-    "readMoreLabel": "Read more"
+    "readMoreLabel": "Read more",
+    "consentPre": "I have read and agree to the",
+    "consentLinkLabel": "Privacy Policy"
   },
   "navLinks": [
     {
@@ -39,7 +41,8 @@
     "phone": "054-5244339",
     "email": "marvawater.info@gmail.com",
     "navHeading": "Navigation",
-    "navAriaLabel": "Footer navigation"
+    "navAriaLabel": "Footer navigation",
+    "privacyLabel": "Privacy Policy"
   },
   "homeMeta": {
     "title": "Marva — Free Water",

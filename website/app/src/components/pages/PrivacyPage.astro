@@ -1,0 +1,74 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../Header.astro';
+import Footer from '../Footer.astro';
+import { type Locale } from '../../data/content';
+import { getPrivacy } from '../../data/privacy';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const privacy = getPrivacy(locale);
+---
+
+<Layout title={privacy.meta.title} description={privacy.meta.description} locale={locale} page="privacy">
+
+  <Header locale={locale} page="privacy" />
+
+  <main id="main-content">
+
+    <!-- ═══════════════════ PRIVACY POLICY ═══════════════════ -->
+    <section class="bg-base py-16 md:py-20">
+      <article class="max-w-3xl mx-auto px-6">
+        <h1 class="font-display font-black text-ink text-[clamp(2rem,3vw+1rem,3rem)] leading-[1.1]">
+          {privacy.title}
+        </h1>
+        <p class="font-body text-muted text-sm mt-3">{privacy.updatedLine}</p>
+        {privacy.translationNote && (
+          <p class="font-body text-muted text-sm mt-1">{privacy.translationNote}</p>
+        )}
+
+        {privacy.intro.map((p) => (
+          <p class="font-body text-ink/80 text-lg leading-relaxed mt-6">{p}</p>
+        ))}
+
+        {privacy.sections.map((s) => (
+          <section>
+            <h2 class="font-display font-bold text-ink text-xl md:text-2xl mt-10 mb-3">{s.heading}</h2>
+            {s.paragraphs?.map((p) => (
+              <p class="font-body text-ink/80 leading-relaxed mb-3">{p}</p>
+            ))}
+            {s.bullets && (
+              <ul class="list-disc ps-6 font-body text-ink/80 leading-relaxed space-y-1.5 mb-3">
+                {s.bullets.map((b) => <li>{b}</li>)}
+              </ul>
+            )}
+            {s.afterBullets?.map((p) => (
+              <p class="font-body text-ink/80 leading-relaxed mb-3">{p}</p>
+            ))}
+          </section>
+        ))}
+
+        <section>
+          <h2 class="font-display font-bold text-ink text-xl md:text-2xl mt-10 mb-3">{privacy.contact.heading}</h2>
+          <p class="font-body text-ink/80 leading-relaxed mb-3">{privacy.contact.lead}</p>
+          <ul class="list-disc ps-6 font-body text-ink/80 leading-relaxed space-y-1.5">
+            <li>
+              {privacy.contact.emailLabel}:
+              <a dir="ltr" href={`mailto:${privacy.contact.email}`} class="underline hover:text-sage-deep transition-colors ms-1">{privacy.contact.email}</a>
+            </li>
+            <li>
+              {privacy.contact.phoneLabel}:
+              <span dir="ltr" class="ms-1">{privacy.contact.phone}</span>
+            </li>
+          </ul>
+        </section>
+      </article>
+    </section>
+
+  </main>
+
+  <Footer locale={locale} page="privacy" />
+</Layout>

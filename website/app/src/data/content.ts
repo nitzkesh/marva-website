@@ -14,7 +14,7 @@ import heJson from './content.he.json';
 import enJson from './content.en.json';
 
 export type Locale = 'he' | 'en';
-export type PageKey = 'home' | 'advertisers' | 'distributors';
+export type PageKey = 'home' | 'advertisers' | 'distributors' | 'privacy';
 
 /* ─────────────────────────── Shared / chrome ─────────────────────────── */
 
@@ -39,6 +39,7 @@ export interface FooterContent {
   email: string;
   navHeading: string;
   navAriaLabel: string;
+  privacyLabel: string;
 }
 
 export interface PageMeta {
@@ -49,6 +50,9 @@ export interface PageMeta {
 export interface UiStrings {
   moreDetailsLabel: string;
   readMoreLabel: string;
+  /** Consent line shown above every form's submit button; link text is separate. */
+  consentPre: string;
+  consentLinkLabel: string;
 }
 
 /* ─────────────────────────────── HOME ──────────────────────────────── */
@@ -290,6 +294,7 @@ const routesByPage: Record<PageKey, Record<Locale, string>> = {
   home: { he: '/', en: '/en/' },
   advertisers: { he: '/advertisers', en: '/en/advertisers' },
   distributors: { he: '/distributors', en: '/en/distributors' },
+  privacy: { he: '/privacy', en: '/en/privacy' },
 };
 
 /** The URL of `page` in `locale` — i.e. "where am I". */

@@ -7,7 +7,7 @@ import Card from '../Card.astro';
 import Input from '../Input.astro';
 import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
-import { getContent, visible, type Locale } from '../../data/content';
+import { getContent, canonicalHref, visible, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
 interface Props {
@@ -35,6 +35,8 @@ const {
   inquiryTopics,
   inquiryForm,
 } = getContent(locale);
+
+const privacyHref = canonicalHref('privacy', locale);
 
 /* Simple hand-drawn line icons (stroke, currentColor, ~40px) for the "how it works" steps. */
 const icons: Record<string, string> = {
@@ -312,6 +314,10 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
                 <textarea name="message" class="form-input" rows="5" required placeholder={inquiryForm.fields.message.placeholder}></textarea>
               </label>
             </div>
+            <label class="flex gap-2 items-start cursor-pointer font-body text-sm text-ink mb-5">
+              <input type="checkbox" name="privacy_consent" value="agreed" required class="mt-1" />
+              <span>{ui.consentPre} <a href={privacyHref} target="_blank" rel="noopener" class="underline hover:text-sage-deep transition-colors">{ui.consentLinkLabel}</a></span>
+            </label>
             <Button size="l" class="w-full" type="submit">{inquiryForm.fields.submitLabel}</Button>
           </form>
           <div class="form-thanks hidden text-center py-10 font-body text-lg text-sage-deep">{inquiryForm.thanks}</div>

@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { getContent, altLocaleHref, visible, type Locale, type PageKey } from '../data/content';
+import { getContent, altLocaleHref, canonicalHref, visible, type Locale, type PageKey } from '../data/content';
 
 interface Props {
   locale: Locale;
@@ -13,6 +13,7 @@ const { navLinks, footerContent } = getContent(locale);
 const toggleHref = altLocaleHref(page, locale);
 const toggleLabel = locale === 'he' ? 'EN' : 'עברית';
 const toggleAriaLabel = locale === 'he' ? 'Switch to English' : 'עבור לעברית';
+const privacyHref = canonicalHref('privacy', locale);
 ---
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
@@ -36,6 +37,7 @@ const toggleAriaLabel = locale === 'he' ? 'Switch to English' : 'עבור לעב
         <a href={l.href} class="hover:text-sage-deep transition-colors">{l.label}</a>
       ))}
       <a href={toggleHref} aria-label={toggleAriaLabel} class="text-muted hover:text-ink transition-colors">{toggleLabel}</a>
+      <a href={privacyHref} class="text-muted hover:text-ink transition-colors">{footerContent.privacyLabel}</a>
     </nav>
 
     <div class="flex gap-3 items-center h-fit">

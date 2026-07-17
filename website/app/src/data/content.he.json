@@ -3,7 +3,9 @@
   "formStartHeading": "בואו נתחיל",
   "ui": {
     "moreDetailsLabel": "עוד פרטים",
-    "readMoreLabel": "קראו עוד"
+    "readMoreLabel": "קראו עוד",
+    "consentPre": "קראתי ואני מסכים/ה",
+    "consentLinkLabel": "למדיניות הפרטיות"
   },
   "navLinks": [
     {
@@ -39,7 +41,8 @@
     "phone": "054-5244339",
     "email": "marvawater.info@gmail.com",
     "navHeading": "ניווט",
-    "navAriaLabel": "ניווט בפוטר"
+    "navAriaLabel": "ניווט בפוטר",
+    "privacyLabel": "מדיניות פרטיות"
   },
   "homeMeta": {
     "title": "מרווה — מים בחינם",
