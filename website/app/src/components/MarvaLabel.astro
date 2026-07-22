@@ -1,0 +1,330 @@
+---
+/**
+ * MarvaLabel — scroll-driven "label unroll" showcase.
+ *
+ * Three stacked panels reproduce the real printed bottle label (Emek
+ * HaMaayanot print, 210×42 mm): minerals table · Marva logo · deposit +
+ * recycling marks. The logo panel pins mid-viewport while the side panels
+ * slide out from underneath it as the user scrolls, like a label unrolling
+ * off the bottle.
+ *
+ * Rebuilt as HTML/CSS rather than raster crops of the print file so the
+ * fine print stays crisp on retina screens and inherits the site palette.
+ * The label is the same physical artifact in both locales (Hebrew/Arabic
+ * print), so only the aria summary is localized.
+ */
+import type { Locale } from '../data/content';
+
+interface Props {
+  locale?: Locale;
+}
+const { locale = 'he' } = Astro.props;
+
+const ariaLabel =
+  locale === 'en'
+    ? 'The Marva bottle label unrolling: minerals table, Marva logo, and the deposit and recycling marks'
+    : 'תווית הבקבוק של מרווה נפרשת: טבלת מינרלים, לוגו מרווה וסימוני הפיקדון והמיחזור';
+
+/* Minerals exactly as printed on the label (mg/liter). Formula strings are
+   trusted static markup (<sub>/<sup> only) rendered via set:html. */
+const minerals = [
+  { he: 'דו פחמות', ar: 'بيكربونات', f: 'HCO<sub>3</sub><sup>-</sup>', v: '293' },
+  { he: 'סידן', ar: 'كالسيوم', f: 'Ca<sup>+2</sup>', v: '84' },
+  { he: 'מגנזיום', ar: 'مغنيسيوم', f: 'Mg<sup>+2</sup>', v: '30' },
+  { he: 'כלורידים', ar: 'كلوريد', f: 'Cl<sup>-</sup>', v: '73' },
+  { he: 'חנקות', ar: 'نترات', f: 'NO<sub>3</sub><sup>-</sup>', v: '15.2' },
+  { he: 'סיליקטים', ar: 'سيليكات', f: 'SiO<sub>2</sub>', v: '9' },
+  { he: 'נתרן', ar: 'صوديوم', f: 'Na<sup>+</sup>', v: '45' },
+  { he: 'גפרות', ar: 'كبريتات', f: 'SO<sub>4</sub>', v: '9.7' },
+  { he: 'אשלגן', ar: 'بوتاسيوم', f: 'K<sup>+</sup>', v: '3.18' },
+  { he: 'פלואוריד', ar: 'فلورايد', f: 'F<sup>-</sup>', v: '0.33' },
+  { he: 'ערך הגבה', ar: 'درجة الحموضة', f: 'pH', v: '7.8' },
+];
+---
+
+<section id="label" class="relative overflow-hidden bg-sky-tint" data-marva-label>
+  <!-- The stage is what gets pinned: a full-viewport flex box centering the label. -->
+  <div class="min-h-screen flex items-center justify-center py-16" data-label-stage>
+    <!-- Track sizes one panel; sides stack underneath the logo via inset-0. -->
+    <div class="marva-label-track relative" role="img" aria-label={ariaLabel} dir="rtl">
+
+      <!-- LEFT · minerals table (starts hidden under the logo panel) -->
+      <div class="lbl-panel absolute inset-0 z-10" data-label-panel="left" aria-hidden="true">
+        <div class="lbl-head">
+          <span>מינרלים מ״ג/ליטר</span>
+          <span lang="ar">المعادن ملغم/لتر</span>
+          <span dir="ltr">Minerals mg/liter</span>
+        </div>
+        <table class="lbl-table">
+          <tbody>
+            {minerals.map((m) => (
+              <tr>
+                <td class="t-he">{m.he}</td>
+                <td class="t-ar" lang="ar">{m.ar}</td>
+                <td class="t-f" dir="ltr" set:html={m.f} />
+                <td class="t-v" dir="ltr">{m.v}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RIGHT · deposit + recycling marks (starts hidden under the logo panel) -->
+      <div class="lbl-panel absolute inset-0 z-10" data-label-panel="right" aria-hidden="true">
+        <div class="lbl-deposit font-display">
+          חייב בפיקדון<br />30 אג׳
+        </div>
+
+        <div class="lbl-marks" aria-hidden="true">
+          <!-- resin code: PETE 1 triangle -->
+          <div class="lbl-mark">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M24 8 39 34.5H9L24 8Z" />
+              <path d="M27 12.8 24 8l-4.6 2.6" />
+              <path d="M12.2 29 9 34.5l5.6.6" />
+              <path d="M33 34.5h6l-1.4-5.4" />
+              <text x="24" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" stroke="none" font-family="Rubik, sans-serif">1</text>
+            </svg>
+            <span dir="ltr">PETE</span>
+          </div>
+
+          <!-- 100% recyclable roundel -->
+          <div class="lbl-mark">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="2.5" />
+              <defs>
+                <path id="lbl-arc" d="M11 32a21 21 0 0 1 42 0" />
+              </defs>
+              <text font-size="8.5" letter-spacing="1.2" fill="currentColor" font-family="Rubik, sans-serif">
+                <textPath href="#lbl-arc" startOffset="50%" text-anchor="middle">RECYCLABLE</textPath>
+              </text>
+              <text x="32" y="44" text-anchor="middle" font-size="13.5" font-weight="700" fill="currentColor" font-family="Rubik, sans-serif">100%</text>
+            </svg>
+          </div>
+
+          <!-- tidyman -->
+          <div class="lbl-mark">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="17" cy="10" r="3.6" />
+              <path d="M17 15v12l-4 12" />
+              <path d="M17 19l10-3.4" />
+              <path d="M29 21l2.6 4.4" />
+              <path d="M29 27h11l-1.8 13h-7L29 27Z" />
+            </svg>
+          </div>
+        </div>
+
+        <p class="lbl-fine">
+          תכולה: <span dir="ltr">500</span> מ״ל · בקבוק <span dir="ltr">PET</span> ניתן למיחזור
+          <br />
+          היצרן: עמק המעיינות מים מינרליים טבעיים בע״מ, קיבוץ שדה אליהו
+        </p>
+      </div>
+
+      <!-- CENTER · logo panel, stays on top of the stack -->
+      <div class="lbl-panel lbl-panel-center relative z-20" data-label-panel="center">
+        <div class="lbl-logo-ring">
+          <img src="/marva-mark.svg" alt="" class="lbl-logo-mark" />
+          <span class="lbl-wordmark font-display" dir="ltr">MARVA</span>
+        </div>
+        <p class="lbl-tagline">מי שתיה · מים מינרליים טבעיים</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  /* One var drives panel width AND the em type scale, so the whole label
+     scales like a single graphic: ~360px on desktop, 30vw below ~1200px
+     (three unrolled panels + gutters always fit the viewport). */
+  .marva-label-track {
+    --panel-w: min(30vw, 360px);
+    width: var(--panel-w);
+    font-size: calc(var(--panel-w) / 24);
+  }
+
+  .lbl-panel {
+    aspect-ratio: 3 / 2;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.9em;
+    padding: 0.7em 0.8em;
+    box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The pinned logo panel needs more lift so the sides read as sliding out
+     from underneath it. */
+  .lbl-panel-center {
+    box-shadow: 0 4px 10px rgba(17, 17, 17, 0.07), 0 20px 44px rgba(17, 17, 17, 0.13);
+    align-items: center;
+    justify-content: center;
+    gap: 0.7em;
+  }
+
+  /* ── minerals table ── */
+  .lbl-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4em;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.52em;
+    color: var(--color-sky-deep);
+    border-bottom: 2px solid var(--color-sky-deep);
+    padding-bottom: 0.5em;
+  }
+
+  .lbl-table {
+    /* stretch to the panel bottom — the extra height distributes across rows */
+    flex: 1;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-display);
+    font-size: 0.55em;
+    line-height: 1.25;
+    color: var(--color-ink);
+  }
+  .lbl-table tr:nth-child(even) {
+    background: var(--color-sky-tint);
+  }
+  .lbl-table td {
+    padding: 0.22em 0.45em;
+  }
+  .t-ar {
+    color: var(--color-muted);
+  }
+  .t-f {
+    color: var(--color-sky-deep);
+    font-weight: 600;
+    text-align: start;
+    white-space: nowrap;
+  }
+  .t-v {
+    text-align: start;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* ── logo panel ── */
+  .lbl-logo-ring {
+    width: 9.4em;
+    height: 9.4em;
+    border: 0.09em solid rgba(17, 17, 17, 0.14);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45em;
+  }
+  .lbl-logo-mark {
+    width: 3.1em;
+    height: auto;
+  }
+  .lbl-wordmark {
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    /* recenter: letter-spacing trails the last glyph */
+    margin-inline-end: -0.18em;
+    font-size: 1.3em;
+    color: var(--color-ink);
+  }
+  .lbl-tagline {
+    font-family: var(--font-display);
+    font-size: 0.58em;
+    color: var(--color-muted);
+  }
+
+  /* ── deposit / recycling panel ── */
+  [data-label-panel='right'] {
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+  }
+  .lbl-deposit {
+    border: 0.16em solid var(--color-ink);
+    border-radius: 0.45em;
+    padding: 0.35em 1.1em;
+    font-weight: 700;
+    font-size: 0.85em;
+    line-height: 1.3;
+    color: var(--color-ink);
+  }
+  .lbl-marks {
+    display: flex;
+    align-items: center;
+    gap: 1.4em;
+    color: var(--color-sage-deep);
+  }
+  .lbl-mark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1em;
+  }
+  .lbl-mark svg {
+    width: 2.6em;
+    height: 2.6em;
+  }
+  .lbl-mark span {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.45em;
+    letter-spacing: 0.12em;
+    color: var(--color-sage-deep);
+  }
+  .lbl-fine {
+    font-family: var(--font-display);
+    font-size: 0.46em;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const stage = document.querySelector<HTMLElement>('[data-label-stage]');
+  const left = document.querySelector<HTMLElement>('[data-label-panel="left"]');
+  const right = document.querySelector<HTMLElement>('[data-label-panel="right"]');
+
+  if (stage && left && right) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /* xPercent:±100 lands the sides flush against the logo panel; the extra
+       12px is a gutter so the three panels read as cards, not one seam. */
+    const GUTTER = 12;
+
+    if (reduced) {
+      // No motion: present the label already unrolled.
+      gsap.set(left, { xPercent: -100, x: -GUTTER });
+      gsap.set(right, { xPercent: 100, x: GUTTER });
+    } else {
+      gsap
+        .timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: stage,
+            pin: true,
+            start: 'center center',
+            end: '+=600',
+            scrub: 1,
+            anticipatePin: 1,
+          },
+        })
+        .to(left, { xPercent: -100, x: -GUTTER }, 0)
+        .to(right, { xPercent: 100, x: GUTTER }, 0);
+
+      /* Pin distances are measured at init; fonts/images that finish loading
+         afterwards shift layout, so re-measure once everything is in. */
+      window.addEventListener('load', () => ScrollTrigger.refresh());
+    }
+  }
+</script>

@@ -93,7 +93,7 @@ const ENUMS = {
 // listed. Hero is omitted everywhere: it is the first thing on the page.
 const ANCHOR_MAP = {
   home: {
-    who: 'who', how: 'how', where: 'where',
+    labelShowcase: 'label', who: 'who', how: 'how', where: 'where',
     upcoming: 'upcoming', testimonials: 'testimonials', inquiry: 'inquiry',
   },
   advertisers: {

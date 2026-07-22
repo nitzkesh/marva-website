@@ -2,6 +2,7 @@
   "home": {
     "hero": true,
     "conveyor": true,
+    "labelShowcase": true,
     "who": true,
     "how": true,
     "where": true,
