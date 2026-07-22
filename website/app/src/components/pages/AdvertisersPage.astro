@@ -5,6 +5,7 @@ import Footer from '../Footer.astro';
 import Button from '../Button.astro';
 import Card from '../Card.astro';
 import Input from '../Input.astro';
+import MarvaLabel from '../MarvaLabel.astro';
 import { getContent, canonicalHref, visible, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
@@ -128,6 +129,9 @@ const whyIcons: Record<string, string> = {
             </Card>
           ))}
         </div>
+
+        <!-- True-proportion label demo — scroll-driven unroll (no header by design) -->
+        <MarvaLabel placeholder={labelPromo.brandZonePlaceholder} ariaLabel={labelPromo.ariaLabel} />
       </div>
     </section>
     )}

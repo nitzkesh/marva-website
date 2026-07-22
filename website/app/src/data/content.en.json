@@ -261,10 +261,10 @@
   "labelPromo": {
     "heading": "The label — your stage",
     "caption": "True-to-scale proportions of a 210×42 mm label, including the mandatory zones",
-    "ariaLabel": "A mockup of a bottle label at true 210 by 42 millimeter proportions: your brand zone takes up most of the label, with the mandatory regulatory zone at the edge",
+    "ariaLabel": "A true-proportion demo of the bottle label: your brand zone in the center — about half the label, the mandatory content on the right and the Marva mark on the left",
     "regulatoryZoneLabel": "Mandatory zone",
     "brandZoneLabel": "Your brand zone",
-    "brandZonePlaceholder": "Your design here"
+    "brandZonePlaceholder": "Your brand here"
   },
   "advertiserOptions": [
     {

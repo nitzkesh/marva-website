@@ -1,29 +1,35 @@
 ---
 /**
- * MarvaLabel — scroll-driven "label unroll" showcase.
+ * MarvaLabel — true-proportion advertiser space demo, scroll-driven unroll.
  *
- * Three stacked panels reproduce the real printed bottle label (Emek
- * HaMaayanot print, 210×42 mm): minerals table · Marva logo · deposit +
- * recycling marks. The logo panel pins mid-viewport while the side panels
- * slide out from underneath it as the user scrolls, like a label unrolling
- * off the bottle.
+ * One strip at the real label's 210:42 print proportions (Emek HaMaayanot
+ * 500ml, measured from the supplier print). Zone split measured from that
+ * label with the mandatory content compressed to the right end:
  *
- * Rebuilt as HTML/CSS rather than raster crops of the print file so the
- * fine print stays crisp on retina screens and inherits the site palette.
- * The label is the same physical artifact in both locales (Hebrew/Arabic
- * print), so only the aria summary is localized.
+ *   left 9% (Marva mark) · center 50% (client ad zone) · right 41% (mandatory)
+ *
+ * The center panel pins mid-viewport; the side panels start tucked underneath
+ * it and slide out to their true positions as the user scrolls — showing an
+ * advertiser exactly how much of the label is theirs. Proportions are sacred;
+ * fine print may be unreadably small at phone scale (it zooms crisply — HTML,
+ * not raster). Without JS or with reduced motion the strip renders already
+ * unrolled: the sides sit at their final CSS positions and only the animation
+ * tucks them.
+ *
+ * ZONES here must stay in sync with the width/inset percentages in the
+ * scoped <style> below.
  */
-import type { Locale } from '../data/content';
 
 interface Props {
-  locale?: Locale;
+  /** Big text in the client zone (labelPromo.brandZonePlaceholder). */
+  placeholder?: string;
+  /** Screen-reader summary of the demo (labelPromo.ariaLabel). */
+  ariaLabel?: string;
 }
-const { locale = 'he' } = Astro.props;
-
-const ariaLabel =
-  locale === 'en'
-    ? 'The Marva bottle label unrolling: minerals table, Marva logo, and the deposit and recycling marks'
-    : 'תווית הבקבוק של מרווה נפרשת: טבלת מינרלים, לוגו מרווה וסימוני הפיקדון והמיחזור';
+const {
+  placeholder = 'המותג שלכם כאן',
+  ariaLabel = 'הדמיה בפרופורציות אמיתיות של תווית הבקבוק: אזור המותג שלכם במרכז, תוכן החובה מימין וסמל מרווה משמאל',
+} = Astro.props;
 
 /* Minerals exactly as printed on the label (mg/liter). Formula strings are
    trusted static markup (<sub>/<sup> only) rendered via set:html. */
@@ -42,42 +48,47 @@ const minerals = [
 ];
 ---
 
-<section id="label" class="relative overflow-hidden bg-sky-tint" data-marva-label>
-  <!-- The stage is what gets pinned: a full-viewport flex box centering the label. -->
-  <div class="min-h-screen flex items-center justify-center py-16" data-label-stage>
-    <!-- Track sizes one panel; sides stack underneath the logo via inset-0. -->
+<div class="mt-14" data-marva-label>
+  <!-- The stage is what gets pinned: strip + breathing room, centered. -->
+  <div class="flex justify-center py-8" data-label-stage>
     <div class="marva-label-track relative" role="img" aria-label={ariaLabel} dir="rtl">
 
-      <!-- LEFT · minerals table (starts hidden under the logo panel) -->
-      <div class="lbl-panel absolute inset-0 z-10" data-label-panel="left" aria-hidden="true">
-        <div class="lbl-head">
-          <span>מינרלים מ״ג/ליטר</span>
-          <span lang="ar">المعادن ملغم/لتر</span>
-          <span dir="ltr">Minerals mg/liter</span>
+      <!-- MARVA ZONE · physical-left 9%, starts under the client zone -->
+      <div class="lbl-zone lbl-zone-marva absolute inset-y-0 left-0 z-10" data-label-panel="left" aria-hidden="true">
+        <div class="lbl-mark-ring">
+          <img src="/marva-mark.svg" alt="" />
         </div>
-        <table class="lbl-table">
-          <tbody>
-            {minerals.map((m) => (
-              <tr>
-                <td class="t-he">{m.he}</td>
-                <td class="t-ar" lang="ar">{m.ar}</td>
-                <td class="t-f" dir="ltr" set:html={m.f} />
-                <td class="t-v" dir="ltr">{m.v}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
 
-      <!-- RIGHT · deposit + recycling marks (starts hidden under the logo panel) -->
-      <div class="lbl-panel absolute inset-0 z-10" data-label-panel="right" aria-hidden="true">
-        <div class="lbl-deposit font-display">
-          חייב בפיקדון<br />30 אג׳
+      <!-- MANDATORY CONTENT · physical-right 41%, starts under the client zone -->
+      <div class="lbl-zone lbl-zone-mandatory absolute inset-y-0 right-0 z-10" data-label-panel="right" aria-hidden="true">
+        <div class="lbl-minerals">
+          <div class="lbl-head">
+            <span>מינרלים מ״ג/ליטר</span>
+            <span lang="ar">المعادن ملغم/لتر</span>
+          </div>
+          <table class="lbl-table">
+            <tbody>
+              {minerals.map((m) => (
+                <tr>
+                  <td class="t-he">{m.he}</td>
+                  <td class="t-ar" lang="ar">{m.ar}</td>
+                  <td class="t-f" dir="ltr" set:html={m.f} />
+                  <td class="t-v" dir="ltr">{m.v}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
-        <div class="lbl-marks" aria-hidden="true">
-          <!-- resin code: PETE 1 triangle -->
-          <div class="lbl-mark">
+        <div class="lbl-reg">
+          <div class="lbl-deposit font-display">חייב בפיקדון 30 אג׳</div>
+          <div class="lbl-reg-line">
+            <span>תכולה: <b dir="ltr">500</b> מ״ל</span>
+            <span>כשר לפסח בהשגחת הרבנות</span>
+          </div>
+          <div class="lbl-marks" aria-hidden="true">
+            <!-- resin code: PETE 1 -->
             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M24 8 39 34.5H9L24 8Z" />
               <path d="M27 12.8 24 8l-4.6 2.6" />
@@ -85,11 +96,7 @@ const minerals = [
               <path d="M33 34.5h6l-1.4-5.4" />
               <text x="24" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" stroke="none" font-family="Rubik, sans-serif">1</text>
             </svg>
-            <span dir="ltr">PETE</span>
-          </div>
-
-          <!-- 100% recyclable roundel -->
-          <div class="lbl-mark">
+            <!-- 100% recyclable roundel -->
             <svg viewBox="0 0 64 64" fill="none">
               <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="2.5" />
               <defs>
@@ -100,10 +107,7 @@ const minerals = [
               </text>
               <text x="32" y="44" text-anchor="middle" font-size="13.5" font-weight="700" fill="currentColor" font-family="Rubik, sans-serif">100%</text>
             </svg>
-          </div>
-
-          <!-- tidyman -->
-          <div class="lbl-mark">
+            <!-- tidyman -->
             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="17" cy="10" r="3.6" />
               <path d="M17 15v12l-4 12" />
@@ -112,88 +116,133 @@ const minerals = [
               <path d="M29 27h11l-1.8 13h-7L29 27Z" />
             </svg>
           </div>
+          <p class="lbl-fine">
+            עדיף להשתמש לפני התאריך המוטבע · לשמור במקום מוצל ויבש
+            <br />
+            היצרן: עמק המעיינות מים מינרליים טבעיים בע״מ, קיבוץ שדה אליהו
+          </p>
         </div>
-
-        <p class="lbl-fine">
-          תכולה: <span dir="ltr">500</span> מ״ל · בקבוק <span dir="ltr">PET</span> ניתן למיחזור
-          <br />
-          היצרן: עמק המעיינות מים מינרליים טבעיים בע״מ, קיבוץ שדה אליהו
-        </p>
       </div>
 
-      <!-- CENTER · logo panel, stays on top of the stack -->
-      <div class="lbl-panel lbl-panel-center relative z-20" data-label-panel="center">
-        <div class="lbl-logo-ring">
-          <img src="/marva-mark.svg" alt="" class="lbl-logo-mark" />
-          <span class="lbl-wordmark font-display" dir="ltr">MARVA</span>
+      <!-- CLIENT AD ZONE · its true home on the strip is [9%,59%] — directly
+           after the mark zone, NOT the strip's middle; the script glides the
+           whole track so this panel still starts viewport-centered. -->
+      <div class="lbl-zone lbl-zone-client absolute inset-y-0 left-[9%] z-20" data-label-panel="center">
+        <div class="lbl-client-frame">
+          <span class="lbl-client-text font-display">{placeholder}</span>
         </div>
-        <p class="lbl-tagline">מי שתיה · מים מינרליים טבעיים</p>
       </div>
 
     </div>
   </div>
-</section>
+</div>
 
 <style>
-  /* One var drives panel width AND the em type scale, so the whole label
-     scales like a single graphic: ~360px on desktop, 30vw below ~1200px
-     (three unrolled panels + gutters always fit the viewport). */
+  /* One var drives strip width AND the em type scale so the whole label
+     scales as a single graphic at true 210:42 print proportions. */
   .marva-label-track {
-    --panel-w: min(30vw, 360px);
-    width: var(--panel-w);
-    font-size: calc(var(--panel-w) / 24);
+    --strip-w: min(92vw, 1200px);
+    width: var(--strip-w);
+    aspect-ratio: 210 / 42;
+    font-size: calc(var(--strip-w) / 100);
+    /* keep mobile browsers from inflating the deliberately-tiny print */
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
   }
 
-  .lbl-panel {
-    aspect-ratio: 3 / 2;
+  /* Zone widths — must stay in sync with ZONES in the <script>. */
+  .lbl-zone {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: 0.9em;
-    padding: 0.7em 0.8em;
+    border-radius: 0.7em;
     box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px rgba(17, 17, 17, 0.06);
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
   }
-
-  /* The pinned logo panel needs more lift so the sides read as sliding out
-     from underneath it. */
-  .lbl-panel-center {
-    box-shadow: 0 4px 10px rgba(17, 17, 17, 0.07), 0 20px 44px rgba(17, 17, 17, 0.13);
+  .lbl-zone-marva {
+    width: 9%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.7em;
+  }
+  .lbl-zone-client {
+    width: 50%;
+    padding: 0.8em;
+    /* pinned panel needs more lift so the sides read as sliding out from
+       underneath it */
+    box-shadow: 0 4px 10px rgba(17, 17, 17, 0.07), 0 20px 44px rgba(17, 17, 17, 0.13);
+  }
+  .lbl-zone-mandatory {
+    width: 41%;
+    display: flex;
+    gap: 0.8em;
+    padding: 0.8em;
   }
 
-  /* ── minerals table ── */
+  /* ── Marva zone ── */
+  .lbl-mark-ring {
+    width: 6.4em;
+    height: 6.4em;
+    border: 0.09em solid rgba(17, 17, 17, 0.16);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lbl-mark-ring img {
+    width: 3.2em;
+    height: auto;
+    display: block;
+  }
+
+  /* ── client ad zone ── */
+  .lbl-client-frame {
+    width: 100%;
+    height: 100%;
+    border: 0.18em dashed var(--color-sage-deep);
+    border-radius: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lbl-client-text {
+    font-weight: 700;
+    font-size: 2.5em;
+    color: var(--color-ink);
+  }
+
+  /* ── mandatory zone: minerals column (true ~30% of the zone) ── */
+  .lbl-minerals {
+    flex: 0 0 30%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
   .lbl-head {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 0.4em;
+    flex-direction: column;
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 0.52em;
+    font-size: 0.5em;
+    line-height: 1.3;
     color: var(--color-sky-deep);
-    border-bottom: 2px solid var(--color-sky-deep);
-    padding-bottom: 0.5em;
+    border-bottom: 0.15em solid var(--color-sky-deep);
+    padding-bottom: 0.3em;
   }
-
   .lbl-table {
-    /* stretch to the panel bottom — the extra height distributes across rows */
+    /* stretch to the zone bottom — the extra height distributes across rows */
     flex: 1;
     width: 100%;
     border-collapse: collapse;
     font-family: var(--font-display);
-    font-size: 0.55em;
-    line-height: 1.25;
+    font-size: 0.45em;
+    line-height: 1.2;
     color: var(--color-ink);
   }
   .lbl-table tr:nth-child(even) {
     background: var(--color-sky-tint);
   }
   .lbl-table td {
-    padding: 0.22em 0.45em;
+    padding: 0.1em 0.25em;
   }
   .t-ar {
     color: var(--color-muted);
@@ -210,78 +259,47 @@ const minerals = [
     white-space: nowrap;
   }
 
-  /* ── logo panel ── */
-  .lbl-logo-ring {
-    width: 9.4em;
-    height: 9.4em;
-    border: 0.09em solid rgba(17, 17, 17, 0.14);
-    border-radius: 50%;
+  /* ── mandatory zone: deposit / kosher / recycling column ── */
+  .lbl-reg {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 0.45em;
-  }
-  .lbl-logo-mark {
-    width: 3.1em;
-    height: auto;
-  }
-  .lbl-wordmark {
-    font-weight: 900;
-    letter-spacing: 0.18em;
-    /* recenter: letter-spacing trails the last glyph */
-    margin-inline-end: -0.18em;
-    font-size: 1.3em;
-    color: var(--color-ink);
-  }
-  .lbl-tagline {
-    font-family: var(--font-display);
-    font-size: 0.58em;
-    color: var(--color-muted);
-  }
-
-  /* ── deposit / recycling panel ── */
-  [data-label-panel='right'] {
-    align-items: center;
     justify-content: space-between;
     text-align: center;
+    gap: 0.3em;
   }
   .lbl-deposit {
-    border: 0.16em solid var(--color-ink);
-    border-radius: 0.45em;
-    padding: 0.35em 1.1em;
+    border: 0.14em solid var(--color-ink);
+    border-radius: 0.4em;
+    padding: 0.25em 0.9em;
     font-weight: 700;
-    font-size: 0.85em;
-    line-height: 1.3;
+    font-size: 0.8em;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  .lbl-reg-line {
+    display: flex;
+    gap: 1em;
+    font-family: var(--font-display);
+    font-size: 0.5em;
     color: var(--color-ink);
   }
   .lbl-marks {
     display: flex;
     align-items: center;
-    gap: 1.4em;
+    gap: 1.2em;
     color: var(--color-sage-deep);
   }
-  .lbl-mark {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.1em;
-  }
-  .lbl-mark svg {
-    width: 2.6em;
-    height: 2.6em;
-  }
-  .lbl-mark span {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 0.45em;
-    letter-spacing: 0.12em;
-    color: var(--color-sage-deep);
+  .lbl-marks svg {
+    width: 2.3em;
+    height: 2.3em;
   }
   .lbl-fine {
     font-family: var(--font-display);
-    font-size: 0.46em;
-    line-height: 1.5;
+    font-size: 0.42em;
+    line-height: 1.45;
     color: var(--color-muted);
   }
 </style>
@@ -298,15 +316,18 @@ const minerals = [
 
   if (stage && left && right) {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    /* xPercent:±100 lands the sides flush against the logo panel; the extra
-       12px is a gutter so the three panels read as cards, not one seam. */
-    const GUTTER = 12;
 
-    if (reduced) {
-      // No motion: present the label already unrolled.
-      gsap.set(left, { xPercent: -100, x: -GUTTER });
-      gsap.set(right, { xPercent: 100, x: GUTTER });
-    } else {
+    if (!reduced) {
+      /* The strip tiles at true proportions: mark [0,9] · client [9,59] ·
+         mandatory [59,100] (% of strip — must stay in sync with the CSS).
+         Both sides start tucked exactly one own-width behind the client
+         zone's edges (xPercent ±100) and slide to their tiled homes. The
+         client zone's true center sits at 34% of the strip, so the whole
+         track also glides 16% → 0: the client panel starts viewport-centered
+         alone, and the finished strip ends viewport-centered — reads as the
+         bottle rotating while the label unrolls. */
+      const track = document.querySelector<HTMLElement>('.marva-label-track');
+
       gsap
         .timeline({
           defaults: { ease: 'none' },
@@ -319,12 +340,15 @@ const minerals = [
             anticipatePin: 1,
           },
         })
-        .to(left, { xPercent: -100, x: -GUTTER }, 0)
-        .to(right, { xPercent: 100, x: GUTTER }, 0);
+        .fromTo(track, { xPercent: 16 }, { xPercent: 0 }, 0)
+        .fromTo(left, { xPercent: 100 }, { xPercent: 0 }, 0)
+        .fromTo(right, { xPercent: -100 }, { xPercent: 0 }, 0);
 
       /* Pin distances are measured at init; fonts/images that finish loading
          afterwards shift layout, so re-measure once everything is in. */
       window.addEventListener('load', () => ScrollTrigger.refresh());
     }
+    /* reduced motion: nothing to do — the sides' static CSS positions ARE the
+       unrolled end state; only the animation ever tucks them. */
   }
 </script>

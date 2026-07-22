@@ -7,7 +7,6 @@ import Card from '../Card.astro';
 import Input from '../Input.astro';
 import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
-import MarvaLabel from '../MarvaLabel.astro';
 import { getContent, canonicalHref, visible, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
@@ -153,9 +152,6 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
       )}
     </section>
     )}
-
-    <!-- ═══════════════ A2. LABEL SHOWCASE — SCROLL-DRIVEN UNROLL ═══════════════ -->
-    {sections.home.labelShowcase && <MarvaLabel locale={locale} />}
 
     <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
     {sections.home.who && (
