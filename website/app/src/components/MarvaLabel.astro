@@ -1,23 +1,26 @@
 ---
 /**
- * MarvaLabel — faithful replica of the real bottle label, scroll-driven unroll.
+ * MarvaLabel — pixel-measured replica of the printed bottle label,
+ * scroll-driven unroll.
  *
- * Reproduces the Emek HaMaayanot 500ml print AS STRUCTURED on the physical
- * label — every element in its printed position, print-blue ink, zone
- * boundaries measured from the label scan:
+ * Source of truth: brand-book/שבלונה ואלי.pdf (supplier print file,
+ * 823.94×136.06 pt), rasterized at 7500×1239 and measured. Geometry uses
+ * em units where 1em = 1% of strip width (strip height = 16.52em). Ink
+ * #2A3443, band #ACD2E6 — sampled from the scan. The בד"ץ / מיוצר בישראל
+ * emblems and the recycling marks are actual crops from the print
+ * (public/label/*.png), not redrawn.
  *
- *   left 30.5%  = logo circle + best-before/storage/kosher column + minerals
- *   center 42%  = the label's own blank middle → "המותג שלכם כאן" (CMS text)
- *   right 27.5% = recycling icons + deposit/contents/producer + source block
+ * Zones: left 30% (logo circle, registration block, care texts, minerals
+ * table, emblems) · blank middle 41.7% (the label's own empty area → CMS
+ * placeholder) · right 28.3% (source block, deposit box with the black
+ * recycling marks under it, trailing seam margin).
  *
- * The blank-middle panel pins mid-viewport; the two printed clusters start
- * tucked underneath it (exactly one own-width: xPercent ±100) and slide out
- * to their true positions on scroll. Proportions are sacred; fine print may
- * be tiny at phone scale (it zooms crisply — HTML, not raster). Without JS,
- * with reduced motion, or with ?label-static (QA screenshots) the strip
- * renders already unrolled — the static CSS positions ARE the end state.
+ * The blank-middle panel pins mid-viewport; the printed clusters start
+ * tucked underneath it (exactly one own-width: xPercent ±100) and slide
+ * out on scroll. Without JS, with reduced motion, or with ?label-static
+ * (QA screenshots) the strip renders already unrolled.
  *
- * Zone numbers here must stay in sync between the <style> and the <script>.
+ * Zone numbers must stay in sync between the <style> and the <script>.
  */
 
 interface Props {
@@ -28,161 +31,115 @@ interface Props {
 }
 const {
   placeholder = 'המותג שלכם כאן',
-  ariaLabel = 'שחזור של תווית הבקבוק בפרופורציות המקוריות: תוכן החובה המודפס משני הצדדים, והאמצע הריק של התווית — כמחצית — הוא אזור המותג שלכם',
+  ariaLabel = 'שחזור של תווית הבקבוק כפי שהיא מודפסת: תוכן החובה משני הצדדים — טבלת מינרלים, כשרות, פיקדון, מיחזור ופרטי היצרן — והאמצע הריק של התווית הוא אזור המותג שלכם',
 } = Astro.props;
 
-/* Minerals exactly as printed (mg/liter). Formula strings are trusted static
-   markup (<sub>/<sup> only) rendered via set:html. Column order mirrors the
-   print: Hebrew · Arabic · value · formula chip. */
+/* Minerals exactly as printed (mg/liter). Banded rows (Ca, Mg, Na, F) match
+   the print's #ACD2E6 stripes. Formula strings are trusted static markup
+   (<sub>/<sup> only) rendered via set:html. */
 const minerals = [
-  { he: 'דו פחמות', ar: 'بيكربونات', f: 'HCO<sub>3</sub>', v: '293' },
-  { he: 'סידן', ar: 'كالسيوم', f: 'Ca<sup>+2</sup>', v: '84' },
-  { he: 'מגנזיום', ar: 'مغنيسيوم', f: 'Mg<sup>+2</sup>', v: '30' },
-  { he: 'כלורידים', ar: 'كلوريد', f: 'Cl<sup>-</sup>', v: '73' },
-  { he: 'חנקות', ar: 'نترات', f: 'NO<sub>3</sub><sup>-</sup>', v: '15.2' },
-  { he: 'סיליקטים', ar: 'سيليكات', f: 'SiO<sub>2</sub>', v: '9' },
-  { he: 'נתרן', ar: 'صوديوم', f: 'Na<sup>+</sup>', v: '45' },
-  { he: 'גפרות', ar: 'كبريتات', f: 'SO<sub>4</sub>', v: '9.7' },
-  { he: 'אשלגן', ar: 'بوتاسيوم', f: 'K<sup>+</sup>', v: '3.18' },
-  { he: 'פלואוריד', ar: 'فلورايد', f: 'F<sup>-</sup>', v: '0.33' },
-  { he: 'ערך הגבה', ar: 'درجة الحموضة', f: 'pH', v: '7.8' },
+  { he: 'דו פחמות', ar: 'بيكربونات', f: 'HCO<sub>3</sub>', v: '293', band: false },
+  { he: 'סידן', ar: 'كالسيوم', f: 'Ca<sup>+2</sup>', v: '84', band: true },
+  { he: 'מגנזיום', ar: 'مغنيسيوم', f: 'Mg<sup>+2</sup>', v: '30', band: true },
+  { he: 'כלורידים', ar: 'كلوريد', f: 'Cl<sup>-</sup>', v: '73', band: false },
+  { he: 'חנקות', ar: 'نترات', f: 'NO<sub>3</sub><sup>-</sup>', v: '15.2', band: false },
+  { he: 'סיליקטים', ar: 'سيليكات', f: 'SiO<sub>2</sub>', v: '9', band: false },
+  { he: 'נתרן', ar: 'صوديوم', f: 'Na<sup>+</sup>', v: '45', band: true },
+  { he: 'גפרות', ar: 'كبريتات', f: 'SO<sub>4</sub><sup>-2</sup>', v: '9.7', band: false },
+  { he: 'אשלגן', ar: 'بوتاسيوم', f: 'K<sup>+</sup>', v: '3.18', band: false },
+  { he: 'פלואוריד', ar: 'فلورايد', f: 'F<sup>-</sup>', v: '0.33', band: true },
+  { he: 'ערך הגבה', ar: 'درجة الحموضة', f: 'pH', v: '7.8', band: false },
 ];
 ---
 
 <div class="mt-14" data-marva-label>
   <!-- The stage is what gets pinned: strip + breathing room, centered. -->
-  <div class="flex justify-center py-8" data-label-stage>
+  <div class="marva-label-stage flex justify-center py-8" data-label-stage>
     <div class="marva-label-track relative" role="img" aria-label={ariaLabel} dir="rtl">
 
-      <!-- LEFT CLUSTER · printed left region of the label, tucks under the middle -->
+      <!-- LEFT CLUSTER · printed left region, tucks under the middle -->
       <div class="lbl-zone lbl-zone-left absolute inset-y-0 left-0 z-10" data-label-panel="left" aria-hidden="true">
-        <!-- minerals table (rightmost sub-column, adjacent to the blank middle) -->
-        <div class="lbl-minerals">
+        <div class="lbl-logo-circle">
+          <img src="/marva-mark.svg" alt="" />
+          <span dir="ltr">MARVA</span>
+        </div>
+        <div class="lbl-regmark"></div>
+
+        <div class="lbl-care">
+          <p class="lbl-bestbefore">
+            <span class="lbl-arrow">↑</span>עדיף להשתמש לפני
+            <br />
+            <span lang="ar">يفضل الاستعمال قبل</span>
+          </p>
+          <p class="lbl-storage">
+            לשמור במקום מוצל ויבש
+            <br />
+            <span lang="ar">للحفظ في مكان مظلل وجاف</span>
+            <br />
+            לשירותך, שירות צרכנים:
+            <br />
+            <span lang="ar">لخدمتك، خدمة العملاء</span>
+            <br />
+            <span class="lbl-phone" dir="ltr">04 - 3818881</span>
+          </p>
+          <p class="lbl-kosher">
+            <b>כשר לפסח</b>
+            <br />
+            בהשגחת הרבנות
+            <br />
+            האזורית עמק המעיינות
+          </p>
+        </div>
+
+        <!-- minerals table -->
+        <div class="lbl-table-box">
+          <div class="lbl-thead">
+            <span>מינרלים<br />(מ״ג/ליטר)</span>
+            <span lang="ar">المعادن<br />(ملغم/لتر)</span>
+            <span dir="ltr">Minerals<br />(mg/liter)</span>
+          </div>
           <table class="lbl-table">
-            <thead>
-              <tr>
-                <th>מינרלים<br />מ״ג/ליטר</th>
-                <th lang="ar">المعادن<br />ملغم/لتر</th>
-                <th colspan="2" dir="ltr">Minerals<br />mg/liter</th>
-              </tr>
-            </thead>
             <tbody>
               {minerals.map((m) => (
-                <tr>
+                <tr class={m.band ? 'is-band' : ''}>
                   <td class="t-he">{m.he}</td>
                   <td class="t-ar" lang="ar">{m.ar}</td>
                   <td class="t-v" dir="ltr">{m.v}</td>
-                  <td class="t-f"><span class="t-chip" dir="ltr" set:html={m.f} /></td>
+                  <td class="t-f" dir="ltr" set:html={m.f} />
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <!-- storage / best-before / kosher column -->
-        <div class="lbl-care">
-          <p class="lbl-care-line">
-            עדיף להשתמש לפני <span class="lbl-arrow" dir="ltr">↑</span>
-            <br />
-            <span lang="ar">يفضل الاستعمال قبل</span>
-          </p>
-          <p class="lbl-care-line">
-            לשמור במקום מוצל ויבש
-            <br />
-            <span lang="ar">للحفظ في مكان مظلل وجاف</span>
-            <br />
-            לשירותך, שירות צרכנים
-            <br />
-            <span lang="ar">لخدمتك، خدمة العملاء</span>
-            <br />
-            <b dir="ltr">04-3818881</b>
-          </p>
-          <div class="lbl-kosher">
-            <div class="lbl-stamp" aria-hidden="true">
-              <span>בהשגחת</span>
-              <span>הבד״ץ</span>
-            </div>
-            <p>
-              <b>כשר לפסח</b>
-              <br />
-              בהשגחת הרבנות
-              <br />
-              האזורית עמק המעיינות
-            </p>
-          </div>
-        </div>
-
-        <!-- logo circle + print registration block (the label's left end) -->
-        <div class="lbl-brand-end">
-          <div class="lbl-logo-ring">
-            <img src="/marva-mark.svg" alt="" />
-            <span dir="ltr">MARVA</span>
-          </div>
-          <div class="lbl-regmark"></div>
-        </div>
+        <!-- kosher + made-in-israel emblems: actual crops from the print -->
+        <img class="lbl-badatz" src="/label/badatz.png" alt="" />
+        <img class="lbl-israel" src="/label/made-in-israel.png" alt="" />
       </div>
 
       <!-- BLANK MIDDLE · the label's own empty area = the client ad zone -->
-      <div class="lbl-zone lbl-zone-client absolute inset-y-0 left-[30.5%] z-20" data-label-panel="center">
+      <div class="lbl-zone lbl-zone-client absolute inset-y-0 left-[30%] z-20" data-label-panel="center">
         <span class="lbl-client-text font-display">{placeholder}</span>
       </div>
 
-      <!-- RIGHT CLUSTER · printed right region of the label, tucks under the middle -->
+      <!-- RIGHT CLUSTER · printed right region, tucks under the middle -->
       <div class="lbl-zone lbl-zone-right absolute inset-y-0 right-0 z-10" data-label-panel="right" aria-hidden="true">
-        <!-- source declaration (rightmost — the RTL start of the label) -->
         <div class="lbl-source">
           <p class="lbl-source-title">מי שתיה מעמק המעיינות</p>
-          <p>מקורם תת קרקעי, מכילים מינרלים טבעיים</p>
-          <p lang="ar">مياه شرب من وادي الينابيع، من مصدر جوفي غني بالمعادن الطبيعية</p>
-          <p>
-            מי שתייה המכילים מינרלים טבעיים, מופק ממקור קרקעי בין הרי הגלבוע לנהר הירדן השוכן בעמק המעיינות
-          </p>
-        </div>
-
-        <!-- deposit box · contents · producer -->
-        <div class="lbl-legal">
-          <div class="lbl-deposit">חייב<br />בפיקדון<br />30 אג׳</div>
-          <p class="lbl-contents">תכולה: <b dir="ltr">500</b> מ״ל/<span dir="ltr">ML</span></p>
-          <p class="lbl-fine">
+          <p class="lbl-source-tag">ממקור תת קרקעי המכיל מינרלים טבעיים</p>
+          <p class="lbl-source-ar" lang="ar">مياه شرب من وادي الينابيع، من مصدر جوفي غني بالمعادن الطبيعية</p>
+          <p class="lbl-source-he">מי שתייה המכילים מינרלים טבעיים מופק ממקור תת קרקעי בין הרי הגלבוע לנהר הירדן השוכן בעמק המעיינות</p>
+          <p class="lbl-contents">תכולה: <span dir="ltr">500 ML</span> מ״ל/<span lang="ar">مل</span></p>
+          <p class="lbl-producer">
             היצרן: עמק המעיינות, מים מינרליים טבעיים בע״מ. קיבוץ שדה אליהו, עמק המעיינות.
             <br />
-            <span lang="ar">المنتج: عيمك همعيانوت، مياه معدنية طبيعية — كيبوتس سدي الياهو، عيمك همعيانوت</span>
+            <span lang="ar">المنتج: عيمك همعيانوت مياه معدنيه طبيعيه بع״م كيبوتس سدي الياهو، عيمك همعيانوت.</span>
           </p>
         </div>
 
-        <!-- recycling marks column (leftmost, beside the blank middle) -->
-        <div class="lbl-marks" aria-hidden="true">
-          <!-- tidyman -->
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="17" cy="10" r="3.6" />
-            <path d="M17 15v12l-4 12" />
-            <path d="M17 19l10-3.4" />
-            <path d="M29 21l2.6 4.4" />
-            <path d="M29 27h11l-1.8 13h-7L29 27Z" />
-          </svg>
-          <!-- 100% recyclable roundel -->
-          <svg viewBox="0 0 64 64" fill="none">
-            <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="2.5" />
-            <defs>
-              <path id="lbl-arc" d="M11 32a21 21 0 0 1 42 0" />
-            </defs>
-            <text font-size="8.5" letter-spacing="1.2" fill="currentColor" font-family="Rubik, sans-serif">
-              <textPath href="#lbl-arc" startOffset="50%" text-anchor="middle">RECYCLABLE</textPath>
-            </text>
-            <text x="32" y="44" text-anchor="middle" font-size="13.5" font-weight="700" fill="currentColor" font-family="Rubik, sans-serif">100%</text>
-          </svg>
-          <!-- resin code: PETE 1 -->
-          <div class="lbl-pete">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M24 8 39 34.5H9L24 8Z" />
-              <path d="M27 12.8 24 8l-4.6 2.6" />
-              <path d="M12.2 29 9 34.5l5.6.6" />
-              <path d="M33 34.5h6l-1.4-5.4" />
-              <text x="24" y="30" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor" stroke="none" font-family="Rubik, sans-serif">1</text>
-            </svg>
-            <span dir="ltr">PETE</span>
-          </div>
-        </div>
+        <div class="lbl-deposit">חייב<br />בפיקדון<br />30 אג׳</div>
+        <!-- black recycling marks under the deposit box: actual crop from the print -->
+        <img class="lbl-recycle" src="/label/recycle-marks.png" alt="" />
       </div>
 
     </div>
@@ -190,266 +147,293 @@ const minerals = [
 </div>
 
 <style>
-  /* One var drives strip width AND the em type scale (1em = 1% of strip
-     width) so the whole label scales as a single graphic at the scan's true
-     proportions (1663×262 px measured on the label image). */
+  /* 1em = 1% of strip width; strip height = 16.52em (823.94:136.06 pts).
+     Ink and fills sampled from the print scan.
+
+     The stage is an inline-size container and the strip derives from cqw,
+     NOT vw: the strip lives inside the section's max-w-6xl px-6 column, so
+     a vw-based width gets flex-shrunk while font-size/--u would keep the
+     unshrunk value — silently breaking the em↔width identity the whole
+     geometry depends on. cqw is the actual available width, so
+     width === 100 × --u at every viewport. */
+  .marva-label-stage {
+    container-type: inline-size;
+  }
   .marva-label-track {
-    --strip-w: min(92vw, 1200px);
-    --lbl-blue: #1e6eb4;
-    --lbl-blue-soft: #d9eaf8;
+    --strip-w: min(92cqw, 1200px);
+    /* geometry unit: 1u = 1% of strip width. Positioned elements that set
+       their own font-size MUST use var(--u), not em — em offsets resolve
+       against the element's own font-size. */
+    --u: calc(var(--strip-w) / 100);
+    --lbl-ink: #2a3443;
+    --lbl-band: #acd2e6;
     width: var(--strip-w);
-    aspect-ratio: 1663 / 262;
-    font-size: calc(var(--strip-w) / 100);
+    aspect-ratio: 82394 / 13606;
+    font-size: var(--u);
     font-family: var(--font-body);
-    color: var(--lbl-blue);
-    /* keep mobile browsers from inflating the deliberately-tiny print */
+    color: var(--lbl-ink);
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
+    /* One shadow for the whole composite: flush panels read as a single
+       sheet of paper (no seams), separated panels still cast individually. */
+    filter: drop-shadow(0 2px 3px rgba(17, 17, 17, 0.07)) drop-shadow(0 12px 22px rgba(17, 17, 17, 0.1));
   }
 
-  /* Zone widths — must stay in sync with ZONES in the <script>. The three
-     panels read as ONE continuous strip at rest: shared white ground,
-     hairline outline that only rounds at the strip's outer ends. */
+  /* Zone widths — must stay in sync with ZONES in the <script>. Borderless
+     white paper like the print; the track-level drop-shadow gives the edge. */
   .lbl-zone {
     background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    box-shadow: 0 1px 2px rgba(17, 17, 17, 0.04), 0 10px 26px rgba(17, 17, 17, 0.08);
     overflow: hidden;
   }
   .lbl-zone-left {
-    width: 30.5%;
-    border-left: 1px solid var(--color-border);
-    border-radius: 0 0.6em 0.6em 0; /* physical-left end of the strip (RTL box) */
-    display: flex;
-    flex-direction: row; /* dir=rtl → first child (minerals) sits rightmost */
-    align-items: stretch;
-    gap: 0.7em;
-    padding: 0.7em 0.6em;
+    width: 30%;
+    border-radius: 0 0.35em 0.35em 0;
   }
   .lbl-zone-client {
-    width: 42%;
+    width: 41.7%;
     display: flex;
     align-items: center;
     justify-content: center;
   }
   .lbl-zone-right {
-    width: 27.5%;
-    border-right: 1px solid var(--color-border);
-    border-radius: 0.6em 0 0 0.6em; /* physical-right end of the strip */
-    display: flex;
-    flex-direction: row; /* dir=rtl → first child (source block) sits rightmost */
-    align-items: stretch;
-    gap: 0.6em;
-    padding: 0.7em 0.6em;
+    width: 28.3%;
+    border-radius: 0.35em 0 0 0.35em;
   }
 
-  /* ── LEFT CLUSTER ─────────────────────────────────────────────── */
-  .lbl-minerals {
-    flex: 0 0 38%;
-    min-width: 0;
+  /* ── LEFT CLUSTER (positions measured off the scan, em = % strip) ── */
+  .lbl-logo-circle {
+    position: absolute;
+    left: 1.4em;
+    top: 0.9em;
+    width: 7.4em;
+    height: 7.4em;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0.12em 0.5em rgba(0, 0, 0, 0.18);
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3em;
+  }
+  .lbl-logo-circle img {
+    width: 3.5em;
+    height: auto;
+    display: block;
+  }
+  .lbl-logo-circle span {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 0.85em;
+    letter-spacing: 0.12em;
+    margin-inline-end: -0.12em;
+    color: #111;
+  }
+  .lbl-regmark {
+    position: absolute;
+    left: 0.72em;
+    top: 9.3em;
+    width: 1.84em;
+    height: 7.22em;
+    background: #111;
+  }
+
+  .lbl-care {
+    position: absolute;
+    left: 8.8em;
+    top: 0;
+    bottom: 0;
+    width: 9.7em;
+    text-align: center;
+  }
+  .lbl-bestbefore {
+    position: absolute;
+    top: calc(0.75 * var(--u));
+    width: 100%;
+    font-size: 0.64em;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .lbl-arrow {
+    font-weight: 700;
+    padding-inline-start: 0.2em;
+  }
+  .lbl-storage {
+    position: absolute;
+    top: calc(7.55 * var(--u));
+    width: 100%;
+    font-size: 0.6em;
+    line-height: 1.33;
+  }
+  .lbl-phone {
+    display: inline-block;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    margin-top: 0.15em;
+  }
+  .lbl-kosher {
+    position: absolute;
+    top: calc(12.25 * var(--u));
+    width: 100%;
+    font-size: 0.6em;
+    line-height: 1.28;
+  }
+  .lbl-kosher b {
+    font-size: 1.45em;
+  }
+
+  .lbl-table-box {
+    position: absolute;
+    left: 18.83em;
+    top: 0.75em;
+    width: 10.44em;
+    height: 11.31em;
+    border: 0.09em solid var(--lbl-ink);
+    border-radius: 0.3em;
+    background: linear-gradient(180deg, #f7fafc, #e6f0f7);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .lbl-thead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25em 0.45em;
+    border-bottom: 0.09em solid var(--lbl-ink);
+    font-size: 0.5em;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .lbl-thead [lang='ar'] {
+    font-weight: 500;
   }
   .lbl-table {
     flex: 1;
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
-    font-size: 0.52em;
-    line-height: 1.15;
-    border: 0.14em solid var(--lbl-blue);
-  }
-  .lbl-table th {
-    font-weight: 700;
-    text-align: start;
-    padding: 0.2em 0.35em;
-    border-bottom: 0.14em solid var(--lbl-blue);
-    background: var(--lbl-blue-soft);
+    font-size: 0.5em;
+    line-height: 1.1;
   }
   .lbl-table td {
-    padding: 0.08em 0.35em;
+    padding: 0.06em 0.35em;
+    overflow: hidden;
   }
-  .lbl-table tbody tr:nth-child(even) {
-    background: var(--lbl-blue-soft);
+  .lbl-table tr.is-band {
+    background: var(--lbl-band);
+  }
+  .t-he {
+    font-weight: 700;
+    width: 29%;
   }
   .t-ar {
-    opacity: 0.85;
+    width: 27%;
+    font-weight: 500;
   }
   .t-v {
+    width: 18%;
     font-weight: 700;
     text-align: start;
     white-space: nowrap;
   }
-  .t-chip {
-    display: inline-block;
-    background: var(--lbl-blue);
-    color: var(--color-surface);
-    border-radius: 0.5em;
-    padding: 0 0.4em;
-    font-weight: 600;
+  .t-f {
+    width: 26%;
+    text-align: start;
     white-space: nowrap;
   }
 
-  .lbl-care {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    font-size: 0.52em;
-    line-height: 1.35;
-  }
-  .lbl-care-line b {
-    letter-spacing: 0.08em;
-  }
-  .lbl-arrow {
-    display: inline-block;
-    font-weight: 700;
-  }
-  .lbl-kosher {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6em;
-    text-align: start;
-  }
-  .lbl-kosher b {
-    font-size: 1.25em;
-  }
-  .lbl-stamp {
-    flex-shrink: 0;
-    width: 4.2em;
-    height: 5.4em;
-    border: 0.16em double var(--lbl-blue);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8em;
-    font-weight: 700;
-    line-height: 1.2;
-  }
-
-  .lbl-brand-end {
-    flex: 0 0 22%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 0.5em;
-  }
-  .lbl-logo-ring {
-    width: 7.4em;
-    height: 7.4em;
-    border: 0.09em solid rgba(17, 17, 17, 0.25);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25em;
-    color: var(--color-ink);
-  }
-  .lbl-logo-ring img {
-    width: 2.6em;
-    height: auto;
-    display: block;
-  }
-  .lbl-logo-ring span {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 0.85em;
-    letter-spacing: 0.14em;
-    margin-inline-end: -0.14em;
-  }
-  /* print registration block — hugs the label's physical bottom-left corner,
-     as on the scan */
-  .lbl-regmark {
+  .lbl-badatz {
     position: absolute;
-    left: 0.35em;
-    bottom: 0.35em;
-    width: 2.6em;
-    height: 3.2em;
-    background: #111;
+    left: 18.7em;
+    top: 12.37em;
+    width: 6.56em;
+    height: auto;
+  }
+  .lbl-israel {
+    position: absolute;
+    left: 25.7em;
+    top: 12.2em;
+    width: 4.24em;
+    height: auto;
   }
 
-  /* ── BLANK MIDDLE / CLIENT ZONE ───────────────────────────────── */
+  /* ── BLANK MIDDLE / CLIENT ZONE ── */
   .lbl-client-text {
     font-weight: 700;
     font-size: 2.4em;
     color: var(--color-ink);
   }
 
-  /* ── RIGHT CLUSTER ────────────────────────────────────────────── */
+  /* ── RIGHT CLUSTER ── */
   .lbl-source {
-    flex: 1 1 38%;
-    min-width: 0;
-    font-size: 0.52em;
-    line-height: 1.4;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
+    position: absolute;
+    left: 0.3em; /* panel is 28.3em; column x 0.3–11.3em from panel left */
+    width: 11em;
+    top: 0.77em;
+    text-align: justify;
+    text-align-last: start;
+  }
+  .lbl-source p {
+    margin: 0;
   }
   .lbl-source-title {
-    font-weight: 700;
-    font-size: 1.5em;
+    font-size: 0.8em;
+    font-weight: 800;
     line-height: 1.2;
   }
-  .lbl-source [lang='ar'] {
-    opacity: 0.85;
-  }
-
-  .lbl-legal {
-    flex: 1 1 34%;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.45em;
-    text-align: center;
-  }
-  .lbl-deposit {
-    border: 0.18em solid var(--lbl-blue);
-    border-radius: 0.35em;
-    padding: 0.3em 0.7em;
+  .lbl-source-tag {
+    font-size: 0.6em;
     font-weight: 700;
-    font-size: 1.05em;
-    line-height: 1.25;
+    line-height: 1.3;
+  }
+  .lbl-source-ar {
+    font-size: 0.6em;
+    line-height: 1.35;
+  }
+  .lbl-source-he {
+    font-size: 0.56em;
+    line-height: 1.3;
   }
   .lbl-contents {
-    font-size: 0.55em;
+    font-size: 0.66em;
     font-weight: 700;
+    border-top: 0.07em solid var(--lbl-ink);
+    border-bottom: 0.07em solid var(--lbl-ink);
+    padding: 0.12em 0;
+    margin: 0.25em 0 !important;
   }
-  .lbl-fine {
-    font-size: 0.42em;
-    line-height: 1.45;
-    opacity: 0.9;
+  .lbl-producer {
+    font-size: 0.56em;
+    line-height: 1.3;
+  }
+  .lbl-producer [lang='ar'] {
+    font-size: 1.04em;
   }
 
-  .lbl-marks {
-    flex: 0 0 20%;
+  .lbl-deposit {
+    position: absolute;
+    left: calc(12.01 * var(--u));
+    top: calc(0.75 * var(--u));
+    width: calc(8.29 * var(--u));
+    height: calc(8.83 * var(--u));
+    background: linear-gradient(160deg, #edf4fa, #dcebf5);
+    border: 0.08em solid var(--lbl-ink);
+    border-radius: 0.3em;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 0.2em 0;
-    color: var(--lbl-blue);
-  }
-  .lbl-marks svg {
-    width: 2.4em;
-    height: 2.4em;
-  }
-  .lbl-pete {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.05em;
-  }
-  .lbl-pete span {
-    font-size: 0.42em;
+    justify-content: center;
+    text-align: center;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    font-size: 2.1em;
+    line-height: 1.22;
+  }
+  .lbl-recycle {
+    position: absolute;
+    left: 11.89em;
+    top: 9.13em;
+    width: 8.67em;
+    height: auto;
   }
 </style>
 
@@ -470,13 +454,13 @@ const minerals = [
     const staticMode = new URLSearchParams(location.search).has('label-static');
 
     if (!reduced && !staticMode) {
-      /* Zones tile at the scan's true boundaries: left [0,30.5] · blank
-         middle [30.5,72.5] · right [72.5,100] (% of strip — keep in sync
-         with the CSS). Both printed clusters sit adjacent to the middle, so
-         tucking each flush behind the middle's edges is exactly one
-         own-width: xPercent ±100. The middle's true center is at 51.5% of
-         the strip, so the whole track also glides -1.5% → 0 to keep the
-         lone middle panel viewport-centered at the start. */
+      /* Zones tile at the scan's boundaries: left [0,30] · middle [30,71.7] ·
+         right [71.7,100] (% of strip — keep in sync with the CSS). Both
+         printed clusters sit adjacent to the middle, so tucking each flush
+         behind the middle's edges is exactly one own-width: xPercent ±100.
+         The middle's true center is at 50.85% of the strip, so the track
+         also glides -0.85% → 0 to keep the lone middle panel
+         viewport-centered at the start. */
       const track = document.querySelector<HTMLElement>('.marva-label-track');
 
       gsap
@@ -491,7 +475,7 @@ const minerals = [
             anticipatePin: 1,
           },
         })
-        .fromTo(track, { xPercent: -1.5 }, { xPercent: 0 }, 0)
+        .fromTo(track, { xPercent: -0.85 }, { xPercent: 0 }, 0)
         .fromTo(left, { xPercent: 100 }, { xPercent: 0 }, 0)
         .fromTo(right, { xPercent: -100 }, { xPercent: 0 }, 0);
 
