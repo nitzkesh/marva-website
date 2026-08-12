@@ -20,10 +20,13 @@ const {
   formStartHeading,
   advertisersMeta,
   advertisersHero,
+  kpis,
   labelPromo,
   advertiserOptions,
   whyAdvertiseHeading,
   whyAdvertise,
+  howHeading,
+  howSteps,
   adForm,
 } = getContent(locale);
 
@@ -41,6 +44,47 @@ const whyIcons: Record<string, string> = {
   label: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><rect x="6" y="14" width="36" height="20" rx="3"/><path d="M34 14v20"/><path d="M12 22h14"/><path d="M12 27h9"/><circle cx="38" cy="24" r="1.5"/></svg>`,
   crowd: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><circle cx="24" cy="15" r="5"/><path d="M14 35c0-6 4.5-10 10-10s10 4 10 10"/><circle cx="9" cy="19" r="4"/><path d="M3 35c0-4.5 2.5-8 6-9.3"/><circle cx="39" cy="19" r="4"/><path d="M45 35c0-4.5-2.5-8-6-9.3"/></svg>`,
   megaphone: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="36" height="36" aria-hidden="true"><path d="M6 20v8a3 3 0 0 0 3 3h3l14 9V8L12 17H9a3 3 0 0 0-3 3Z"/><path d="M26 17a7 7 0 0 1 0 14"/><path d="M33 12a15 15 0 0 1 0 24"/></svg>`,
+};
+
+/* Inline stroke-style vector icons for the "how it works" steps — moved here
+   from the home page (was section C there), same house style. */
+const howIcons: Record<string, string> = {
+  document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M14 6h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M28 6v8h8"/><path d="M17 26h14"/><path d="M17 32h14"/><path d="M17 20h6"/></svg>`,
+  bottle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M19 4L29 4L29 9L27 9L27 14Q35 17 35 23L35 38Q35 42 31 42L17 42Q13 42 13 38L13 23Q13 17 21 14L21 9L19 9Z"/><path d="M15 27h18"/><path d="M15 34h18"/></svg>`,
+  rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M24 4c6 4 9 11 9 18 0 4-1 8-3 11l-6 5-6-5c-2-3-3-7-3-11 0-7 3-14 9-18Z"/><circle cx="24" cy="18" r="3.5"/><path d="M17 30l-6 4 2-8"/><path d="M31 30l6 4-2-8"/><path d="M20 38h8l-4 6-4-6Z"/></svg>`,
+};
+
+/* Inline stroke-style vector icons for the KPI band (same house style as
+   whyIcons above: currentColor, 2px stroke), rendered at 88px — larger than
+   the whyAdvertise icons because these carry the band on their own, with no
+   plate behind them.
+
+   Every element carrying a `kpi-a-*` class is an animation handle; the
+   keyframes live in global.css under "KPI icons". Each icon plays a short beat
+   on a long 10s loop. Loops stay paused until `#kpis` gets `.kpi-playing` on
+   first scroll-in (see the page script).
+
+   `roi` is a stationary rocket — only the air stripes and burner flame move.
+   `value` is a thin-ring compass: the ring is fixed, the needle spins a full
+   continuous 360deg with no start/stop beat — approved as a standalone
+   preview before landing here, see the `kpi-compass-spin` keyframes below. */
+const kpiIcons: Record<string, string> = {
+  roi: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="88" height="88" aria-hidden="true"><g class="kpi-a-rocket"><line class="kpi-a-stripe" x1="4" y1="30" x2="14" y2="26"/><line class="kpi-a-stripe" x1="3" y1="35" x2="14" y2="31"/><line class="kpi-a-stripe" x1="5" y1="40" x2="15" y2="36"/><path d="M28 6c0 0 5.5 6 5.5 15.5v6.5c0 2-2.5 3-5.5 3s-5.5-1-5.5-3v-6.5C22.5 12 28 6 28 6z"/><circle cx="28" cy="18" r="2.5"/><path d="M22.5 29.5 17 37l5-1.8"/><path d="M33.5 29.5 39 37l-5-1.8"/><g class="kpi-a-flame"><path d="M24.5 34.5c0 0-1.5 4.2 3.5 7 5-2.8 3.5-7 3.5-7"/><path d="M26.5 35c0 0-.2 2.4 1.5 4.2 1.7-1.8 1.5-4.2 1.5-4.2"/></g></g></svg>`,
+  impressions: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="88" height="88" aria-hidden="true"><circle class="kpi-a-ring" cx="24" cy="24" r="17"/><circle class="kpi-a-ring" cx="24" cy="24" r="10.5"/><g class="kpi-a-cross"><line x1="24" y1="2" x2="24" y2="9"/><line x1="24" y1="39" x2="24" y2="46"/><line x1="2" y1="24" x2="9" y2="24"/><line x1="39" y1="24" x2="46" y2="24"/></g><circle class="kpi-a-dot" cx="24" cy="24" r="3" fill="currentColor" stroke="none"/></svg>`,
+  /* Hand-holding-bottle + heart — supplied by Nitzan as a flat two-tone
+     glyph, paths reproduced verbatim (only the embedded C2PA provenance
+     metadata was stripped since it doesn't render). Recolored for a
+     transparent background on the black band: the original was #1A1B1D
+     silhouette + white detail lines on its own white backdrop square: the
+     backdrop is dropped, the silhouette becomes sage (matching the other two
+     KPI icons' currentColor), and the detail lines become ink (matching the
+     band's own background) so they still read as cut-out highlights rather
+     than washing out as white-on-light-green noise. The heart is wrapped in
+     its own <g class="kpi-a-heart"> so it can pump independently — see "KPI
+     icons" in global.css. transform-box:fill-box there scales it around its
+     own centre, not the icon's, so growing on the beat can't walk it into
+     the bottle. */
+  value: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="258 232 764 764" width="128" height="128" aria-hidden="true"><path fill="var(--color-sage)" d="M564.622 255.528C592.049 254.123 620.903 256.05 648.436 255.311C679.737 254.472 681.037 274.119 680.075 299.158C679.568 312.353 682.843 321.56 673.685 333.269C685.843 342.058 685.198 355.223 669.753 359.115C669.82 378.936 671.096 378.234 685.525 390.693C697.152 400.733 708.921 414.576 716.906 427.577C733.062 453.845 737.324 486.029 733.493 516.293C730.958 536.322 727.936 554.37 726.97 574.662C734.856 574.142 741.191 573.919 748.858 576.389C757.703 579.159 765.018 585.447 769.087 593.775C779.255 614.69 767.82 634.828 748.268 644.452C753.044 647.392 756.022 649.539 759.491 654.083C764.992 661.363 767.388 670.524 766.156 679.565C764.608 690.735 759.426 697.392 750.776 703.817C753.353 705.834 756.024 708.034 758.035 710.62C763.696 718.036 766.11 727.43 764.726 736.656C763.143 747.704 758.292 753.757 749.81 760.132C764.16 772.666 767.624 791.615 754.743 807.416C748.009 815.677 738.202 818.157 727.864 818.66C728.627 850.964 736.902 885.907 729.717 917.869C727.01 929.91 717.626 941.545 706.765 947.392C676.958 963.3 644.377 948.366 613.071 947.965C573.704 947.461 518.872 972.554 494.319 927.307C490.384 917.725 489.283 912.633 488.52 902.284C477.563 905.633 466.772 907.588 456.072 910.917C448.916 913.143 438.637 918.832 431.841 922.483C438.604 943.219 424.905 947.455 409.893 955.121C404.532 957.958 399.252 960.665 393.879 963.508C381.764 969.92 365.374 980.599 355.911 963.885C351.134 955.449 346.8 946.394 342.343 937.645L317.697 889.485L293.41 842.959C290.784 837.973 280.218 818.821 279.278 814.351C278.391 810.002 279.302 805.479 281.805 801.813C283.513 799.351 285.841 797.396 288.353 795.794C294.721 791.732 335.109 770.841 340.992 769.821C347.75 768.649 352.475 770.955 357.739 774.804C380.373 759.631 380.999 748.848 389.417 723.309C396.223 702.66 402.141 678.664 413.47 660.05C422.567 645.103 434.926 630.292 445.789 616.41C460.959 596.896 476.266 577.489 491.708 558.19C489.344 536.136 484.984 514.497 484.862 493.16C484.594 446.4 508.802 410.13 544.136 381.984C550.38 377.01 549.999 366.923 549.995 359.383C534.035 354.694 533.46 342.9 546.092 333.411C535.887 321.972 540.411 306.212 539.535 291.966C538.296 271.807 542.434 258.641 564.622 255.528Z"/><path fill="var(--color-ink)" d="M712.263 587.945L713.379 587.927C714.802 589.708 714.2 637.994 714.293 644.036C708.198 646.797 703.752 649.604 699.52 654.902C693.505 662.484 690.893 672.215 692.303 681.79C693.824 692.449 698.69 698.602 706.875 704.791C685.369 719.87 686.711 746.793 707.902 761.718C704.115 764.863 701.625 767.556 699.288 771.966C695.27 779.644 694.441 788.596 696.981 796.881C700.19 807.287 706.172 812.045 715.228 816.66L715.446 825.984C670.273 842.911 604.53 843.228 557.15 836.845C539.117 834.233 522.147 830.588 505.587 822.693C505.845 811.789 506.815 799.915 507.316 788.892C508.407 767.28 508.822 745.639 508.56 724.001C508.417 714.241 505.801 682.158 508.867 675.335C512.547 667.146 519.266 659.273 524.419 651.901C537.205 633.606 547.341 615.133 553.852 593.628C610.431 599.412 655.945 600.361 712.263 587.945Z"/><path fill="var(--color-ink)" d="M562.863 359.089C594.192 359.592 625.754 359 657.116 359.255C656.648 392.025 667.283 389.155 688.129 411.167C699.002 422.465 707.657 435.703 713.646 450.194C731.369 493.795 715.432 531.13 714.315 576.221C688.211 582.137 669.633 584.041 642.856 585.627C618.547 587.304 579.926 585.842 555.935 582.21C558.661 567.642 556.935 549.04 545.495 538.61C530.377 524.825 514.87 530.997 502.838 544.195C500.507 523.874 496.449 506.238 497.914 485.245C500.197 452.522 515.795 425.106 539.731 403.215C546.625 396.91 555.652 390.77 559.677 382.25C563.227 374.736 561.893 367.337 562.799 359.592L562.863 359.089Z"/><path fill="var(--color-ink)" d="M525.134 543.783C529.623 543.74 533.458 544.995 536.727 548.162C550.234 561.25 543.214 587.081 537.542 602.174C532.279 616.18 524.531 628.969 516.106 641.274C509.827 650.446 499.157 662.688 495.914 673.244C493.235 681.967 496.611 731.414 496.392 745.151C495.85 772.393 494.553 799.614 492.503 826.784C490.867 847.188 488.117 868.639 487.989 888.935C475.97 892.974 465.676 894.838 453.727 898.101C445.753 900.277 433.433 907.058 425.801 911.156L412.868 884.546L363.638 786.068C384.974 772.237 390.9 760.893 398.597 736.482C402.222 724.984 405.93 712.686 409.685 701.231C412.944 691.022 416.987 681.08 421.778 671.494C427.393 660.395 438.158 647.033 446.001 637.047L475.116 600.041L500.733 567.504C507.219 559.332 515.149 547.028 525.134 543.783Z"/><path fill="var(--color-ink)" d="M504.521 834.425C560.006 858.399 659.222 856.745 716.33 837.509C716.502 839.016 716.664 840.524 716.816 842.033C718.098 854.916 719.155 868.275 719.803 881.201C720.657 898.222 721.001 915.107 709.758 928.888C708.836 929.831 707.881 930.742 706.894 931.617C687.339 948.66 658.591 940.294 635.875 936.988C628.026 935.917 620.115 935.363 612.193 935.329C602.881 935.252 593.576 935.876 584.357 937.198C561.544 940.605 527.255 949.195 510.302 928.25C493.881 907.964 502.126 859.609 504.521 834.425Z"/><path fill="var(--color-ink)" d="M341.683 782.524C342.943 782.334 345.391 782.007 346.325 782.791C350.873 786.613 355.397 797.746 358.102 803.129L376.856 840.656C390.543 868.125 404.362 895.714 417.919 923.255C419.076 925.606 421.486 931.662 420.603 934.019C416.297 938.186 378.527 957.249 371.34 960.392C369.926 960.087 368.309 959.675 367.534 958.471C364.969 954.481 362.541 949.165 360.392 944.942L344.903 914.621C328.373 882.377 311.615 850.201 294.866 818.07C293.882 816.181 291.884 812.014 292.106 809.978C296.666 803.844 332.465 787.237 341.683 782.524Z"/><path fill="var(--color-ink)" d="M565.077 268.378C593.441 266.833 624.725 269.023 653.291 268.407C660.293 268.256 667.166 272.421 667.199 280.19C667.251 292.296 667.917 304.938 667.365 317.051C666.976 324.085 662.463 326.219 656.301 326.437L595.047 326.485C587.295 326.497 560.484 327.595 555.119 324.344C550.272 317.961 552.884 302.018 552.283 293.365C551.45 281.394 550.862 270.901 565.077 268.378Z"/><path fill="var(--color-ink)" d="M731.406 653.578C742.326 653.904 751.626 660.133 753.415 671.381C754.398 677.256 752.872 683.273 749.208 687.97C743.704 695.089 736.967 696.568 728.698 697.57C722.521 697.636 717.744 696.985 712.585 693.164C708.164 689.92 705.289 684.984 704.649 679.538C703.86 673.422 705.683 667.257 709.67 662.553C715.734 655.413 722.775 654.196 731.406 653.578Z"/><path fill="var(--color-ink)" d="M728.99 710.515C734.05 710.351 739.123 711.425 743.381 714.269C748.197 717.484 751.419 722.596 752.242 728.329C753.138 734.014 751.634 739.817 748.088 744.351C742.785 751.192 736.431 752.54 728.553 753.67C716.315 753.764 705.365 748.589 704.193 735.042C703.664 729.272 705.484 723.531 709.242 719.121C714.779 712.592 721.102 711.274 728.99 710.515Z"/><path fill="var(--color-ink)" d="M727.047 587.428C729.045 587.275 731.046 587.163 733.049 587.092C740.823 586.863 747.906 588.197 753.681 593.907C757.883 598.054 760.182 603.753 760.034 609.654C759.866 617.182 756.377 622.968 751.035 627.932C743.106 634.098 735.967 634.787 726.486 635.524C726.469 628.999 725.792 591.037 727.047 587.428Z"/><path fill="var(--color-ink)" d="M727.47 766.739C737.901 765.837 746.975 770.977 749.455 781.557C750.682 786.724 749.762 792.169 746.906 796.647C743.067 802.62 738.405 804.393 732 805.912C726.255 806.331 721.57 806.075 716.491 802.764C712.355 800.093 709.493 795.845 708.573 791.008C707.507 785.701 708.621 780.188 711.663 775.711C715.762 769.747 720.832 767.97 727.47 766.739Z"/><path fill="var(--color-ink)" d="M557.678 339.32L662.638 339.356C665.287 341.008 670.313 343.537 668.944 347.155C666.951 348.523 665.716 348.281 663.279 348.329L591.09 348.367C583.267 348.372 555.552 349.246 550.335 346.932L550.115 345.812C551.928 342.391 554.443 341.274 557.678 339.32Z"/><g class="kpi-a-heart"><path fill="var(--color-sage)" d="M824.678 322.312C852.808 318.716 875.869 336.071 888.61 359.851C892.529 354.888 897.019 350.405 901.989 346.494C914.997 336.231 931.538 331.532 947.999 333.422C964.011 335.383 978.564 343.694 988.389 356.488C998.958 370.099 1002.93 389.276 1000.49 406.103C994.304 448.687 962.58 471.429 931.543 495.333C920.837 502.982 877.906 536.936 870.014 538.541C865.147 537.314 858.685 529.664 855.522 525.544C826.293 487.473 776.403 448.404 770.152 398.295C765.574 361.6 786.693 326.675 824.678 322.312Z"/><path fill="var(--color-ink)" d="M826.44 335.14C846.994 332.91 865.471 344.987 875.079 362.718C877.69 367.537 881.083 378.477 886.17 379.833C892.385 379.255 897.16 370.29 901.423 365.256C903.804 362.462 906.443 359.898 909.305 357.598C919.791 349.158 932.405 344.801 945.878 346.305C958.503 347.746 970.03 354.169 977.898 364.146C991.161 381.139 990.947 403.415 982.794 422.462C972.666 446.127 953.738 461.707 933.94 476.895C913.453 492.466 891.278 507.844 871.276 523.618L831.925 478.193C817.524 461.623 806.048 448.36 794.339 429.726C772.773 395.406 779.312 341.473 826.44 335.14Z"/></g></svg>`,
 };
 ---
 
@@ -72,6 +116,59 @@ const whyIcons: Record<string, string> = {
 
         <div class="hero-visual relative w-full max-w-[200px] justify-self-center">
           <img src="/hero-bottle.png" alt={heroBottleAlt} class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
+        </div>
+      </div>
+    </section>
+    )}
+
+    <!-- ═══════════════════ A2. KPI BAND ═══════════════════ -->
+    {sections.advertisers.kpis && (
+    <section id="kpis" class="relative overflow-hidden bg-ink py-16 md:py-24">
+      <!-- Wave caps: purely decorative, painted in a NEIGHBOURING section's own
+           background colour so this band's straight top/bottom edges read as a
+           wave cut out of the rectangle instead of a hard line. Top cap matches
+           the hero above it (bg-base); bottom cap matches label-promo below it
+           (bg-sage-tint). If either neighbour's background token ever changes,
+           update the matching fill here too. -->
+      <!-- Control points sit at each crest/trough with horizontal tangents, which
+           is what makes these read as a sine-like wave rather than a tilted line.
+           preserveAspectRatio="none" squashes the viewBox height into the cap
+           height (200 units -> 96px at md), so the drawn amplitude has to be
+           roughly double what you want on screen. -->
+      <svg class="absolute top-0 inset-x-0 w-full h-16 md:h-24 z-0 pointer-events-none" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,0 L1440,0 L1440,55 C1320,55 1200,112 1080,112 C960,112 840,38 720,38 C600,38 480,112 360,112 C240,112 120,58 0,58 Z" fill="var(--color-base)"></path>
+      </svg>
+      <svg class="absolute bottom-0 inset-x-0 w-full h-16 md:h-24 z-0 pointer-events-none" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0,200 L1440,200 L1440,145 C1320,145 1200,88 1080,88 C960,88 840,162 720,162 C600,162 480,88 360,88 C240,88 120,142 0,142 Z" fill="var(--color-sage-tint)"></path>
+      </svg>
+
+      <div class="max-w-6xl mx-auto px-6 relative z-10">
+        <div class="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+          {visible(kpis).map((kpi) => (
+            <div class="kpi-item w-full sm:w-[calc(50%-1rem)] md:w-[calc(33.333%-1.34rem)] flex flex-col items-center text-center gap-3">
+              <!-- No plate behind the icon: it sits directly on the band so the
+                   icon's own background is the section's. -->
+              <div class="h-32 flex items-center justify-center shrink-0 transition-transform duration-200 hover:-translate-y-1">
+                <div class={`kpi-icon kpi-icon--${kpi.icon} text-sage`} set:html={kpiIcons[kpi.icon]} />
+              </div>
+
+              {kpi.number ? (
+                <>
+                  <div class="kpi-figure font-display font-black text-inverse text-[clamp(2.5rem,5vw,3.5rem)] leading-none" dir="ltr">
+                    <span class="kpi-number" data-count-to={kpi.number}>{kpi.number}</span>{kpi.suffix}
+                  </div>
+                  <p class="font-body text-inverse/80 text-xl md:text-2xl">{kpi.label}</p>
+                </>
+              ) : kpi.headline ? (
+                <>
+                  <p class="font-display font-black text-inverse text-[clamp(2.5rem,5vw,3.5rem)] leading-none">{kpi.headline}</p>
+                  <p class="font-body text-inverse/80 text-xl md:text-2xl">{kpi.label}</p>
+                </>
+              ) : (
+                <p class="font-display font-bold text-inverse text-[clamp(1.5rem,3vw,2rem)] leading-[1.25]">{kpi.label}</p>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -158,6 +255,30 @@ const whyIcons: Record<string, string> = {
     </section>
     )}
 
+    <!-- ═══════════════ C2. HOW IT WORKS ═══════════════ -->
+    <!-- Moved here from the home page (was section C there). -->
+    {sections.advertisers.how && (
+    <section id="how" class="bg-sage-tint py-16 md:py-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <h2 class="how-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {howHeading}
+        </h2>
+        <div class="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto mt-12">
+          {visible(howSteps).map((s) => (
+            <Card class="how-card w-full md:w-[calc(33.333%-1rem)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="how-card-icon text-sage-deep" set:html={howIcons[s.icon]} />
+                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sage-tint font-display font-bold text-sage-deep text-sm">{s.n}</span>
+              </div>
+              <h3 class="font-display font-bold text-ink text-xl mb-2.5">{s.title}</h3>
+              <p class="font-body text-ink/80">{s.body}</p>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+    )}
+
     <!-- ═══════════════ D. ADVERTISER FORM ═══════════════ -->
     {sections.advertisers.adForm && (
     <section id="ad-form" class="bg-sand-tint py-16 md:py-24">
@@ -233,7 +354,10 @@ const whyIcons: Record<string, string> = {
 
   <script>
     import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
     import { heroSpring } from '../../scripts/hero-spring';
+
+    gsap.registerPlugin(ScrollTrigger);
 
     /* Task E — hero entrance (Motion spring, same pattern as home). */
     heroSpring();
@@ -283,6 +407,109 @@ const whyIcons: Record<string, string> = {
             maybeResume();
           });
         }
+      }
+    }
+
+    /* KPI band — count-up + item/icon entrance (GSAP ScrollTrigger). One-shot
+       on scroll-in, never loops. Count-up reads its target from
+       [data-count-to], which already holds the correct server-rendered final
+       value; it's only reset to "1" when the figures are still below the
+       trigger point, so a band that is already on screen at load keeps its
+       real numbers instead of flashing 29 -> 1 -> 29.
+
+       Trigger off the FIGURES ROW, not the section: the section opens with a
+       96px wave cap plus the heading, so on a tall viewport its top crosses
+       'top 80%' while the page is still at scroll 0 — the count would fire at
+       load, finish off-screen, and the visitor would only ever meet a static
+       29. Anchoring to the row means the trigger point and the "is it visible
+       yet" guard describe the same element, and the numbers animate exactly
+       when they come into view. */
+    if (!reduced) {
+      const kpiSection = document.getElementById('kpis');
+      const kpiItems = document.querySelectorAll<HTMLElement>('.kpi-item');
+      const kpiRow = kpiItems[0]?.parentElement;
+
+      if (kpiSection && kpiItems.length && kpiRow) {
+        const countEls = kpiSection.querySelectorAll<HTMLElement>('[data-count-to]');
+        const START_RATIO = 0.8; // matches the 'top 80%' used by every other reveal on the site
+        const belowFold = kpiRow.getBoundingClientRect().top >= window.innerHeight * START_RATIO;
+
+        if (belowFold) {
+          countEls.forEach((el) => {
+            el.textContent = '1';
+          });
+        }
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: kpiRow,
+            start: `top ${START_RATIO * 100}%`,
+            once: true,
+            onEnter: () => kpiSection.classList.add('kpi-playing'),
+          },
+          onStart: () => {
+            kpiSection.classList.add('kpi-playing');
+            if (!belowFold) return;
+            countEls.forEach((el) => {
+              const target = Number(el.dataset.countTo);
+              if (!Number.isFinite(target)) return;
+              const counter = { val: 1 };
+              gsap.to(counter, {
+                val: target,
+                duration: 1.4,
+                ease: 'power2.out',
+                onUpdate: () => {
+                  el.textContent = String(Math.round(counter.val));
+                },
+              });
+            });
+          },
+        });
+
+        kpiItems.forEach((item, i) => {
+          const start = i * 0.12;
+          tl.from(item, { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' }, start);
+
+          const icon = item.querySelector<HTMLElement>('.kpi-icon');
+          if (icon) {
+            tl.from(icon, { scale: 0.5, rotate: -12, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' }, start + 0.12);
+          }
+        });
+      }
+    }
+
+    /* How-it-works card sequence — moved here from the home page (was #how
+       there). Cards enter one-by-one; on desktop (md+) each icon also pops in
+       slightly after its card lands. */
+    if (!reduced) {
+      const howSection = document.getElementById('how');
+      const howCards = document.querySelectorAll<HTMLElement>('.how-card');
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+
+      if (howCards.length) {
+        const tl = gsap.timeline({
+          scrollTrigger: { trigger: howSection || howCards[0], start: 'top 80%', once: true },
+        });
+
+        howCards.forEach((card, i) => {
+          const start = i * 0.18;
+          tl.from(
+            card,
+            { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' },
+            start,
+          );
+
+          if (isDesktop) {
+            const icon = card.querySelector<HTMLElement>('.how-card-icon');
+            if (icon) {
+              tl.from(
+                icon,
+                { scale: 0.6, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' },
+                start + 0.15,
+              );
+            }
+          }
+        });
       }
     }
   </script>

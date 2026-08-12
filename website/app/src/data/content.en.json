@@ -32,17 +32,22 @@
   "headerContent": {
     "menuAriaLabel": "Navigation menu",
     "logoAriaLabel": "Marva — home",
+    "langAriaLabel": "Choose language",
     "ctaLabel": "Contact us",
     "ctaHref": "/en/#inquiry"
   },
   "footerContent": {
-    "ctaLine": "Got more questions? Talk to us:",
+    "contactHeading": "Contact us",
     "phoneLabel": "Phone",
     "phone": "054-5244339",
+    "emailLabel": "Email",
     "email": "marvawater.info@gmail.com",
     "navHeading": "Navigation",
     "navAriaLabel": "Footer navigation",
-    "privacyLabel": "Privacy Policy"
+    "langHeading": "Language",
+    "policyHeading": "Policy",
+    "privacyLabel": "Privacy Policy",
+    "rights": "© Marva 2026"
   },
   "homeMeta": {
     "title": "Marva — Free Water",
@@ -62,13 +67,8 @@
   "conveyorLabel": "Our partners and customers",
   "conveyorChips": [
     {
-      "text": "Coming soon"
-    },
-    {
-      "text": "Coming soon"
-    },
-    {
-      "text": "Coming soon"
+      "text": "Cinema City",
+      "logo": "/partners/cinema-city.png"
     },
     {
       "text": "Coming soon"
@@ -89,7 +89,11 @@
     }
   ],
   "whoStatement": {
-    "big": "Marva is a new advertising platform: free mineral water, and the label is your ad space"
+    "lines": [
+      "Marva is a new advertising platform",
+      "Free mineral water",
+      "The label is your ad space"
+    ]
   },
   "howHeading": "How does it work?",
   "howSteps": [
@@ -197,6 +201,7 @@
       "long": "We're just launching — the first reviews are on their way. Want to be one of the first? Talk to us"
     }
   ],
+  "bigButtonsHeading": "What's next?",
   "bigButtons": [
     {
       "label": "I want to advertise",
@@ -258,6 +263,28 @@
     "ctaLabel": "Get a quote",
     "ctaHref": "#ad-form"
   },
+  "kpiHeading": "The numbers speak",
+  "kpis": [
+    {
+      "icon": "roi",
+      "number": "29",
+      "suffix": "%",
+      "label": "Return on investment"
+    },
+    {
+      "icon": "impressions",
+      "number": "10",
+      "suffix": "",
+      "label": "Impressions per bottle"
+    },
+    {
+      "icon": "value",
+      "number": "",
+      "suffix": "",
+      "headline": "Advertising",
+      "label": "becomes value"
+    }
+  ],
   "labelPromo": {
     "heading": "The label — your stage",
     "caption": "True-to-scale proportions of a 210×42 mm label, including the mandatory zones",

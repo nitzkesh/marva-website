@@ -32,17 +32,22 @@
   "headerContent": {
     "menuAriaLabel": "תפריט ניווט",
     "logoAriaLabel": "מרווה — לדף הבית",
+    "langAriaLabel": "בחירת שפה",
     "ctaLabel": "צור קשר",
     "ctaHref": "/#inquiry"
   },
   "footerContent": {
-    "ctaLine": "לשאלות נוספות, דברו איתנו:",
+    "contactHeading": "צרו קשר",
     "phoneLabel": "טלפון",
     "phone": "054-5244339",
+    "emailLabel": "מייל",
     "email": "marvawater.info@gmail.com",
     "navHeading": "ניווט",
     "navAriaLabel": "ניווט בפוטר",
-    "privacyLabel": "מדיניות פרטיות"
+    "langHeading": "שפה",
+    "policyHeading": "מדיניות",
+    "privacyLabel": "מדיניות פרטיות",
+    "rights": "© מרווה 2026"
   },
   "homeMeta": {
     "title": "מרווה — מים בחינם",
@@ -62,13 +67,8 @@
   "conveyorLabel": "השותפים והלקוחות שלנו",
   "conveyorChips": [
     {
-      "text": "בקרוב"
-    },
-    {
-      "text": "בקרוב"
-    },
-    {
-      "text": "בקרוב"
+      "text": "סינמה סיטי",
+      "logo": "/partners/cinema-city.png"
     },
     {
       "text": "בקרוב"
@@ -89,7 +89,11 @@
     }
   ],
   "whoStatement": {
-    "big": "מרווה היא פלטפורמת פרסום חדשה: מים מינרלים בחינם, שהתווית שלהם היא שטח הפרסום שלכם"
+    "lines": [
+      "מרווה היא פלטפורמת פרסום חדשה",
+      "מים מינרליים בחינם",
+      "התווית היא שטח הפרסום שלכם"
+    ]
   },
   "howHeading": "איך זה עובד?",
   "howSteps": [
@@ -197,6 +201,7 @@
       "long": "אנחנו בשלבי השקה — הממליצים הראשונים בדרך. רוצים להיות בין הראשונים? דברו איתנו"
     }
   ],
+  "bigButtonsHeading": "מה הצעד הבא?",
   "bigButtons": [
     {
       "label": "אני רוצה לפרסם",
@@ -258,6 +263,28 @@
     "ctaLabel": "להצעת מחיר",
     "ctaHref": "#ad-form"
   },
+  "kpiHeading": "המספרים מדברים",
+  "kpis": [
+    {
+      "icon": "roi",
+      "number": "29",
+      "suffix": "%",
+      "label": "החזר על ההשקעה"
+    },
+    {
+      "icon": "impressions",
+      "number": "10",
+      "suffix": "",
+      "label": "חשיפות לבקבוק"
+    },
+    {
+      "icon": "value",
+      "number": "",
+      "suffix": "",
+      "headline": "פרסום",
+      "label": "הופך לערך"
+    }
+  ],
   "labelPromo": {
     "heading": "כל התווית — הבמה שלכם",
     "caption": "פרופורציות אמיתיות של תווית 210×42 מ״מ, כולל אזורי החובה",

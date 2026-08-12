@@ -3,7 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../Header.astro';
 import Footer from '../Footer.astro';
 import Button from '../Button.astro';
-import Card from '../Card.astro';
 import Input from '../Input.astro';
 import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
@@ -23,27 +22,19 @@ const {
   conveyorLabel,
   conveyorChips,
   whoStatement,
-  howHeading,
-  howSteps,
   whereHeading,
   whereCards,
   findSpotsHeading,
   findSpots,
   testimonialsHeading,
   testimonials,
+  bigButtonsHeading,
   bigButtons,
   inquiryTopics,
   inquiryForm,
 } = getContent(locale);
 
 const privacyHref = canonicalHref('privacy', locale);
-
-/* Simple hand-drawn line icons (stroke, currentColor, ~40px) for the "how it works" steps. */
-const icons: Record<string, string> = {
-  document: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M14 6h14l8 8v28a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M28 6v8h8"/><path d="M17 26h14"/><path d="M17 32h14"/><path d="M17 20h6"/></svg>`,
-  bottle: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M19 4L29 4L29 9L27 9L27 14Q35 17 35 23L35 38Q35 42 31 42L17 42Q13 42 13 38L13 23Q13 17 21 14L21 9L19 9Z"/><path d="M15 27h18"/><path d="M15 34h18"/></svg>`,
-  rocket: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="40" height="40" aria-hidden="true"><path d="M24 4c6 4 9 11 9 18 0 4-1 8-3 11l-6 5-6-5c-2-3-3-7-3-11 0-7 3-14 9-18Z"/><circle cx="24" cy="18" r="3.5"/><path d="M17 30l-6 4 2-8"/><path d="M31 30l6 4-2-8"/><path d="M20 38h8l-4 6-4-6Z"/></svg>`,
-};
 
 /* Real photography for the "where" cards (replaces the earlier flat-SVG placeholders).
    Alt text is locale-dependent (from content), src is not. */
@@ -116,35 +107,37 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
       <!-- conveyor strip -->
       {sections.home.conveyor && (
       <div class="relative z-10 border-t border-border bg-surface/70">
-        <div class="max-w-6xl mx-auto px-6 py-5">
+        <div class="max-w-6xl mx-auto px-6 py-7 md:py-8">
           <p class="font-body text-xs tracking-[0.12em] uppercase text-muted mb-3">{conveyorLabel}</p>
           <div class="overflow-hidden conveyor-viewport">
             <div class="conveyor-marquee">
-              <div class="conveyor-track" aria-hidden="false">
-                {visible(conveyorChips).map((chip, i) => (
-                  chip.isCta ? (
-                    <a href={chip.href} class="conveyor-chip bg-ink text-inverse font-semibold hover:bg-[#2B2B2B] transition-colors">{chip.text}</a>
-                  ) : (
-                    <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
-                      <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
-                      {chip.text}
-                    </span>
-                  )
-                ))}
-              </div>
-              <!-- duplicate set — decorative, hidden from assistive tech; makes the marquee loop seamless -->
-              <div class="conveyor-track" aria-hidden="true">
-                {visible(conveyorChips).map((chip, i) => (
-                  chip.isCta ? (
-                    <span tabindex="-1" class="conveyor-chip bg-ink text-inverse font-semibold">{chip.text}</span>
-                  ) : (
-                    <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
-                      <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
-                      {chip.text}
-                    </span>
-                  )
-                ))}
-              </div>
+              <!-- Four identical tracks, each translated by exactly one track's width
+                   (25%) per loop, so the belt loops seamlessly no matter how narrow a
+                   single track is relative to the viewport. Copy 0 is the live,
+                   interactive strip (real CTA link, aria-hidden="false"); copies 1-3 are
+                   decorative duplicates (aria-hidden="true", non-interactive CTA stand-in). -->
+              {[0, 1, 2, 3].map((copy) => (
+                <div class="conveyor-track" aria-hidden={copy === 0 ? 'false' : 'true'}>
+                  {visible(conveyorChips).map((chip, i) => (
+                    chip.isCta ? (
+                      copy === 0 ? (
+                        <a href={chip.href} class="conveyor-chip bg-ink text-inverse font-semibold hover:bg-[#2B2B2B] transition-colors">{chip.text}</a>
+                      ) : (
+                        <span tabindex="-1" class="conveyor-chip bg-ink text-inverse font-semibold">{chip.text}</span>
+                      )
+                    ) : chip.logo ? (
+                      <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                        <img src={chip.logo} alt={chip.text} class="h-10 w-auto object-contain" loading="lazy" />
+                      </span>
+                    ) : (
+                      <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                        <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
+                        {chip.text}
+                      </span>
+                    )
+                  ))}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -156,35 +149,12 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
     {sections.home.who && (
     <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sand-tint py-16">
-      <div class="max-w-3xl mx-auto px-6 text-center">
-        <h2 class="who-heading font-display font-bold text-ink text-[clamp(2rem,4vw+1rem,3.5rem)] leading-[1.25]">
-          {whoStatement.big.split(' ').map((word) => (
-            <span class="who-word inline-block">{word}&nbsp;</span>
-          ))}
-        </h2>
-      </div>
-    </section>
-    )}
-
-    <!-- ═══════════════ C. HOW IT WORKS ═══════════════ -->
-    {sections.home.how && (
-    <section id="how" class="bg-surface py-16 md:py-24">
-      <div class="max-w-6xl mx-auto px-6">
-        <h2 class="how-heading font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
-          {howHeading}
-        </h2>
-        <div class="flex flex-wrap justify-center gap-6 max-w-4xl mx-auto mt-12">
-          {visible(howSteps).map((s) => (
-            <Card class="how-card w-full md:w-[calc(33.333%-1rem)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 shadow-card-hover">
-              <div class="flex items-center gap-3 mb-4">
-                <div class="how-card-icon text-sage-deep" set:html={icons[s.icon]} />
-                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-sage-tint font-display font-bold text-sage-deep text-sm">{s.n}</span>
-              </div>
-              <h3 class="font-display font-bold text-ink text-xl mb-2.5">{s.title}</h3>
-              <p class="font-body text-ink/80">{s.body}</p>
-            </Card>
-          ))}
-        </div>
+      <div class="max-w-3xl mx-auto px-6 text-center flex flex-col gap-6">
+        {whoStatement.lines.map((line, i) => (
+          <p class={`who-line font-display font-bold text-ink leading-[1.2] ${i === 0 ? 'text-[clamp(2.25rem,4.5vw+1.1rem,4rem)]' : 'text-[clamp(2rem,4vw+1rem,3.5rem)]'} ${i === 2 ? 'whitespace-nowrap' : ''}`}>
+            {line}
+          </p>
+        ))}
       </div>
     </section>
     )}
@@ -217,28 +187,30 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     </section>
     )}
 
-    <!-- ═══════════════ D2. UPCOMING DISTRIBUTION POINTS ═══════════════ -->
-    {sections.home.upcoming && (
-    <section id="upcoming" class="bg-surface py-16 md:py-24">
+    <!-- ═══════════════ E. THREE BIG BUTTONS ═══════════════ -->
+    {sections.home.bigButtons && (
+    <section class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
-          {findSpotsHeading}
-        </h2>
-        <div class="bg-sand-tint rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-12">
-          <ul class="list-none p-0 m-0">
-            {visible(findSpots).map((s) => (
-              <li class="flex gap-4 items-center py-3.5 border-b border-border last:border-b-0">
-                <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
-                <span class="font-body text-ink">{s.loc}</span>
-              </li>
-            ))}
-          </ul>
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">{bigButtonsHeading}</h2>
+        <div class="flex flex-wrap justify-center gap-5 max-w-4xl mx-auto mt-12">
+          {visible(bigButtons).map((b) => (
+            <a
+              href={b.href}
+              class={`group w-full md:w-[calc(33.333%-0.834rem)] flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}
+            >
+              <span>{b.label}</span>
+              <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 10H4"></path>
+                <path d="M9 4l-6 6 6 6"></path>
+              </svg>
+            </a>
+          ))}
         </div>
       </div>
     </section>
     )}
 
-    <!-- ═══════════════ E. TESTIMONIALS ═══════════════ -->
+    <!-- ═══════════════ F. TESTIMONIALS ═══════════════ -->
     {sections.home.testimonials && (
     <section id="testimonials" class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
@@ -266,29 +238,28 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     </section>
     )}
 
-    <!-- ═══════════════ F. THREE BIG BUTTONS ═══════════════ -->
-    {sections.home.bigButtons && (
-    <section class="bg-sand-tint py-16 md:py-24">
+    <!-- ═══════════════ G. UPCOMING DISTRIBUTION POINTS ═══════════════ -->
+    {sections.home.upcoming && (
+    <section id="upcoming" class="bg-sand-tint py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
-        <div class="flex flex-wrap justify-center gap-5 max-w-4xl mx-auto">
-          {visible(bigButtons).map((b) => (
-            <a
-              href={b.href}
-              class={`group w-full md:w-[calc(33.333%-0.834rem)] flex flex-col items-center justify-center gap-4 py-10 px-6 rounded-[20px] text-center font-display font-bold text-lg text-ink transition-all duration-200 hover:-translate-y-1 ${bigButtonTints[b.tint].bg} ${bigButtonTints[b.tint].hover}`}
-            >
-              <span>{b.label}</span>
-              <svg class="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M16 10H4"></path>
-                <path d="M9 4l-6 6 6 6"></path>
-              </svg>
-            </a>
-          ))}
+        <h2 class="font-display font-bold text-ink text-[clamp(1.75rem,3vw+0.5rem,3rem)] text-center">
+          {findSpotsHeading}
+        </h2>
+        <div class="bg-surface rounded-[20px] shadow-card p-6 md:p-8 max-w-4xl mx-auto mt-12">
+          <ul class="list-none p-0 m-0">
+            {visible(findSpots).map((s) => (
+              <li class="flex gap-4 items-center py-3.5 border-b border-border last:border-b-0">
+                <span class="font-display font-bold text-sm text-sage-deep min-w-[72px]">{s.date}</span>
+                <span class="font-body text-ink">{s.loc}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
     )}
 
-    <!-- ═══════════════ G. GENERAL INQUIRY FORM ═══════════════ -->
+    <!-- ═══════════════ H. GENERAL INQUIRY FORM ═══════════════ -->
     {sections.home.inquiry && (
     <section id="inquiry" class="bg-surface py-16 md:py-24">
       <div class="max-w-6xl mx-auto px-6">
@@ -364,59 +335,33 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
       }
     }
 
-    /* Who-are-we word cascade — home #who only.
-       Replaces the generic `main h2` reveal (excluded via :not(.who-heading)
-       in shared.ts) so it doesn't double-fire. */
+    /* Who-are-we stacked cascade — home #who only. 3 lines sit stacked
+       normally (no pinning) and fade/slide in one after another as the
+       section is scrolled to — not a `main h2` reveal (there's no h2 in
+       #who at all, just 3 <p class="who-line">), so no exclusion is needed
+       for it in shared.ts.
+
+       Genuinely sequential, not a GSAP `stagger` (stagger only offsets each
+       line's START by a fixed delta — with these durations the tweens still
+       overlap in time, so lines 2 and 3 end up mid-fade together and read as
+       "showing at once"). Each `+=0.3` position instead starts a line only
+       after the PREVIOUS one has fully finished, so line 2 doesn't begin
+       until line 1 has completely landed. */
     if (!reduced) {
       const whoSection = document.getElementById('who');
-      const whoWords = document.querySelectorAll<HTMLElement>('.who-word');
+      const whoLines = document.querySelectorAll<HTMLElement>('.who-line');
 
-      if (whoSection && whoWords.length) {
-        gsap.timeline({
-          scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
-        }).from(whoWords, {
-          y: 24,
-          opacity: 0,
-          duration: 0.5,
-          ease: 'power2.out',
-          stagger: 0.05,
-          clearProps: 'transform',
-        });
-      }
-    }
-
-    /* How-it-works card sequence — home #how only.
-       Replaces the generic `.how-card` reveal (removed from shared.ts) so it
-       doesn't double-fire. Cards enter one-by-one everywhere; on desktop
-       (md+) each icon also pops in slightly after its card lands. */
-    if (!reduced) {
-      const howSection = document.getElementById('how');
-      const howCards = document.querySelectorAll<HTMLElement>('.how-card');
-      const isDesktop = window.matchMedia('(min-width: 768px)').matches;
-
-      if (howCards.length) {
+      if (whoSection && whoLines.length) {
         const tl = gsap.timeline({
-          scrollTrigger: { trigger: howSection || howCards[0], start: 'top 80%', once: true },
+          scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
         });
 
-        howCards.forEach((card, i) => {
-          const start = i * 0.18;
+        whoLines.forEach((line, i) => {
           tl.from(
-            card,
-            { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' },
-            start,
+            line,
+            { y: 24, opacity: 0, duration: 0.5, ease: 'power2.out', clearProps: 'transform' },
+            i === 0 ? 0 : '+=0.3',
           );
-
-          if (isDesktop) {
-            const icon = card.querySelector<HTMLElement>('.how-card-icon');
-            if (icon) {
-              tl.from(
-                icon,
-                { scale: 0.6, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' },
-                start + 0.15,
-              );
-            }
-          }
         });
       }
     }

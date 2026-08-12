@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { getContent, altLocaleHref, canonicalHref, visible, type Locale, type PageKey } from '../data/content';
+import { getContent, altLocaleHref, canonicalHref, visible, locales, localeNames, type Locale, type PageKey } from '../data/content';
 
 interface Props {
   locale: Locale;
@@ -10,46 +10,98 @@ interface Props {
 const { locale, page } = Astro.props;
 const { navLinks, footerContent } = getContent(locale);
 
-const toggleHref = altLocaleHref(page, locale);
-const toggleLabel = locale === 'he' ? 'EN' : 'עברית';
-const toggleAriaLabel = locale === 'he' ? 'Switch to English' : 'עבור לעברית';
 const privacyHref = canonicalHref('privacy', locale);
+/** Social icons with no live destination yet — point at the site's 404 so
+    they're inert without dangling as broken/empty hrefs. */
+const notFoundHref = locale === 'en' ? '/en/404' : '/404';
 ---
 
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer class="bg-base border-t border-border py-12 md:py-16">
-  <div class="max-w-6xl mx-auto px-6 flex flex-wrap gap-10 justify-between">
-    <div>
-      <Logo size="sm" locale={locale} />
-      <div class="mt-4 font-body text-ink">
-        <div class="mb-1.5">{footerContent.ctaLine}</div>
-        <div class="flex flex-wrap gap-4 text-muted">
-          <span dir="ltr" class="text-end">{footerContent.phoneLabel}: {footerContent.phone}</span>
-          <span>·</span>
-          <a dir="ltr" href={`mailto:${footerContent.email}`} class="text-end hover:text-sage-deep transition-colors">{footerContent.email}</a>
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex flex-wrap gap-10 justify-between">
+
+      <!-- a. contact -->
+      <div>
+        <Logo size="sm" locale={locale} />
+        <div class="mt-4 font-body text-ink">
+          <span class="form-label mb-1">{footerContent.contactHeading}</span>
+          <!-- Label stays in the page's own direction and only the value is an
+               LTR island. Wrapping the label inside dir="ltr" too (as the phone
+               line used to) flips it to the far side of the number, so stacked
+               the two lines would mirror each other and the labels wouldn't line up. -->
+          <div class="flex flex-col gap-1.5 text-muted">
+            <span>{footerContent.phoneLabel}: <span dir="ltr">{footerContent.phone}</span></span>
+            <span>{footerContent.emailLabel}: <a dir="ltr" href={`mailto:${footerContent.email}`} class="hover:text-sage-deep transition-colors">{footerContent.email}</a></span>
+          </div>
         </div>
       </div>
+
+      <!-- b. nav -->
+      <nav aria-label={footerContent.navAriaLabel} class="flex flex-col gap-2 font-body text-ink">
+        <span class="form-label mb-1">{footerContent.navHeading}</span>
+        {visible(navLinks).map((l) => (
+          <a href={l.href} class="hover:text-sage-deep transition-colors">{l.label}</a>
+        ))}
+      </nav>
+
+      <!-- c. language -->
+      <div class="flex flex-col gap-2 font-body text-ink">
+        <span class="form-label mb-1">{footerContent.langHeading}</span>
+        {locales.map((l) => (
+          l === locale ? (
+            <span aria-current="true" class="text-muted">{localeNames[l]}</span>
+          ) : (
+            <a href={altLocaleHref(page, locale)} class="hover:text-sage-deep transition-colors">{localeNames[l]}</a>
+          )
+        ))}
+      </div>
+
+      <!-- d. policy -->
+      <div class="flex flex-col gap-2 font-body text-ink">
+        <span class="form-label mb-1">{footerContent.policyHeading}</span>
+        <a href={privacyHref} class="text-muted hover:text-ink transition-colors">{footerContent.privacyLabel}</a>
+      </div>
+
+      <!-- social -->
+      <div class="flex gap-3 items-center h-fit">
+        <a href="https://www.instagram.com/marvawater.il/" target="_blank" rel="noopener" aria-label="Instagram — marvawater.il" class="hover:text-sage-deep transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink">
+            <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+          </svg>
+        </a>
+        <a href={notFoundHref} aria-label="TikTok" class="hover:text-sage-deep transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" aria-hidden="true">
+            <path d="M16 4v12a4 4 0 1 1-4-4"></path>
+            <path d="M16 4a4 4 0 0 0 4 4"></path>
+          </svg>
+        </a>
+        <a href={notFoundHref} aria-label="YouTube" class="hover:text-sage-deep transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" aria-hidden="true">
+            <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path>
+            <path d="m10 15 5-3-5-3z"></path>
+          </svg>
+        </a>
+        <a href={notFoundHref} aria-label="LinkedIn" class="hover:text-sage-deep transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" aria-hidden="true">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect width="4" height="12" x="2" y="9"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+        </a>
+        <a href={notFoundHref} aria-label="Facebook" class="hover:text-sage-deep transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" aria-hidden="true">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          </svg>
+        </a>
+      </div>
+
     </div>
 
-    <nav aria-label={footerContent.navAriaLabel} class="flex flex-col gap-2 font-body text-ink">
-      <span class="form-label mb-1">{footerContent.navHeading}</span>
-      {visible(navLinks).map((l) => (
-        <a href={l.href} class="hover:text-sage-deep transition-colors">{l.label}</a>
-      ))}
-      <a href={toggleHref} aria-label={toggleAriaLabel} class="text-muted hover:text-ink transition-colors">{toggleLabel}</a>
-      <a href={privacyHref} class="text-muted hover:text-ink transition-colors">{footerContent.privacyLabel}</a>
-    </nav>
-
-    <div class="flex gap-3 items-center h-fit">
-      <a href="https://www.instagram.com/marvawater.il/" target="_blank" rel="noopener" aria-label="Instagram — marvawater.il" class="hover:text-sage-deep transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink">
-          <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
-        </svg>
-      </a>
-      <span class="w-6 h-6 rounded-full border border-dashed border-border inline-block"></span>
-      <span class="w-6 h-6 rounded-full border border-dashed border-border inline-block"></span>
+    <div class="border-t border-border mt-10 pt-6 flex justify-end">
+      <span class="font-body text-sm text-muted">{footerContent.rights}</span>
     </div>
   </div>
 </footer>

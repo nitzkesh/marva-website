@@ -28,18 +28,25 @@ export interface NavLink {
 export interface HeaderContent {
   menuAriaLabel: string;
   logoAriaLabel: string;
+  /** Accessible name of the globe button that opens the language menu. */
+  langAriaLabel: string;
   ctaLabel: string;
   ctaHref: string;
 }
 
 export interface FooterContent {
-  ctaLine: string;
+  contactHeading: string;
   phoneLabel: string;
   phone: string;
+  emailLabel: string;
   email: string;
   navHeading: string;
   navAriaLabel: string;
+  langHeading: string;
+  policyHeading: string;
   privacyLabel: string;
+  /** Rights line at the foot of the footer, © glyph included. */
+  rights: string;
 }
 
 export interface PageMeta {
@@ -72,6 +79,11 @@ export interface ConveyorChip {
   text: string;
   href?: string;
   isCta?: boolean;
+  /**
+   * Partner logo shown in place of the text — public-root path, e.g.
+   * `/partners/x.png`. `text` stays the chip's accessible name (the img alt).
+   */
+  logo?: string;
   hidden?: boolean;
 }
 
@@ -143,6 +155,26 @@ export interface HeroContent {
   sub: string;
   ctaLabel: string;
   ctaHref: string;
+}
+
+/**
+ * One headline figure in the advertisers-page KPI band. `number` counts up on
+ * scroll-in; leave it empty for a statement KPI that carries no figure — the
+ * label then takes the whole slot.
+ */
+export interface Kpi {
+  icon: 'roi' | 'impressions' | 'value';
+  number: string;
+  /** Rendered tight against the number once it lands, e.g. "%". */
+  suffix: string;
+  /**
+   * Bold lead line for a statement KPI (one with no `number`), sized to match
+   * the numeric KPIs' big figure so every card in the row carries the same
+   * two-line rhythm. Only meaningful when `number` is empty; ignored otherwise.
+   */
+  headline?: string;
+  label: string;
+  hidden?: boolean;
 }
 
 export interface LabelPromo {
@@ -234,7 +266,7 @@ export interface ContentBundle {
   homeHero: HomeHero;
   conveyorLabel: string;
   conveyorChips: ConveyorChip[];
-  whoStatement: { big: string };
+  whoStatement: { lines: string[] };
   howHeading: string;
   howSteps: HowStep[];
   whereHeading: string;
@@ -243,12 +275,15 @@ export interface ContentBundle {
   findSpots: FindSpot[];
   testimonialsHeading: string;
   testimonials: Testimonial[];
+  bigButtonsHeading: string;
   bigButtons: BigButton[];
   inquiryTopics: string[];
   inquiryForm: InquiryForm;
 
   advertisersMeta: PageMeta;
   advertisersHero: HeroContent;
+  kpiHeading: string;
+  kpis: Kpi[];
   labelPromo: LabelPromo;
   advertiserOptions: AdvertiserOption[];
   whyAdvertiseHeading: string;
@@ -307,3 +342,16 @@ export function altLocaleHref(page: PageKey, locale: Locale): string {
   const other: Locale = locale === 'he' ? 'en' : 'he';
   return routesByPage[page][other];
 }
+
+/**
+ * Language names for the switcher. Endonyms — a language is always offered in
+ * its own language, never translated — so these are locale-independent and
+ * deliberately live here rather than in the per-locale copy files.
+ */
+export const localeNames: Record<Locale, string> = {
+  he: 'עברית',
+  en: 'English',
+};
+
+/** Both locales in a stable order, for rendering the language menu. */
+export const locales: Locale[] = ['he', 'en'];

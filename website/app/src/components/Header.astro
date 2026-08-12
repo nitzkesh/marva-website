@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Button from './Button.astro';
-import { getContent, altLocaleHref, canonicalHref, visible, type Locale, type PageKey } from '../data/content';
+import { getContent, altLocaleHref, canonicalHref, visible, locales, localeNames, type Locale, type PageKey } from '../data/content';
 
 interface Props {
   locale: Locale;
@@ -11,28 +11,73 @@ interface Props {
 const { locale, page } = Astro.props;
 const { navLinks, headerContent } = getContent(locale);
 
-const toggleHref = altLocaleHref(page, locale);
-const toggleLabel = locale === 'he' ? 'EN' : 'עברית';
-const toggleAriaLabel = locale === 'he' ? 'Switch to English' : 'עבור לעברית';
 const homeHref = canonicalHref('home', locale);
 ---
 
 <!-- ═══════════════════ HEADER ═══════════════════ -->
 <header class="site-header sticky top-0 z-50 bg-base/85 backdrop-blur-sm border-b border-border transition-shadow">
   <div class="relative max-w-6xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center">
-    <!-- Hamburger: fixed physical LEFT at all sizes (Freewater-style), opens full-screen overlay -->
-    <button
-      id="hamburger"
-      type="button"
-      aria-label={headerContent.menuAriaLabel}
-      aria-expanded="false"
-      aria-controls="nav-overlay"
-      class="absolute left-0 flex flex-col justify-center items-center gap-[6px] w-10 h-10 z-10 cursor-pointer"
-    >
-      <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
-      <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-opacity duration-200"></span>
-      <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
-    </button>
+    <!-- Hamburger + language switcher: fixed physical LEFT at all sizes (Freewater-style) -->
+    <div class="absolute left-0 flex items-center gap-1">
+      <!-- Hamburger: opens full-screen overlay -->
+      <button
+        id="hamburger"
+        type="button"
+        aria-label={headerContent.menuAriaLabel}
+        aria-expanded="false"
+        aria-controls="nav-overlay"
+        class="flex flex-col justify-center items-center gap-[6px] w-10 h-10 z-10 cursor-pointer"
+      >
+        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
+        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-opacity duration-200"></span>
+        <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
+      </button>
+
+      <!-- Language switcher: globe button opens a small locale menu -->
+      <div class="relative">
+        <button
+          id="lang-toggle"
+          type="button"
+          aria-label={headerContent.langAriaLabel}
+          aria-expanded="false"
+          aria-controls="lang-menu"
+          class="w-10 h-10 flex items-center justify-center cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
+            <!-- x endpoints sit ON the circle at these y's (√(81−9)≈8.49), so the
+                 latitude lines stop at the rim instead of poking out past it. -->
+            <line x1="3.5" y1="9" x2="20.5" y2="9"></line>
+            <line x1="3.5" y1="15" x2="20.5" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Disclosure, not role="menu": a menu role promises arrow-key/Home/End
+             navigation to screen readers, and this is a two-item list of plain
+             links reached with Tab. aria-expanded + aria-controls describe it
+             honestly without claiming keyboard behaviour we don't implement. -->
+        <div
+          id="lang-menu"
+          class="absolute left-0 top-full mt-2 min-w-[9rem] bg-surface border border-border rounded-xl shadow-card overflow-hidden py-1 z-50 opacity-0 -translate-y-1 pointer-events-none transition-[opacity,transform] duration-200"
+        >
+          {locales.map((l) => (
+            l === locale ? (
+              <span aria-current="true" class="block px-4 py-2.5 font-body text-sm text-start bg-sage-tint font-semibold text-ink">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle me-1.5" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                {localeNames[l]}
+              </span>
+            ) : (
+              <a href={altLocaleHref(page, locale)} class="block px-4 py-2.5 font-body text-sm text-start text-ink hover:bg-sage-tint transition-colors">
+                {localeNames[l]}
+              </a>
+            )
+          ))}
+        </div>
+      </div>
+    </div>
 
     <a href={homeHref} class="mx-auto" aria-label={headerContent.logoAriaLabel}>
       <Logo size="sm" locale={locale} />
@@ -58,8 +103,5 @@ const homeHref = canonicalHref('home', locale);
         {l.label}
       </a>
     ))}
-    <a href={toggleHref} aria-label={toggleAriaLabel} class="nav-overlay-link font-display font-bold text-2xl text-inverse/60 hover:text-sage transition-colors">
-      {toggleLabel}
-    </a>
   </nav>
 </div>

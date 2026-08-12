@@ -30,7 +30,7 @@ const MANIFEST = {
       keys: ['testimonialsHeading', 'testimonials'],
       hints: { testimonials: 'section currently hidden — see sections' },
     },
-    { heading: 'THREE BIG BUTTONS', keys: ['bigButtons'] },
+    { heading: 'THREE BIG BUTTONS', keys: ['bigButtonsHeading', 'bigButtons'] },
     { heading: 'INQUIRY FORM', keys: ['inquiryTopics', 'inquiryForm'] },
   ],
   'advertisers/content': [
@@ -40,6 +40,11 @@ const MANIFEST = {
       hints: { advertisersMeta: 'SEO text for Google and link previews — not visible on the page itself' },
     },
     { heading: 'HERO', keys: ['advertisersHero'] },
+    {
+      heading: 'KPIs',
+      keys: ['kpiHeading', 'kpis'],
+      hints: { kpis: 'leave NUMBER empty for a KPI that is a statement, not a figure' },
+    },
     { heading: 'LABEL PROMO', keys: ['labelPromo'] },
     { heading: 'OPTIONS', keys: ['advertiserOptions'] },
     { heading: 'WHY ADVERTISE', keys: ['whyAdvertiseHeading', 'whyAdvertise'] },
@@ -76,6 +81,7 @@ const MANIFEST = {
 const OBJECT_ARRAY_KEYS = new Set([
   'conveyorChips', 'howSteps', 'whereCards', 'findSpots', 'testimonials',
   'bigButtons', 'navLinks', 'advertiserOptions', 'whyAdvertise', 'whyDistribute',
+  'kpis',
 ]);
 const STRING_ARRAY_KEYS = new Set(['inquiryTopics', 'distributorTypes']);
 
@@ -84,6 +90,7 @@ const ENUMS = {
   'howSteps.icon': ['document', 'bottle', 'rocket'],
   'whyAdvertise.icon': ['target', 'label', 'crowd', 'megaphone'],
   'whereCards.illustration': ['beach', 'storefront', 'event', 'supermarket'],
+  'kpis.icon': ['roi', 'impressions', 'value'],
   'bigButtons.tint': ['sage', 'sky', 'sand'],
   'whyDistribute.accent': ['sage', 'sky', 'sand'],
 };
@@ -97,6 +104,7 @@ const ANCHOR_MAP = {
     upcoming: 'upcoming', testimonials: 'testimonials', inquiry: 'inquiry',
   },
   advertisers: {
+    kpis: 'kpis',
     adForm: 'ad-form',
   },
   distributors: {
