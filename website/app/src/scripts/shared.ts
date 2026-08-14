@@ -12,6 +12,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Hygiene fix: ScrollTrigger caches trigger positions at init, before the
+// async Google Fonts (Rubik, Work Sans, Assistant) have swapped in. A late
+// font swap can shift heading sizes/line heights, so cached positions can be
+// slightly off. Re-measure once fonts are ready — doesn't change what's
+// hidden/shown, just keeps trigger math accurate.
+document.fonts.ready.then(() => ScrollTrigger.refresh());
+
 /* ── 1. Full-screen nav overlay (all viewport sizes) ─────────────────── */
 const hamburger = document.getElementById('hamburger');
 const navOverlay = document.getElementById('nav-overlay');
@@ -177,18 +184,50 @@ if (!reduced) {
     });
   });
 
+  // Each card reveals off its OWN position (via ScrollTrigger.batch), not its
+  // section's top edge — on a phone, where cards stack vertically, a
+  // section-level trigger fires while the cards are still off screen, so by
+  // the time the reader scrolls to them they're already static ("header
+  // appears, then dead content"). batch() gives every card its own trigger
+  // but still groups same-frame entries (e.g. a desktop row) into one
+  // staggered reveal, matching the old side-by-side behaviour there.
   ['.where-card', '.testimonial-card', '.why-card', '.option-card', '.tile-card'].forEach((selector) => {
     const cards = document.querySelectorAll<HTMLElement>(selector);
     if (!cards.length) return;
-    const section = cards[0].closest('section');
-    gsap.from(cards, {
-      y: 30,
-      opacity: 0,
-      duration: 0.6,
-      ease: 'power2.out',
-      stagger: 0.1,
-      clearProps: 'transform',
-      scrollTrigger: { trigger: section || cards[0], start: 'top 80%' },
+    gsap.set(cards, { y: 30, opacity: 0 });
+    ScrollTrigger.batch(cards, {
+      start: 'top 85%',
+      onEnter: (batch) => {
+        const elements = batch as HTMLElement[];
+        // Some card types (.where-card) carry a Tailwind hover-lift transition
+        // on `transform` (transition-[transform,box-shadow]). Left alone, that
+        // CSS transition intercepts every transform GSAP writes each tick and
+        // re-interpolates it over its own 200ms, smearing/lagging the reveal
+        // instead of playing GSAP's 0.6s power2.out curve. Suspend the
+        // transition for the reveal only, then hand it back once the reveal
+        // has fully settled so the hover lift keeps its 200ms ease.
+        elements.forEach((el) => {
+          el.style.transition = 'none';
+        });
+        gsap.to(elements, {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out',
+          stagger: 0.1,
+          overwrite: true,
+          clearProps: 'transform',
+          onComplete: () => {
+            elements.forEach((el) => {
+              // Force a reflow while transition is still 'none' so removing
+              // the inline transform above (clearProps) isn't itself picked
+              // up and animated the instant the transition is restored.
+              void el.offsetHeight;
+              el.style.transition = '';
+            });
+          },
+        });
+      },
     });
   });
 }

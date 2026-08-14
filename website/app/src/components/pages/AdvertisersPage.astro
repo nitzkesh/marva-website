@@ -480,35 +480,76 @@ const kpiIcons: Record<string, string> = {
 
     /* How-it-works card sequence — moved here from the home page (was #how
        there). Cards enter one-by-one; on desktop (md+) each icon also pops in
-       slightly after its card lands. */
+       slightly after its card lands.
+
+       Triggers off each card's OWN position via ScrollTrigger.batch, not off
+       the section (#how): on mobile the cards stack vertically (w-full,
+       thirds only at md), so a section-level trigger fires while the cards
+       are still off screen — the reveal plays where nobody can see it and by
+       the time the reader scrolls down the cards are already static. batch()
+       still groups same-frame entries (the desktop row) into one staggered
+       reveal, preserving the sequenced feel there. Matches the .where-card
+       pattern in shared.ts. */
     if (!reduced) {
-      const howSection = document.getElementById('how');
       const howCards = document.querySelectorAll<HTMLElement>('.how-card');
       const isDesktop = window.matchMedia('(min-width: 768px)').matches;
 
       if (howCards.length) {
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: howSection || howCards[0], start: 'top 80%', once: true },
-        });
+        gsap.set(howCards, { y: 30, opacity: 0 });
+        if (isDesktop) {
+          const howIcons = document.querySelectorAll<HTMLElement>('.how-card-icon');
+          if (howIcons.length) gsap.set(howIcons, { scale: 0.6, opacity: 0 });
+        }
 
-        howCards.forEach((card, i) => {
-          const start = i * 0.18;
-          tl.from(
-            card,
-            { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' },
-            start,
-          );
+        ScrollTrigger.batch(howCards, {
+          start: 'top 85%',
+          onEnter: (batch) => {
+            const cards = batch as HTMLElement[];
+            // .how-card carries a Tailwind hover-lift transition on
+            // `transform` (transition-[transform,box-shadow]). Left alone,
+            // that CSS transition intercepts every transform GSAP writes
+            // each tick and re-interpolates it over its own 200ms, smearing
+            // the reveal instead of playing GSAP's 0.6s power2.out curve.
+            // Suspend the transition for the reveal only, then hand it back
+            // once the reveal has fully settled so the hover lift keeps its
+            // 200ms ease.
+            cards.forEach((el) => {
+              el.style.transition = 'none';
+            });
 
-          if (isDesktop) {
-            const icon = card.querySelector<HTMLElement>('.how-card-icon');
-            if (icon) {
-              tl.from(
-                icon,
-                { scale: 0.6, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' },
-                start + 0.15,
+            const tl = gsap.timeline({
+              onComplete: () => {
+                cards.forEach((el) => {
+                  // Force a reflow while transition is still 'none' so
+                  // removing the inline transform (clearProps) isn't itself
+                  // picked up and animated the instant the transition is
+                  // restored.
+                  void el.offsetHeight;
+                  el.style.transition = '';
+                });
+              },
+            });
+
+            cards.forEach((card, i) => {
+              const start = i * 0.18;
+              tl.to(
+                card,
+                { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out', clearProps: 'transform' },
+                start,
               );
-            }
-          }
+
+              if (isDesktop) {
+                const icon = card.querySelector<HTMLElement>('.how-card-icon');
+                if (icon) {
+                  tl.to(
+                    icon,
+                    { scale: 1, opacity: 1, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' },
+                    start + 0.15,
+                  );
+                }
+              }
+            });
+          },
         });
       }
     }

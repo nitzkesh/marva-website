@@ -148,10 +148,19 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
 
     <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
     {sections.home.who && (
-    <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sand-tint py-16">
-      <div class="max-w-3xl mx-auto px-6 text-center flex flex-col gap-6">
+    <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sage-tint py-16">
+      <!-- sage-tint here (not sand-tint): sage is Marva's dominant brand colour (45% of the
+           palette) and was unused on the home page; #who is also the full-screen brand
+           statement moment, a natural place to spend it. This keeps page rhythm alternating —
+           hero bg-base -> who bg-sage-tint -> where bg-sand-tint -> big-buttons bg-surface ->
+           upcoming bg-sand-tint -> inquiry bg-surface — so no two adjacent sections share a bg. -->
+      <div class="max-w-3xl mx-auto px-6 text-center flex flex-col gap-6 w-full min-w-0">
         {whoStatement.lines.map((line, i) => (
-          <p class={`who-line font-display font-bold text-ink leading-[1.2] ${i === 0 ? 'text-[clamp(2.25rem,4.5vw+1.1rem,4rem)]' : 'text-[clamp(2rem,4vw+1rem,3.5rem)]'} ${i === 2 ? 'whitespace-nowrap' : ''}`}>
+          // Line 3 is the longest string and stays single-line from md up (below, it wraps
+          // to 2 balanced lines instead). Its clamp maximum steps down to 3.25rem (vs line 2's
+          // 3.5rem) so it fits the 720px usable width (max-w-3xl minus px-6) without bleeding
+          // past the column at desktop widths.
+          <p class={`who-line font-display font-bold text-ink leading-[1.2] text-balance ${i === 0 ? 'text-[clamp(2.25rem,4.5vw+1.1rem,4rem)]' : i === 2 ? 'text-[clamp(2rem,4vw+1rem,3.25rem)]' : 'text-[clamp(2rem,4vw+1rem,3.5rem)]'} ${i === 2 ? 'md:whitespace-nowrap' : ''}`}>
             {line}
           </p>
         ))}

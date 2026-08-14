@@ -20,6 +20,18 @@
  * out on scroll. Without JS, with reduced motion, or with ?label-static
  * (QA screenshots) the strip renders already unrolled.
  *
+ * Below 768px the strip is rotated 90° (plain CSS, unconditional — not
+ * JS-gated) so its long axis runs down the phone's portrait screen
+ * instead of across its width: a 6.055:1 strip fits a phone's height far
+ * better than its width, so this gets both a bigger base unit AND the
+ * whole label visible at once — an earlier revision panned across an
+ * oversized strip instead and could only ever get one of those two, plus
+ * the right cluster was never reachable on a touch screen. The rotation
+ * lives on a wrapper around .marva-label-track, never on the track
+ * itself — see the <style>/<script> for why. The scroll-driven unroll
+ * below is otherwise unchanged; it just reads as a vertical slide once
+ * rotated, since the zones' local x becomes screen y.
+ *
  * Zone numbers must stay in sync between the <style> and the <script>.
  */
 
@@ -55,7 +67,12 @@ const minerals = [
 <div class="mt-14" data-marva-label>
   <!-- The stage is what gets pinned: strip + breathing room, centered. -->
   <div class="marva-label-stage flex justify-center py-8" data-label-stage>
-    <div class="marva-label-track relative" role="img" aria-label={ariaLabel} dir="rtl">
+    <!-- Mobile-only 90deg rotation (plain CSS, see <style>) lives on this
+         wrapper, never on .marva-label-track itself: GSAP owns the
+         track's `transform` wholesale for the unroll tween below and
+         would clobber a rotate() set on that same element. -->
+    <div class="marva-label-rotate">
+      <div class="marva-label-track relative" role="img" aria-label={ariaLabel} dir="rtl">
 
       <!-- LEFT CLUSTER · printed left region, tucks under the middle -->
       <div class="lbl-zone lbl-zone-left absolute inset-y-0 left-0 z-10" data-label-panel="left" aria-hidden="true">
@@ -142,6 +159,7 @@ const minerals = [
         <img class="lbl-recycle" src="/label/recycle-marks.png" alt="" />
       </div>
 
+      </div>
     </div>
   </div>
 </div>
@@ -155,7 +173,18 @@ const minerals = [
      a vw-based width gets flex-shrunk while font-size/--u would keep the
      unshrunk value — silently breaking the em↔width identity the whole
      geometry depends on. cqw is the actual available width, so
-     width === 100 × --u at every viewport. */
+     width === 100 × --u at every viewport.
+
+     Below 768px --strip-w switches to svh instead (see the mobile block
+     below): the strip is rotated there, so it's viewport HEIGHT, not the
+     stage's inline width, that it has to fit. That does not reopen the
+     hazard above — svh is a viewport unit exactly like the vw this
+     paragraph warns against, but what actually prevented the shrink was
+     never cqw itself, it was flex-shrink: 0 (below, and on the
+     .marva-label-rotate wrapper in the mobile block): cqw only ever
+     dodged the question because the container's resolved size already
+     matched the unshrunk width. flex-shrink: 0 answers it directly for
+     any unit, which is what makes svh safe here too. */
   .marva-label-stage {
     container-type: inline-size;
   }
@@ -174,9 +203,80 @@ const minerals = [
     color: var(--lbl-ink);
     -webkit-text-size-adjust: none;
     text-size-adjust: none;
+    /* Below 768px the track's width no longer matches the stage's own
+       (cqw) size — see the mobile block below — so it must never
+       flex-shrink back down to fit, or the whole point of sizing it off
+       the viewport is lost. No-op on desktop, where the track always
+       already fits its flex container by construction. */
+    flex-shrink: 0;
     /* One shadow for the whole composite: flush panels read as a single
        sheet of paper (no seams), separated panels still cast individually. */
     filter: drop-shadow(0 2px 3px rgba(17, 17, 17, 0.07)) drop-shadow(0 12px 22px rgba(17, 17, 17, 0.1));
+  }
+
+  /* ── MOBILE (<768px) ──────────────────────────────────────────────────
+     Rotated 90°: the strip's own (long) axis then runs down the screen's
+     (long) portrait axis instead of across its (short) width. A 6.055:1
+     strip fits a phone's HEIGHT far better than its width, so this wins
+     on two fronts a straight resize can't: a bigger base unit AND the
+     entire label visible at once, nothing left off-screen (an earlier
+     revision panned across an oversized strip instead of rotating and
+     could only ever get one of those two — plus the right cluster was
+     never reachable at all on a touch screen). The fine print stays
+     illegible at any mobile size regardless (the minerals table is
+     ~3.6px even at the strip width set below) — readers read the label's
+     shape, not its copy, so nothing further is lost.
+     .marva-label-rotate is a plain wrapper around .marva-label-track,
+     never the track itself: GSAP owns the track's `transform` wholesale
+     for the unroll tween in the <script> below and would clobber a CSS
+     rotate() set on that same element. A wrapper keeps the two transform
+     owners on separate elements and needs no GSAP changes at all. */
+  @media (max-width: 767px) {
+    .marva-label-stage {
+      min-height: 100svh;
+      align-items: center;
+      /* The wrapper's un-rotated LAYOUT box (see below) is still ~715px
+         wide even though it only paints ~118px wide once rotated — clip
+         it here so that layout width can't push a horizontal scrollbar
+         onto the page. This clips against the transformed (rotated)
+         rendering, not the pre-transform layout box, so the actual
+         visible strip — comfortably inside the stage on both axes — is
+         never itself cut off. Unconditional: with the whole label always
+         fully visible after rotation, there's nothing left to reach by
+         scrolling, in any mode (animated, reduced-motion, ?label-static,
+         or no JS at all) — so unlike the panning approach this needed
+         before, no overflow-x escape hatch is needed either. */
+      overflow: hidden;
+    }
+    .marva-label-track {
+      /* Driven by viewport HEIGHT, not width, because rotated the strip's
+         own width runs down the screen. svh (small-viewport height, immune
+         to a collapsing mobile address bar resizing things mid-scroll) is
+         the binding constraint. 88% leaves ~6% clear top and bottom so the
+         strip never touches the screen edges; 900px caps it on unusually
+         tall mobile viewports. At 375×812 this resolves to ~715px
+         (--u ≈ 7.15px — more than double the old cqw-based ~3.27px),
+         painting ~118px wide once .marva-label-rotate below rotates it. */
+      --strip-w: min(88svh, 900px);
+    }
+    .marva-label-rotate {
+      /* This wrapper, not the track, is the actual flex item inside
+         .marva-label-stage now — same shrink hazard as .marva-label-track
+         above, one level up. It must render at its full un-rotated size
+         (matching the track it wraps exactly, since it has no sizing of
+         its own) for the rotation below to land centered and correctly
+         proportioned; letting flex shrink it would undersize the whole
+         strip. */
+      flex-shrink: 0;
+      /* Clockwise: CSS rotate() on the browser's y-down screen axis maps
+         a point at the element's LEFT edge, (-1, 0), to (0, -1) — its TOP
+         (matrix x'=x·cos θ−y·sin θ, y'=x·sin θ+y·cos θ; at θ=90°,
+         (-1,0) → (0,-1)). .lbl-zone-left — the MARVA wordmark and the
+         minerals table — sits at the track's physical left edge, so this
+         is what puts the logo at the top of the screen as the natural
+         reading entry point. */
+      transform: rotate(90deg);
+    }
   }
 
   /* Zone widths — must stay in sync with ZONES in the <script>. Borderless
@@ -475,7 +575,10 @@ const minerals = [
          behind the middle's edges is exactly one own-width: xPercent ±100.
          The middle's true center is at 50.85% of the strip, so the track
          also glides -0.85% → 0 to keep the lone middle panel
-         viewport-centered at the start. */
+         viewport-centered at the start. Identical on mobile: the CSS
+         rotation lives on a separate wrapper (see <style>), so this still
+         runs unmodified there — it just reads as a vertical slide instead
+         of a horizontal one, since the zones' local x becomes screen y. */
       const track = document.querySelector<HTMLElement>('.marva-label-track');
 
       gsap
@@ -488,6 +591,10 @@ const minerals = [
             end: '+=600',
             scrub: 1,
             anticipatePin: 1,
+            /* Pin distance depends on measured layout, not just fixed
+               values; invalidate on refresh so a late-loading font/image
+               (or a resize) doesn't leave it stale. */
+            invalidateOnRefresh: true,
           },
         })
         .fromTo(track, { xPercent: -0.85 }, { xPercent: 0 }, 0)
@@ -499,6 +606,9 @@ const minerals = [
       window.addEventListener('load', () => ScrollTrigger.refresh());
     }
     /* reduced motion / static mode: nothing to do — the clusters' static CSS
-       positions ARE the unrolled label; only the animation ever tucks them. */
+       positions ARE the unrolled label; only the animation ever tucks them.
+       The mobile rotation is plain, unconditional CSS (not JS-gated), so it
+       still applies here too, and with the whole label already visible
+       there's nothing further needed for either mode to stay reachable. */
   }
 </script>

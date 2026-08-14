@@ -189,18 +189,35 @@ html[lang='en'] {
   animation: conveyor-scroll 35s linear infinite;
   will-change: transform;
 }
-.conveyor-viewport:hover .conveyor-marquee,
+/* Guard :hover behind (hover: hover) and (pointer: fine) — on a touchscreen
+   there is no pointer to "leave" an element with, so a tap makes :hover
+   stick and permanently pauses the marquee. :focus-within is left
+   unguarded: blur clears it normally and has no equivalent touch quirk. */
+@media (hover: hover) and (pointer: fine) {
+  .conveyor-viewport:hover .conveyor-marquee {
+    animation-play-state: paused;
+  }
+}
 .conveyor-viewport:focus-within .conveyor-marquee {
   animation-play-state: paused;
 }
 @keyframes conveyor-scroll {
+  /* RTL: the marquee is anchored at its RIGHT edge (matches dir="rtl" flex
+     flow) and the three duplicate tracks extend to the LEFT, into negative
+     x, off the visible viewport. translateX(-25%) (moving further left,
+     i.e. away from x:0) drags the whole block away from those duplicates —
+     the viewport runs dry for most of the cycle and every chip "pops back
+     in" only when the animation loops and snaps to 0.
+     Fix: animate from +25% down to 0 instead. This still reads as leftward
+     motion on screen (forward against RTL content), but now travels TOWARD
+     the duplicate tracks, so the viewport is always over covered content.
+     25% = width of exactly one track, since all four tracks are identical,
+     so the loop point (0) lines back up with the start (+25%) seamlessly. */
   from {
-    transform: translateX(0);
+    transform: translateX(25%);
   }
   to {
-    /* -25% = width of exactly one track, since all four tracks are identical;
-       moves visually leftward, reading as "forward" against the RTL content. */
-    transform: translateX(-25%);
+    transform: translateX(0);
   }
 }
 /* EN is LTR — mirror the loop so it still reads as "forward" (rightward)
