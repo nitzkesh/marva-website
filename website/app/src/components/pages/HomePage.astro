@@ -91,14 +91,19 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
           </div>
 
           <div class="hero-visual relative w-full max-w-[290px] justify-self-center">
-            <img src="/hero-bottle.png" alt={heroBottleAlt} class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
-            <div class="absolute top-[43%] left-[34%] w-[31.5%] h-[23%] flex flex-col items-center justify-center">
-              <div class="flex flex-col items-center gap-px">
-                {homeHero.bottleLabelLines.map((line) => (
-                  <span class="font-display font-bold text-ink text-center leading-[1.18] text-[clamp(0.62rem,2vw,0.95rem)]">{line}</span>
-                ))}
-              </div>
-              <img src="/marva-mark.svg" alt="" class="absolute bottom-[8%] left-[6%] w-[22%] h-auto object-contain" />
+            <img src="/hero-bottle.webp" alt={heroBottleAlt} width="1024" height="1535" fetchpriority="high" class="w-full block [mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)] [-webkit-mask-image:radial-gradient(ellipse_55%_80%_at_50%_48%,#000_55%,transparent_100%)]" />
+            <!-- Pinned to the label panel of /hero-bottle.webp, measured on the
+                 1024x1535 source: x 332..693, y 500..752. Re-measure these four
+                 percentages if the bottle photo is ever replaced. -->
+            <div class="absolute top-[32.6%] left-[32.4%] w-[35.3%] h-[16.4%] flex flex-col items-center justify-center gap-[4px] px-1">
+              <img src="/marva-mark.svg" alt="" class="w-[21%] h-auto object-contain" />
+              <!-- Sized to keep both locales on a single line inside the ~102px
+                   label: "YOUR BRAND HERE" is the wide case. Percentage padding
+                   would resolve against .hero-visual, not this box, so the inset
+                   is fixed. -->
+              <span class="font-display font-bold text-ink text-center text-balance leading-[1.15] text-[clamp(0.5rem,1.35vw,0.58rem)]">
+                {homeHero.bottleLabelLines.join(' ')}
+              </span>
             </div>
           </div>
         </div>
