@@ -288,7 +288,7 @@
   "labelPromo": {
     "heading": "The label — your stage",
     "caption": "True-to-scale proportions of a 210×42 mm label, including the mandatory zones",
-    "ariaLabel": "A replica of the bottle label as printed: the mandatory content on both sides — minerals table, kosher, deposit, recycling and producer details — with the label's blank middle as your brand zone",
+    "ariaLabel": "A replica of the bottle label as printed: the mandatory content on both sides — minerals table, kosher, deposit, recycling and producer details (masked in this demo) — with the label's blank middle as your brand zone",
     "regulatoryZoneLabel": "Mandatory zone",
     "brandZoneLabel": "Your brand zone",
     "brandZonePlaceholder": "Your brand here"

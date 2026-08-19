@@ -33,6 +33,24 @@
  * rotated, since the zones' local x becomes screen y.
  *
  * Zone numbers must stay in sync between the <style> and the <script>.
+ *
+ * Marva is a white-label advertiser, not the bottler, so nothing here may
+ * name or point to the actual manufacturer: the producer's name and
+ * address, the consumer-service phone number, the kosher supervising
+ * body, and the source's place names are all redacted, each character
+ * swapped for a plain ASCII hyphen. The hyphen run for each redacted word
+ * is deliberately the same length as the real word it replaces, because
+ * these text blocks are justified to fill ink bands measured off the
+ * supplier print — a short placeholder would leave a visible gap where
+ * the print has none. Matching the character count is not the same as
+ * matching the width, though: the hyphen comes from Work Sans while the
+ * Hebrew it stands in for comes from Assistant, and it measures about 11%
+ * wider, so a redacted block can run slightly taller than the printed
+ * original. Measured at the current sizes that costs the producer column
+ * 8px, which still clears the bottom of its panel by 11px, and the kosher
+ * block sits 18px clear — check that slack again before lengthening any
+ * run. The genuine values live only in the supplier print file
+ * (brand-book/שבלונה ואלי.pdf) and must never be copied back in here.
  */
 
 interface Props {
@@ -43,7 +61,7 @@ interface Props {
 }
 const {
   placeholder = 'המותג שלכם כאן',
-  ariaLabel = 'שחזור של תווית הבקבוק כפי שהיא מודפסת: תוכן החובה משני הצדדים — טבלת מינרלים, כשרות, פיקדון, מיחזור ופרטי היצרן — והאמצע הריק של התווית הוא אזור המותג שלכם',
+  ariaLabel = 'שחזור של תווית הבקבוק כפי שהיא מודפסת: תוכן החובה משני הצדדים — טבלת מינרלים, כשרות, פיקדון, מיחזור ופרטי יצרן המוסתרים בהדגמה — והאמצע הריק של התווית הוא אזור המותג שלכם',
 } = Astro.props;
 
 /* Minerals exactly as printed (mg/liter). Banded rows (Ca, Mg, Na, F) match
@@ -97,14 +115,14 @@ const minerals = [
             <br />
             <span lang="ar">لخدمتك، خدمة العملاء</span>
             <br />
-            <span class="lbl-phone" dir="ltr">04 - 3818881</span>
+            <span class="lbl-phone" dir="ltr">-- - -------</span>
           </p>
           <p class="lbl-kosher">
             <b>כשר לפסח</b>
             <br />
-            בהשגחת הרבנות
+            בהשגחת ------
             <br />
-            האזורית עמק המעיינות
+            ------- --- --------
           </p>
         </div>
 
@@ -142,15 +160,15 @@ const minerals = [
       <!-- RIGHT CLUSTER · printed right region, tucks under the middle -->
       <div class="lbl-zone lbl-zone-right absolute inset-y-0 right-0 z-10" data-label-panel="right" aria-hidden="true">
         <div class="lbl-source">
-          <p class="lbl-source-title">מי שתיה מעמק המעיינות</p>
+          <p class="lbl-source-title">מי שתיה ---- --------</p>
           <p class="lbl-source-tag">ממקור תת קרקעי המכיל מינרלים טבעיים</p>
-          <p class="lbl-source-ar" lang="ar">مياه شرب من وادي الينابيع، من مصدر جوفي غني بالمعادن الطبيعية</p>
-          <p class="lbl-source-he">מי שתייה המכילים מינרלים טבעיים מופק ממקור תת קרקעי בין הרי הגלבוע לנהר הירדן השוכן בעמק המעיינות</p>
+          <p class="lbl-source-ar" lang="ar">مياه شرب من ---- --------، من مصدر جوفي غني بالمعادن الطبيعية</p>
+          <p class="lbl-source-he">מי שתייה המכילים מינרלים טבעיים מופק ממקור תת קרקעי בין --- ------ ---- ----- השוכן ---- --------</p>
           <p class="lbl-contents">תכולה: <span dir="ltr">500 ML</span> מ״ל/<span lang="ar">مل</span></p>
           <p class="lbl-producer">
-            היצרן: עמק המעיינות, מים מינרליים טבעיים בע״מ. קיבוץ שדה אליהו, עמק המעיינות.
+            היצרן: --- --------, --- -------- ------ ----. ----- --- -----, --- --------.
             <br />
-            <span lang="ar">المنتج: عيمك همعيانوت مياه معدنيه طبيعيه بع״م كيبوتس سدي الياهو، عيمك همعيانوت.</span>
+            <span lang="ar">المنتج: ---- -------- ---- ------ ------ ---- ------ --- ------، ---- --------.</span>
           </p>
         </div>
 

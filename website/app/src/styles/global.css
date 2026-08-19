@@ -279,9 +279,13 @@ html[lang='en'] .conveyor-marquee {
    band reads as alive without three things wiggling at the reader forever.
    All movement is transform/opacity only.
 
-   Animations are gated on `#kpis.kpi-playing`, which the advertisers page
-   script adds on first scroll-in. Until then the icons stay as static line art.
-   Under prefers-reduced-motion: reduce, none of this applies at all.
+   Animations are gated per item on `.kpi-item.is-playing`, which the
+   advertisers page script adds to each card as it lands rather than once for
+   the whole band: cards now enter a full second apart, so a section-wide gate
+   would start every icon's idle loop as soon as the first card appeared, long
+   before the third card is even on screen. Until a card gets its class the
+   icon stays as static line art. Under prefers-reduced-motion: reduce, none
+   of this applies at all.
 
    Every keyframe set starts and ends on the SAME value. */
 @media (prefers-reduced-motion: no-preference) {
@@ -291,10 +295,10 @@ html[lang='en'] .conveyor-marquee {
   }
 
   /* 1 - rocket: body stays put; air stripes rush past; burner flickers */
-  #kpis.kpi-playing .kpi-icon--roi .kpi-a-stripe { animation: kpi-stripe 10s ease-in-out infinite; }
-  #kpis.kpi-playing .kpi-icon--roi .kpi-a-stripe:nth-of-type(2) { animation-delay: 0.08s; }
-  #kpis.kpi-playing .kpi-icon--roi .kpi-a-stripe:nth-of-type(3) { animation-delay: 0.16s; }
-  #kpis.kpi-playing .kpi-icon--roi .kpi-a-flame {
+  .kpi-item.is-playing .kpi-icon--roi .kpi-a-stripe { animation: kpi-stripe 10s ease-in-out infinite; }
+  .kpi-item.is-playing .kpi-icon--roi .kpi-a-stripe:nth-of-type(2) { animation-delay: 0.08s; }
+  .kpi-item.is-playing .kpi-icon--roi .kpi-a-stripe:nth-of-type(3) { animation-delay: 0.16s; }
+  .kpi-item.is-playing .kpi-icon--roi .kpi-a-flame {
     transform-origin: center bottom;
     animation: kpi-flame 10s ease-in-out infinite;
   }
@@ -320,7 +324,7 @@ html[lang='en'] .conveyor-marquee {
     transform-origin: center;
     transform: rotate(38deg);
   }
-  #kpis.kpi-playing .kpi-icon--roi .kpi-a-rocket {
+  .kpi-item.is-playing .kpi-icon--roi .kpi-a-rocket {
     animation: kpi-rocket-fly 10s ease-in-out infinite;
   }
 
@@ -335,10 +339,10 @@ html[lang='en'] .conveyor-marquee {
   }
 
   /* 2 - precision target */
-  #kpis.kpi-playing .kpi-icon--impressions .kpi-a-ring { animation: kpi-ring 10s ease-in-out infinite; }
-  #kpis.kpi-playing .kpi-icon--impressions .kpi-a-ring:nth-of-type(2) { animation-delay: 0.12s; }
-  #kpis.kpi-playing .kpi-icon--impressions .kpi-a-cross { animation: kpi-cross 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-  #kpis.kpi-playing .kpi-icon--impressions .kpi-a-dot { animation: kpi-dot 10s ease-in-out infinite; }
+  .kpi-item.is-playing .kpi-icon--impressions .kpi-a-ring { animation: kpi-ring 10s ease-in-out infinite; }
+  .kpi-item.is-playing .kpi-icon--impressions .kpi-a-ring:nth-of-type(2) { animation-delay: 0.12s; }
+  .kpi-item.is-playing .kpi-icon--impressions .kpi-a-cross { animation: kpi-cross 10s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  .kpi-item.is-playing .kpi-icon--impressions .kpi-a-dot { animation: kpi-dot 10s ease-in-out infinite; }
 
   @keyframes kpi-ring {
     0%, 4%, 28%, 100% { transform: scale(1); }
@@ -360,7 +364,7 @@ html[lang='en'] .conveyor-marquee {
      not the icon's overall centre, and the growth is kept modest (max 1.14x)
      so the beat can never walk the heart into the bottle sitting ~50 units
      away in the source artwork. */
-  #kpis.kpi-playing .kpi-icon--value .kpi-a-heart {
+  .kpi-item.is-playing .kpi-icon--value .kpi-a-heart {
     animation: kpi-heart-pump 1.1s ease-in-out infinite;
   }
 

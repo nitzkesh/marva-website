@@ -61,8 +61,9 @@ const howIcons: Record<string, string> = {
 
    Every element carrying a `kpi-a-*` class is an animation handle; the
    keyframes live in global.css under "KPI icons". Each icon plays a short beat
-   on a long 10s loop. Loops stay paused until `#kpis` gets `.kpi-playing` on
-   first scroll-in (see the page script).
+   on a long 10s loop. Loops stay paused on each icon until its own `.kpi-item`
+   gets `.is-playing` when that card lands, one second after the previous one
+   (see the page script).
 
    `roi` is a stationary rocket — only the air stripes and burner flame move.
    `value` is a thin-ring compass: the ring is fixed, the needle spins a full
@@ -423,7 +424,12 @@ const kpiIcons: Record<string, string> = {
        load, finish off-screen, and the visitor would only ever meet a static
        29. Anchoring to the row means the trigger point and the "is it visible
        yet" guard describe the same element, and the numbers animate exactly
-       when they come into view. */
+       when they come into view.
+
+       Items land a full second apart (STAGGER below), and each figure's
+       count-up sits inside its own item's slot on the timeline instead of
+       every count-up firing together at t=0 — so the three cards read as a
+       sequence arriving one after another, not one simultaneous pop. */
     if (!reduced) {
       const kpiSection = document.getElementById('kpis');
       const kpiItems = document.querySelectorAll<HTMLElement>('.kpi-item');
@@ -432,6 +438,7 @@ const kpiIcons: Record<string, string> = {
       if (kpiSection && kpiItems.length && kpiRow) {
         const countEls = kpiSection.querySelectorAll<HTMLElement>('[data-count-to]');
         const START_RATIO = 0.8; // matches the 'top 80%' used by every other reveal on the site
+        const STAGGER = 1; // seconds between each item's entrance, so the three cards arrive one after another
         const belowFold = kpiRow.getBoundingClientRect().top >= window.innerHeight * START_RATIO;
 
         if (belowFold) {
@@ -445,34 +452,34 @@ const kpiIcons: Record<string, string> = {
             trigger: kpiRow,
             start: `top ${START_RATIO * 100}%`,
             once: true,
-            onEnter: () => kpiSection.classList.add('kpi-playing'),
-          },
-          onStart: () => {
-            kpiSection.classList.add('kpi-playing');
-            if (!belowFold) return;
-            countEls.forEach((el) => {
-              const target = Number(el.dataset.countTo);
-              if (!Number.isFinite(target)) return;
-              const counter = { val: 1 };
-              gsap.to(counter, {
-                val: target,
-                duration: 1.4,
-                ease: 'power2.out',
-                onUpdate: () => {
-                  el.textContent = String(Math.round(counter.val));
-                },
-              });
-            });
           },
         });
 
         kpiItems.forEach((item, i) => {
-          const start = i * 0.12;
-          tl.from(item, { y: 30, opacity: 0, duration: 0.6, ease: 'power2.out', clearProps: 'transform' }, start);
+          const start = i * STAGGER;
+          tl.from(item, { y: 30, opacity: 0, duration: 1, ease: 'power2.out', clearProps: 'transform' }, start);
 
           const icon = item.querySelector<HTMLElement>('.kpi-icon');
           if (icon) {
-            tl.from(icon, { scale: 0.5, rotate: -12, opacity: 0, duration: 0.45, ease: 'back.out(1.7)', clearProps: 'transform' }, start + 0.12);
+            tl.from(icon, { scale: 0.5, rotate: -12, opacity: 0, duration: 0.7, ease: 'back.out(1.7)', clearProps: 'transform' }, start + 0.2);
+          }
+
+          tl.call(() => item.classList.add('is-playing'), undefined, start);
+
+          if (belowFold) {
+            const countEl = item.querySelector<HTMLElement>('[data-count-to]');
+            const target = Number(countEl?.dataset.countTo);
+            if (countEl && Number.isFinite(target)) {
+              const counter = { val: 1 };
+              tl.to(counter, {
+                val: target,
+                duration: 2,
+                ease: 'power2.out',
+                onUpdate: () => {
+                  countEl.textContent = String(Math.round(counter.val));
+                },
+              }, start);
+            }
           }
         });
       }
