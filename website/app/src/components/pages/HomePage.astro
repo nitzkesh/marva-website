@@ -132,7 +132,12 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
                       )
                     ) : chip.logo ? (
                       <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
-                        <img src={chip.logo} alt={chip.text} class="h-10 w-auto object-contain" loading="lazy" />
+                        {/* eager, not lazy: the belt sits just under the hero, so these are
+                            in view immediately and lazy only delays them. It also matters for
+                            the animation — a logo has no intrinsic width until it decodes, so
+                            a late arrival widens its chip and changes the track width mid-run,
+                            which shows up as a stutter in the belt. */}
+                        <img src={chip.logo} alt={chip.text} class="h-10 w-auto object-contain" loading="eager" decoding="sync" />
                       </span>
                     ) : (
                       <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>

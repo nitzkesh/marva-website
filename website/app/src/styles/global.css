@@ -245,16 +245,24 @@ html[lang='en'] .conveyor-marquee {
      marquee the total is 4T + 3·gap, so translating -25% moves T + 0.75·gap and
      the belt jumps a few px every cycle. Carried as trailing padding, each track
      measures T + gap and -25% lands on a perfect repeat.
-     Gap is responsive (24px, 80px from md up — see below). The desktop value is
+     Gap is responsive (24px, 112px from md up — see below). The desktop value is
      deliberately large: it sets the loop period P, which must stay bigger than
      the conveyor viewport (max ~1104px, from the max-w-6xl/px-6 wrapper) so a
-     single chip/logo is never visible twice on screen at once. */
+     single chip/logo is never visible twice on screen at once.
+
+     P = (sum of chip widths) + 5·gap, with 5 chips: 4 gaps between them plus the
+     trailing padding. Hebrew is the binding locale — its chips are much narrower
+     than the English ones (בקרוב 106px vs "Coming soon" 167px), so HE sets the
+     floor. Measured at 1280px: HE chips sum to 628px, so gap must exceed 95px.
+     At 112px, P = 1188px — 84px of headroom. Dropping to 80px would give P =
+     1028px, i.e. 76px BELOW the viewport, and the belt would show a chip twice.
+     If a chip is ever added or removed, re-measure and re-derive this number. */
   padding-inline-end: 24px;
 }
 @media (min-width: 768px) {
   .conveyor-track {
-    gap: 80px;
-    padding-inline-end: 80px;
+    gap: 112px;
+    padding-inline-end: 112px;
   }
 }
 /* Fixed height, not min-height: chips carry either a text label or a partner
