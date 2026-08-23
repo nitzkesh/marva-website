@@ -7,6 +7,20 @@ on:
       - 'website/app/**'
       - '.github/workflows/deploy.yml'
 
+# The job only ever reads the repo: Cloudflare is authenticated with its own API
+# token, so GITHUB_TOKEN never needs write. The repo default is already `read`,
+# but pinning it here keeps the guarantee with the workflow rather than in a
+# repo setting that can be changed without touching this file.
+permissions:
+  contents: read
+
+# One deploy at a time per ref. Queue rather than cancel: `wrangler pages deploy`
+# uploads to a live site, and interrupting it mid-upload risks publishing a
+# half-written build.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,9 +30,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Node 24 is Active LTS until 2028-04; 22 dropped to maintenance (security
+      # fixes only) and is the version the local machine has already moved off,
+      # so this also removes local/CI drift.
       - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
 
       - run: npm ci
 
