@@ -181,7 +181,7 @@ html[lang='en'] {
   padding-top: 12px;
 }
 
-/* Conveyor strip — infinite marquee (four identical tracks translated as one row) */
+/* Conveyor strip — infinite marquee (two identical tracks translated as one row) */
 /* Layer promotion is `will-change: transform` below, and nothing else. The old
    translate3d(x,0,0) trick does NOT survive this build — lightningcss rewrites it
    to translate(x) as an equivalent 2D transform, verified in the deployed CSS — so
@@ -208,28 +208,28 @@ html[lang='en'] {
 @keyframes conveyor-scroll {
   /* RTL: the marquee is anchored at its RIGHT edge (matches dir="rtl" flex
      flow) and the three duplicate tracks extend to the LEFT, into negative
-     x, off the visible viewport. translateX(-25%) (moving further left,
+     x, off the visible viewport. Translating further left (away from x:0)
      i.e. away from x:0) drags the whole block away from those duplicates —
      the viewport runs dry for most of the cycle and every chip "pops back
      in" only when the animation loops and snaps to 0.
-     Fix: animate from +25% down to 0 instead. This still reads as leftward
+     Fix: animate from +50% down to 0 instead. This still reads as leftward
      motion on screen (forward against RTL content), but now travels TOWARD
      the duplicate tracks, so the viewport is always over covered content.
-     25% = width of exactly one track, since all four tracks are identical,
-     so the loop point (0) lines back up with the start (+25%) seamlessly. */
+     50% = width of exactly one track, since both tracks are identical,
+     so the loop point (0) lines back up with the start (+50%) seamlessly. */
   from {
-    transform: translateX(25%);
+    transform: translateX(50%);
   }
   to {
     transform: translateX(0);
   }
 }
 /* EN is LTR — mirror the loop so it still reads as "forward" (rightward)
-   instead of visually reversing against left-to-right content. Same four
+   instead of visually reversing against left-to-right content. Same two
    identical tracks, same duration; only the apparent direction flips. */
 @keyframes conveyor-scroll-reverse {
   from {
-    transform: translateX(-25%);
+    transform: translateX(-50%);
   }
   to {
     transform: translateX(0);
@@ -246,9 +246,9 @@ html[lang='en'] .conveyor-marquee {
   flex-shrink: 0;
   /* The spacing between two tracks lives HERE, not as a gap on the marquee.
      One loop period must equal one track's width exactly: with the gap on the
-     marquee the total is 4T + 3·gap, so translating -25% moves T + 0.75·gap and
+     marquee the total is 2T + gap, so translating one half moves T + 0.5·gap and
      the belt jumps a few px every cycle. Carried as trailing padding, each track
-     measures T + gap and -25% lands on a perfect repeat.
+     measures T + gap and a half-marquee shift lands on a perfect repeat.
      Gap is responsive (24px, 112px from md up — see below). The desktop value is
      deliberately large: it sets the loop period P, which must stay bigger than
      the conveyor viewport (max ~1104px, from the max-w-6xl/px-6 wrapper) so a
