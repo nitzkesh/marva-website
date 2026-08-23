@@ -214,10 +214,10 @@ html[lang='en'] {
      25% = width of exactly one track, since all four tracks are identical,
      so the loop point (0) lines back up with the start (+25%) seamlessly. */
   from {
-    transform: translateX(25%);
+    transform: translate3d(25%, 0, 0);
   }
   to {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 /* EN is LTR — mirror the loop so it still reads as "forward" (rightward)
@@ -225,10 +225,10 @@ html[lang='en'] {
    identical tracks, same duration; only the apparent direction flips. */
 @keyframes conveyor-scroll-reverse {
   from {
-    transform: translateX(-25%);
+    transform: translate3d(-25%, 0, 0);
   }
   to {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 html[lang='en'] .conveyor-marquee {
@@ -263,6 +263,19 @@ html[lang='en'] .conveyor-marquee {
   .conveyor-track {
     gap: 112px;
     padding-inline-end: 112px;
+  }
+}
+/* Speed, not duration, is what should be constant. The 35s above is the time to
+   travel ONE track width, and a track is much narrower below md because the gap
+   drops from 112px to 24px — so the same 35s made the mobile belt crawl at
+   21.4px/s against the desktop 34.0px/s (measured: 748.27px and 1188.27px per
+   cycle). At 60fps that is 0.36px per frame, barely a third of a pixel, which is
+   where dropped frames and pixel snapping stop reading as motion and start
+   reading as the chips stepping forward. 22s restores 34.0px/s — the same speed
+   the desktop belt already runs at. Recompute if the gap or chip set changes. */
+@media (max-width: 767px) {
+  .conveyor-marquee {
+    animation-duration: 22s;
   }
 }
 /* Fixed height, not min-height: chips carry either a text label or a partner
