@@ -1,0 +1,12 @@
+# Cloudflare Pages serves these on every response. Deliberately narrow:
+# Cloudflare already sets X-Content-Type-Options and Referrer-Policy at the
+# edge, so only the genuinely missing headers are set here.
+#
+# No CSP: the edge injects its own inline scripts (email-address obfuscation
+# and the bot-challenge platform), so a strict policy would break the live
+# site rather than protect it.
+# No HSTS: long max-age is effectively irreversible, and it belongs in the
+# Cloudflare dashboard alongside the TLS settings, not in the build output.
+/*
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

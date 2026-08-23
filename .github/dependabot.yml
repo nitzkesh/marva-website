@@ -1,0 +1,28 @@
+# Automates the two maintenance tasks that were both done by hand on 2026-08-23:
+# a lockfile refresh that cleared 9 advisories, and an actions bump that had
+# drifted three majors behind. Dependabot only opens PRs — nothing merges
+# itself, so a bad bump is reviewed before it can reach the live site.
+version: 2
+updates:
+  # Site dependencies. The lockfile lives in website/app, not the repo root.
+  - package-ecosystem: npm
+    directory: /website/app
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # Routine bumps arrive as a single weekly PR rather than one per package.
+      # Majors are deliberately left out of the group so something like a
+      # motion or gsap major lands alone, where it can be reviewed — and
+      # visually checked — on its own.
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Workflow actions. Monthly is enough: these move slowly, and the failure
+  # mode is a deprecation warning rather than a vulnerability.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
