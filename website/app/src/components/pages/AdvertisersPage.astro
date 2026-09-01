@@ -293,12 +293,10 @@ const kpiIcons: Record<string, string> = {
             <input type="hidden" name="from_page" value={adForm.fromPage} />
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <Input label={adForm.fields.businessName.label} name="business_name" placeholder={adForm.fields.businessName.placeholder} required />
-              <Input label={adForm.fields.taxId.label} name="tax_id" placeholder={adForm.fields.taxId.placeholder} />
               <Input label={adForm.fields.contact.label} name="contact" placeholder={adForm.fields.contact.placeholder} required />
               <Input label={adForm.fields.phone.label} name="phone" type="tel" dir="ltr" placeholder={adForm.fields.phone.placeholder} required />
               <Input label={adForm.fields.email.label} name="email" type="email" dir="ltr" placeholder={adForm.fields.email.placeholder} required />
               <Input label={adForm.fields.qty.label} name="qty" placeholder={adForm.fields.qty.placeholder} />
-              <Input label={adForm.fields.duration.label} name="duration" placeholder={adForm.fields.duration.placeholder} />
               <Input label={adForm.fields.startDate.label} name="start_date" type="date" dir="ltr" />
             </div>
 

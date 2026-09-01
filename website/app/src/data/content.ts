@@ -206,12 +206,10 @@ export interface AdForm {
   error: string;
   fields: {
     businessName: FormFieldSpec;
-    taxId: FormFieldSpec;
     contact: FormFieldSpec;
     phone: FormFieldSpec;
     email: FormFieldSpec;
     qty: FormFieldSpec;
-    duration: FormFieldSpec;
     startDate: FormFieldSpec;
     deliveryLabel: string;
     deliveryOptionSupply: string;

@@ -61,8 +61,8 @@ const he: PrivacyContent = {
       ],
       bullets: [
         'פרטי קשר — שם מלא או איש קשר, טלפון ואימייל',
-        'פרטי עסק — שם העסק, ח.פ./ע.מ, סוג העסק ומיקומו',
-        'פרטי קמפיין — כמות בקבוקים, משך, תאריך התחלה, אופן החלוקה ונקודות חלוקה מועדפות',
+        'פרטי עסק — שם העסק, סוג העסק ומיקומו',
+        'פרטי קמפיין — כמות בקבוקים, התאריך הרצוי, אופן החלוקה ונקודות חלוקה מועדפות',
         'כל מה שתכתבו בשדות ההודעה וההערות',
         'מאיזה עמוד באתר נשלחה הפנייה',
       ],
@@ -155,8 +155,8 @@ const en: PrivacyContent = {
       ],
       bullets: [
         'Contact details — full name or contact person, phone, and email',
-        'Business details — business name, business ID, business type and location',
-        'Campaign details — bottle quantities, duration, start date, distribution method and preferred distribution points',
+        'Business details — business name, business type and location',
+        'Campaign details — bottle quantities, preferred date, distribution method and preferred distribution points',
         'Anything you write in the message and notes fields',
         'Which page of the site the inquiry was sent from',
       ],

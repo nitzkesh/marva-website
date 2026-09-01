@@ -190,7 +190,9 @@ html[lang='en'] {
   display: flex;
   align-items: center;
   width: max-content;
-  animation: conveyor-scroll 35s linear infinite;
+  /* 36s is the HE desktop value in the constant-speed derivation below the
+     mobile duration comment; EN and the mobile breakpoint override it. */
+  animation: conveyor-scroll 36s linear infinite;
   will-change: transform;
 }
 /* Guard :hover behind (hover: hover) and (pointer: fine) — on a touchscreen
@@ -237,6 +239,10 @@ html[lang='en'] {
 }
 html[lang='en'] .conveyor-marquee {
   animation-name: conveyor-scroll-reverse;
+  /* EN's chips are wider than HE's at every breakpoint, so a shared duration
+     can never hold a shared speed — 39s is EN's own desktop value from the
+     constant-speed derivation below the mobile duration comment. */
+  animation-duration: 39s;
 }
 .conveyor-track {
   display: flex;
@@ -257,9 +263,9 @@ html[lang='en'] .conveyor-marquee {
      P = (sum of chip widths) + 5·gap, with 5 chips: 4 gaps between them plus the
      trailing padding. Hebrew is the binding locale — its chips are much narrower
      than the English ones (בקרוב 106px vs "Coming soon" 167px), so HE sets the
-     floor. Measured at 1280px: HE chips sum to 628px, so gap must exceed 95px.
-     At 112px, P = 1188px — 84px of headroom. Dropping to 80px would give P =
-     1028px, i.e. 76px BELOW the viewport, and the belt would show a chip twice.
+     floor. Measured at 1280px: HE chips sum to 669px, so gap must exceed 87px.
+     At 112px, P = 1229px — 125px of headroom. Dropping to 80px would give P =
+     1069px, i.e. 35px BELOW the viewport, and the belt would show a chip twice.
      If a chip is ever added or removed, re-measure and re-derive this number. */
   padding-inline-end: 24px;
 }
@@ -269,17 +275,29 @@ html[lang='en'] .conveyor-marquee {
     padding-inline-end: 112px;
   }
 }
-/* Speed, not duration, is what should be constant. The 35s above is the time to
-   travel ONE track width, and a track is much narrower below md because the gap
-   drops from 112px to 24px — so the same 35s made the mobile belt crawl at
-   21.4px/s against the desktop 34.0px/s (measured: 748.27px and 1188.27px per
-   cycle). At 60fps that is 0.36px per frame, barely a third of a pixel, which is
-   where dropped frames and pixel snapping stop reading as motion and start
-   reading as the chips stepping forward. 22s restores 34.0px/s — the same speed
-   the desktop belt already runs at. Recompute if the gap or chip set changes. */
+/* Speed, not duration, is what should be constant — and duration alone can no
+   longer hold it, because there are now two things that change P: breakpoint
+   (gap 112px -> 24px shrinks the track below md, as it always did) AND locale
+   (EN chips have always summed wider than HE's — the Kapayim swap just made
+   this visible, it didn't create it). One duration per breakpoint can only be
+   correct for one locale, so duration now has a locale axis too, carried by
+   the same `html[lang='en']` selector already used above to reverse the
+   keyframe direction: HE is the value on .conveyor-marquee (the default),
+   EN is its own override.
+   Design speed target: 34.0px/s. duration = loop period P / 34.0, rounded to
+   the nearest whole second:
+     HE desktop  P=1229px -> 36s -> 34.15px/s
+     EN desktop  P=1325px -> 39s -> 33.97px/s
+     HE mobile   P=789px  -> 23s -> 34.31px/s
+     EN mobile   P=885px  -> 26s -> 34.04px/s
+   All four now sit within about 1% of the 34.0px/s target (33.97-34.31px/s).
+   Recompute every value here if the gap or chip set changes again. */
 @media (max-width: 767px) {
   .conveyor-marquee {
-    animation-duration: 22s;
+    animation-duration: 23s;
+  }
+  html[lang='en'] .conveyor-marquee {
+    animation-duration: 26s;
   }
 }
 /* Fixed height, not min-height: chips carry either a text label or a partner
@@ -417,7 +435,16 @@ html[lang='en'] .conveyor-marquee {
   html {
     scroll-behavior: auto;
   }
-  .conveyor-marquee {
+  /* A media query adds nothing to specificity, so the bare selector below is
+     (0,1,0) while `html[lang='en'] .conveyor-marquee` above (the EN duration
+     override) is (0,2,1) — on /en/* that override outranks this rule and
+     wins on BOTH animation-name and animation-duration, so `animation: none`
+     here would be silently ignored and the belt would keep scrolling under
+     reduced motion. Repeating the locale selector ties the specificity and
+     wins on source order instead. Any future locale-scoped .conveyor-marquee
+     rule must be added here too, or it reopens this exact hole. */
+  .conveyor-marquee,
+  html[lang='en'] .conveyor-marquee {
     animation: none;
     transform: none;
   }

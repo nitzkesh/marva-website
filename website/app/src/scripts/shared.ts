@@ -112,6 +112,22 @@ document.querySelectorAll<HTMLInputElement>('input[name="delivery"]').forEach((r
   });
 });
 
+/* The preferred-date field is a native <input type="date">, so the browser
+   supplies the calendar. All we add is the floor: `min` is set at RUNTIME,
+   never baked into the HTML, because this is a static build — a build-time
+   date would go stale the day after a deploy and start accepting dates that
+   are already in the past. Local date parts, not toISOString(): Israel is
+   UTC+2/+3, so an ISO string taken after midnight local resolves to
+   yesterday. The existing checkValidity() in the submit handler below turns
+   a `min` violation into a native browser message for free. */
+const startDate = document.querySelector<HTMLInputElement>('input[name="start_date"]');
+if (startDate) {
+  const now = new Date();
+  const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  startDate.min = `${tomorrow.getFullYear()}-${pad(tomorrow.getMonth() + 1)}-${pad(tomorrow.getDate())}`;
+}
+
 const saveToggle = document.getElementById('save-toggle');
 const saveBox = document.getElementById('save-box');
 let saveOpen = false;

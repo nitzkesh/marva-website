@@ -75,7 +75,8 @@
       "logo": "/partners/valley.png"
     },
     {
-      "text": "בקרוב"
+      "text": "כפיים",
+      "logo": "/partners/kapayim.png"
     },
     {
       "text": "בקרוב"
@@ -338,10 +339,6 @@
         "label": "שם העסק",
         "placeholder": "לדוגמה: קפה השכונה"
       },
-      "taxId": {
-        "label": "ח.פ./ע.מ",
-        "placeholder": "123456789"
-      },
       "contact": {
         "label": "איש קשר",
         "placeholder": "שם מלא"
@@ -358,12 +355,8 @@
         "label": "כמות בקבוקים רצויה",
         "placeholder": "לדוגמה: 5,000"
       },
-      "duration": {
-        "label": "משך קמפיין",
-        "placeholder": "לדוגמה: חודש"
-      },
       "startDate": {
-        "label": "תאריך התחלה רצוי"
+        "label": "תאריך רצוי"
       },
       "deliveryLabel": "שיטת חלוקה",
       "deliveryOptionSupply": "אתם מקבלים את הבקבוקים ישירות אליכם",

@@ -75,7 +75,8 @@
       "logo": "/partners/valley.png"
     },
     {
-      "text": "Coming soon"
+      "text": "Kapayim",
+      "logo": "/partners/kapayim.png"
     },
     {
       "text": "Coming soon"
@@ -338,10 +339,6 @@
         "label": "Business name",
         "placeholder": "e.g. Corner Café"
       },
-      "taxId": {
-        "label": "Business ID",
-        "placeholder": "123456789"
-      },
       "contact": {
         "label": "Contact person",
         "placeholder": "Full name"
@@ -358,12 +355,8 @@
         "label": "Desired bottle quantity",
         "placeholder": "e.g. 5,000"
       },
-      "duration": {
-        "label": "Campaign length",
-        "placeholder": "e.g. one month"
-      },
       "startDate": {
-        "label": "Preferred start date"
+        "label": "Preferred date"
       },
       "deliveryLabel": "Distribution method",
       "deliveryOptionSupply": "You receive the bottles directly",
