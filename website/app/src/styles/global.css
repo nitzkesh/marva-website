@@ -130,6 +130,31 @@ html[lang='en'] {
   opacity: 1;
 }
 
+/* Date field — keep the calendar icon next to the date text.
+   The direction of an input[type='date'] is not ours to set: Chromium's
+   StyleAdjuster overrides `direction` on this input type, so a dir="ltr"
+   attribute, an inline style="direction:ltr" and even an author rule with
+   !important all still compute to direction:rtl here. What the widget follows
+   is the BROWSER's locale, not the document's — on a Hebrew Chrome it lays out
+   RTL even on the /en/ pages (verified by re-running the same page under
+   `chrome --lang=en-US`, which flips it).
+   So the fix places the shadow parts instead of fighting over direction. By
+   default the UA's shadow container stretches across the input's full width,
+   and because the edit inside it is `flex: 0 1 auto` it never grows to take up
+   the slack — the leftover width opens up BETWEEN the two parts, pinning the
+   dd/mm/yyyy edit to one edge of the box and stranding the calendar picker
+   indicator alone at the other. Making the input itself a flex container turns
+   that shadow container into a flex item, which shrink-wraps to its content
+   rather than stretching: the leftover width moves outside the pair, so the
+   icon sits beside the text at whichever edge the browser's locale chose.
+   Do not extend this to the phone/email fields next to it — Chromium forces
+   input[type='tel'] to ltr just as immovably, but those are single-part
+   widgets and already read as one group. */
+.form-input[type='date'] {
+  display: flex;
+  align-items: center;
+}
+
 /* Content placeholder (dashed) — for sections whose content comes later */
 .dashed-box {
   border: 2px dashed var(--color-border);
@@ -181,6 +206,7 @@ html[lang='en'] {
   padding-top: 12px;
 }
 
+
 /* Conveyor strip — infinite marquee (two identical tracks translated as one row) */
 /* Layer promotion is `will-change: transform` below, and nothing else. The old
    translate3d(x,0,0) trick does NOT survive this build — lightningcss rewrites it
@@ -190,9 +216,9 @@ html[lang='en'] {
   display: flex;
   align-items: center;
   width: max-content;
-  /* 36s is the HE desktop value in the constant-speed derivation below the
+  /* 35.5s is the HE desktop value in the constant-speed derivation below the
      mobile duration comment; EN and the mobile breakpoint override it. */
-  animation: conveyor-scroll 36s linear infinite;
+  animation: conveyor-scroll 35.5s linear infinite;
   will-change: transform;
 }
 /* Guard :hover behind (hover: hover) and (pointer: fine) — on a touchscreen
@@ -240,9 +266,9 @@ html[lang='en'] {
 html[lang='en'] .conveyor-marquee {
   animation-name: conveyor-scroll-reverse;
   /* EN's chips are wider than HE's at every breakpoint, so a shared duration
-     can never hold a shared speed — 39s is EN's own desktop value from the
+     can never hold a shared speed - 38s is EN's own desktop value from the
      constant-speed derivation below the mobile duration comment. */
-  animation-duration: 39s;
+  animation-duration: 38s;
 }
 .conveyor-track {
   display: flex;
@@ -263,9 +289,11 @@ html[lang='en'] .conveyor-marquee {
      P = (sum of chip widths) + 5·gap, with 5 chips: 4 gaps between them plus the
      trailing padding. Hebrew is the binding locale — its chips are much narrower
      than the English ones (בקרוב 106px vs "Coming soon" 167px), so HE sets the
-     floor. Measured at 1280px: HE chips sum to 669px, so gap must exceed 87px.
-     At 112px, P = 1229px — 125px of headroom. Dropping to 80px would give P =
-     1069px, i.e. 35px BELOW the viewport, and the belt would show a chip twice.
+     floor. Measured at 1280px: HE chips sum to 641.8px, so gap must exceed
+     92.4px. At 112px, P = 1201.8px - 97.8px of headroom. Dropping to 80px would
+     give P = 1041.8px, i.e. 62px BELOW the viewport, and the belt would show a
+     chip twice. (The sum fell from 669px, and the headroom from 125px, when
+     Kapayim was capped at 72px wide - see the img class in HomePage.astro.)
      If a chip is ever added or removed, re-measure and re-derive this number. */
   padding-inline-end: 24px;
 }
@@ -285,19 +313,24 @@ html[lang='en'] .conveyor-marquee {
    keyframe direction: HE is the value on .conveyor-marquee (the default),
    EN is its own override.
    Design speed target: 34.0px/s. duration = loop period P / 34.0, rounded to
-   the nearest whole second:
-     HE desktop  P=1229px -> 36s -> 34.15px/s
-     EN desktop  P=1325px -> 39s -> 33.97px/s
-     HE mobile   P=789px  -> 23s -> 34.31px/s
-     EN mobile   P=885px  -> 26s -> 34.04px/s
-   All four now sit within about 1% of the 34.0px/s target (33.97-34.31px/s).
-   Recompute every value here if the gap or chip set changes again. */
+   the nearest HALF second:
+     HE desktop  P=1201.8px -> 35.5s -> 33.85px/s
+     EN desktop  P=1297.5px -> 38s   -> 34.14px/s
+     HE mobile   P=761.8px  -> 22.5s -> 33.86px/s
+     EN mobile   P=857.5px  -> 25s   -> 34.30px/s
+   All four sit within 0.88% of the 34.0px/s target (33.85-34.30px/s).
+
+   Halves, not whole seconds as before. Capping Kapayim at 72px shortened every
+   period by 27.5px, and at whole-second precision HE would have landed on 22s
+   mobile / 35s desktop, i.e. +1.84% and +0.99% fast - visibly quicker than EN
+   on the same page. A half-second step costs nothing and halves the spread.
+   Recompute every value here if the gap, the chip set, or a logo cap changes. */
 @media (max-width: 767px) {
   .conveyor-marquee {
-    animation-duration: 23s;
+    animation-duration: 22.5s;
   }
   html[lang='en'] .conveyor-marquee {
-    animation-duration: 26s;
+    animation-duration: 25s;
   }
 }
 /* Fixed height, not min-height: chips carry either a text label or a partner

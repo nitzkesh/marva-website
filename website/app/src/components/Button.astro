@@ -11,8 +11,13 @@ const { variant = 'primary', size = 'm', href, class: className, ...rest } = Ast
 
 const base = 'rounded-full font-body font-semibold transition-all duration-150 inline-flex items-center justify-center';
 
+// text-[1rem], not text-base: --color-base exists in @theme, so Tailwind v4
+// compiles `text-base` to color:var(--color-base) (#FBFAF6) instead of a font
+// size. It has been harmless only because every Button on the site is the
+// primary variant, whose text-inverse is the SAME hex — on a secondary or
+// ghost button it would have painted near-white text on a light background.
 const sizes = {
-  m: 'px-[22px] py-3 text-base',
+  m: 'px-[22px] py-3 text-[1rem]',
   l: 'px-7 py-4 text-lg',
 };
 

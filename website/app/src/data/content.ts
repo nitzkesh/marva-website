@@ -28,8 +28,6 @@ export interface NavLink {
 export interface HeaderContent {
   menuAriaLabel: string;
   logoAriaLabel: string;
-  /** Accessible name of the globe button that opens the language menu. */
-  langAriaLabel: string;
   ctaLabel: string;
   ctaHref: string;
 }
@@ -85,6 +83,22 @@ export interface ConveyorChip {
    */
   logo?: string;
   hidden?: boolean;
+}
+
+/**
+ * The reservist-owned-business credential: a mark-only badge in the header on
+ * every page, and the campaign's own banner on the home page under the
+ * "what's next" buttons.
+ *
+ * Neither string is decorative filler. `badgeLabel` is the badge's only
+ * accessible name (the mark ships with alt=""), and `bannerAlt` has to carry
+ * the banner's entire message, because that message lives in pixels.
+ */
+export interface MiluimContent {
+  /** Header badge's accessible name and hover tooltip; never rendered visibly. */
+  badgeLabel: string;
+  /** Alt for the campaign banner - it carries the banner's whole message. */
+  bannerAlt: string;
 }
 
 export interface HowStep {
@@ -264,6 +278,7 @@ export interface ContentBundle {
   homeHero: HomeHero;
   conveyorLabel: string;
   conveyorChips: ConveyorChip[];
+  miluim: MiluimContent;
   whoStatement: { lines: string[] };
   howHeading: string;
   howSteps: HowStep[];

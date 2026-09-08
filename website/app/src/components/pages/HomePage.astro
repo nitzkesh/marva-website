@@ -21,6 +21,7 @@ const {
   homeHero,
   conveyorLabel,
   conveyorChips,
+  miluim,
   whoStatement,
   whereHeading,
   whereCards,
@@ -150,7 +151,19 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
                             the animation — a logo has no intrinsic width until it decodes, so
                             a late arrival widens its chip and changes the track width mid-run,
                             which shows up as a stutter in the belt. */}
-                        <img src={chip.logo} alt={chip.text} class="h-10 w-auto object-contain" loading="eager" decoding="sync" />
+                        {/* h-10 sets the common height; max-w caps the wide ones.
+                            Height alone does not equalise perceived size: at h-10
+                            Cinema City lands 55.5px wide and Valley 48.3px, but
+                            Kapayim's 2.49 aspect ratio put it at 99.5px, roughly
+                            double their area, and it read as the biggest logo on
+                            the belt. 72px is where its bounding box (72x29 =
+                            2076px^2) matches theirs (2220 and 1932). Expressed as a
+                            cap rather than a per-logo size so any future wide
+                            wordmark is normalised on arrival. Changing this number
+                            changes chip width, which changes the loop period, which
+                            changes all four durations in global.css -- re-derive
+                            them if you touch it. */}
+                        <img src={chip.logo} alt={chip.text} class="h-10 w-auto max-w-[72px] object-contain" loading="eager" decoding="sync" />
                       </span>
                     ) : (
                       <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
@@ -238,6 +251,52 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
             </a>
           ))}
         </div>
+      </div>
+    </section>
+    )}
+
+    <!-- ═══════════ E2. RESERVIST-OWNED BUSINESS (campaign banner) ═══════════
+         The campaign's own 970x250 banner, reproduced 1:1 rather than rebuilt:
+         same artwork, same lockup, same Keshet 12 colour bar. It is published
+         by מחבקים מילואימניקים specifically for certified businesses to display,
+         which is what makes shipping it verbatim the right call here.
+
+         max-w-[970px] is a hard ceiling, not a style choice: 970px is the
+         artwork's native width and the widest the campaign publishes, so
+         letting it fill max-w-6xl (1152px) would upscale and blur it.
+
+         bg-base, because the banner carries its own cream plate and its own
+         bottom stripe. It also keeps the page's no-two-adjacent-backgrounds
+         rule intact: buttons above are bg-surface, #upcoming below is
+         bg-sand-tint. Re-encoded to WebP q92 (270KB JPEG -> 71KB), verified
+         visually identical against the original at 2x. -->
+    {sections.home.miluim && (
+    <section class="bg-base pb-16 md:pb-24">
+      <div class="max-w-6xl mx-auto px-6">
+        <!-- Two official cuts, not one scaled one. The 970x250 shrinks to
+             342x88 on a 390px phone - about a third of its design size, where
+             the sub-headline stops being readable - so below sm the campaign's
+             own 300x250 mobile cut takes over at its native size. Both are
+             their artwork, so the banner stays 1:1 at every width; only the
+             composition changes, which is exactly what the kit is for.
+
+             The aspect is pinned per breakpoint because the two cuts have very
+             different ratios (6/5 against 97/25). The width/height attributes
+             below can only describe ONE of them, so without these the box would
+             be reserved at the desktop ratio and jump when the mobile file
+             lands. -->
+        <picture>
+          <source media="(max-width: 639px)" srcset="/miluim/miluim-banner-mobile.webp" />
+          <img
+            src="/miluim/miluim-banner.webp"
+            alt={miluim.bannerAlt}
+            width="970"
+            height="250"
+            loading="lazy"
+            decoding="async"
+            class="block mx-auto w-full max-w-[300px] sm:max-w-[970px] aspect-[6/5] sm:aspect-[97/25] object-contain rounded-[10px]"
+          />
+        </picture>
       </div>
     </section>
     )}

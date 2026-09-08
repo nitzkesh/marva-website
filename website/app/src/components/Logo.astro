@@ -4,9 +4,16 @@ import type { Locale } from '../data/content';
 interface Props {
   size?: 'sm' | 'md' | 'lg';
   class?: string;
+  /**
+   * Extra classes for the wordmark span only, so a caller can drop the word
+   * responsively and keep the mark. The header needs this: the mark's `alt`
+   * still carries the brand name, so hiding the word costs nothing in the
+   * accessibility tree.
+   */
+  textClass?: string;
   locale?: Locale;
 }
-const { size = 'md', class: className, locale = 'he' } = Astro.props;
+const { size = 'md', class: className, textClass, locale = 'he' } = Astro.props;
 
 const sizes = {
   sm: { mark: 'h-7 w-7', text: 'text-2xl' },
@@ -19,5 +26,5 @@ const wordmark = locale === 'en' ? 'MARVA' : 'מרווה';
 
 <div class={['flex items-center gap-2.5', className].filter(Boolean).join(' ')}>
   <img src="/marva-mark.svg" alt={wordmark} class={`${s.mark} object-contain`} />
-  <span class={`font-display font-bold text-ink ${s.text}`}>{wordmark}</span>
+  <span class={['font-display font-bold text-ink', s.text, textClass].filter(Boolean).join(' ')}>{wordmark}</span>
 </div>

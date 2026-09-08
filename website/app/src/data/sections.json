@@ -2,6 +2,7 @@
   "home": {
     "hero": true,
     "conveyor": true,
+    "miluim": true,
     "who": true,
     "where": true,
     "upcoming": true,

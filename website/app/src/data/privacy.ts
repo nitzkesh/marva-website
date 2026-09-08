@@ -38,20 +38,20 @@ export interface PrivacyContent {
 
 const he: PrivacyContent = {
   meta: {
-    title: 'מרווה — מדיניות פרטיות',
+    title: 'מרווה - מדיניות פרטיות',
     description: 'איך מרווה אוספת ומשתמשת במידע שנמסר באתר, ומה הזכויות שלכם',
   },
   title: 'מדיניות פרטיות',
   updatedLine: 'עודכן לאחרונה: יולי 2026',
   intro: [
-    'מרווה מפעילה את האתר marva-water.com — פלטפורמת פרסום שמחלקת מים מינרלים בחינם, במימון מפרסמים. העמוד הזה מסביר איזה מידע נאסף באתר, איך אנחנו משתמשים בו ומה הזכויות שלכם.',
+    'מרווה מפעילה את האתר marva-water.com - פלטפורמת פרסום שמחלקת מים מינרלים בחינם, במימון מפרסמים. העמוד הזה מסביר איזה מידע נאסף באתר, איך אנחנו משתמשים בו ומה הזכויות שלכם.',
   ],
   sections: [
     {
       heading: 'מי אנחנו ולמי המדיניות מיועדת',
       paragraphs: [
         'למרווה שני קהלים: עסקים שמתעניינים בפרסום או בחלוקת בקבוקים (וממלאים טפסים באתר), והציבור הרחב שמקבל את הבקבוקים בחינם.',
-        'חשוב לדעת: מי שמקבל בקבוק לא נדרש למסור שום פרט — אין רישום, אין אפליקציה ואין איסוף מידע על מי ששותה. המידע האישי שנאסף באתר מגיע רק מטפסי הפנייה העסקיים.',
+        'חשוב לדעת: מי שמקבל בקבוק לא נדרש למסור שום פרט - אין רישום, אין אפליקציה ואין איסוף מידע על מי ששותה. המידע האישי שנאסף באתר מגיע רק מטפסי הפנייה העסקיים.',
       ],
     },
     {
@@ -60,9 +60,9 @@ const he: PrivacyContent = {
         'כשאתם ממלאים טופס באתר (פנייה כללית, טופס מפרסמים או טופס משווקים), אתם מוסרים לנו מרצונכם:',
       ],
       bullets: [
-        'פרטי קשר — שם מלא או איש קשר, טלפון ואימייל',
-        'פרטי עסק — שם העסק, סוג העסק ומיקומו',
-        'פרטי קמפיין — כמות בקבוקים, התאריך הרצוי, אופן החלוקה ונקודות חלוקה מועדפות',
+        'פרטי קשר - שם מלא או איש קשר, טלפון ואימייל',
+        'פרטי עסק - שם העסק, סוג העסק ומיקומו',
+        'פרטי קמפיין - כמות בקבוקים, התאריך הרצוי, אופן החלוקה ונקודות חלוקה מועדפות',
         'כל מה שתכתבו בשדות ההודעה וההערות',
         'מאיזה עמוד באתר נשלחה הפנייה',
       ],
@@ -70,7 +70,7 @@ const he: PrivacyContent = {
     {
       heading: 'מידע טכני ועוגיות',
       paragraphs: [
-        'האתר עצמו לא מפעיל כלי אנליטיקה, לא שותל עוגיות פרסום ולא עוקב אחריכם. ספקיות התשתית שלנו (Cloudflare — אחסון האתר, ו-Google Fonts — טעינת גופנים) מעבדות באופן אוטומטי נתונים טכניים בסיסיים כמו כתובת IP, כנדרש להצגת האתר ולאבטחתו.',
+        'האתר עצמו לא מפעיל כלי אנליטיקה, לא שותל עוגיות פרסום ולא עוקב אחריכם. ספקיות התשתית שלנו (Cloudflare - אחסון האתר, ו-Google Fonts - טעינת גופנים) מעבדות באופן אוטומטי נתונים טכניים בסיסיים כמו כתובת IP, כנדרש להצגת האתר ולאבטחתו.',
       ],
     },
     {
@@ -79,8 +79,8 @@ const he: PrivacyContent = {
       bullets: [
         'מענה לפנייה שלכם',
         'שליחת ערכת מדיה (מדיה קיט), מחירים והצעות לקמפיין',
-        'ניהול וביצוע של שיתופי פעולה — קמפיינים של מפרסמים ונקודות חלוקה של משווקים',
-        'עדכונים על מרווה שרלוונטיים לפנייה שלכם — אפשר להסיר את עצמכם בכל רגע במענה למייל',
+        'ניהול וביצוע של שיתופי פעולה - קמפיינים של מפרסמים ונקודות חלוקה של משווקים',
+        'עדכונים על מרווה שרלוונטיים לפנייה שלכם - אפשר להסיר את עצמכם בכל רגע במענה למייל',
       ],
       afterBullets: [
         'אנחנו לא מוכרים, לא משכירים ולא מעבירים את הפרטים שלכם לגורמים שלישיים למטרות השיווק שלהם.',
@@ -90,9 +90,9 @@ const he: PrivacyContent = {
       heading: 'עם מי המידע משותף',
       paragraphs: ['המידע עובר רק דרך ספקי השירות שמפעילים את התשתית שלנו:'],
       bullets: [
-        'Web3Forms — השירות שמעביר את הטפסים מהאתר לתיבת המייל שלנו',
-        'Google (Gmail) — תיבת המייל שבה הפניות מתקבלות ומנוהלות',
-        'Cloudflare — אחסון והגשה של האתר',
+        'Web3Forms - השירות שמעביר את הטפסים מהאתר לתיבת המייל שלנו',
+        'Google (Gmail) - תיבת המייל שבה הפניות מתקבלות ומנוהלות',
+        'Cloudflare - אחסון והגשה של האתר',
       ],
       afterBullets: [
         'הספקים האלה מעבדים את המידע רק לצורך מתן השירות שלהם. מעבר לזה, נמסור מידע רק אם נידרש לכך על פי דין.',
@@ -108,7 +108,7 @@ const he: PrivacyContent = {
     {
       heading: 'הזכויות שלכם',
       paragraphs: [
-        'בהתאם לחוק הגנת הפרטיות, התשמ״א-1981, יש לכם זכות לעיין במידע שנאסף עליכם, לבקש לתקן אותו ולבקש למחוק אותו. כדי לממש את הזכויות — כתבו לנו למייל שמופיע למטה, ואנחנו נטפל בבקשה בהקדם.',
+        'בהתאם לחוק הגנת הפרטיות, התשמ״א-1981, יש לכם זכות לעיין במידע שנאסף עליכם, לבקש לתקן אותו ולבקש למחוק אותו. כדי לממש את הזכויות - כתבו לנו למייל שמופיע למטה, ואנחנו נטפל בבקשה בהקדם.',
       ],
     },
     {
@@ -130,7 +130,7 @@ const he: PrivacyContent = {
 
 const en: PrivacyContent = {
   meta: {
-    title: 'Marva — Privacy Policy',
+    title: 'Marva - Privacy Policy',
     description: 'How Marva collects and uses information submitted on this site, and your rights',
   },
   title: 'Privacy Policy',
@@ -138,14 +138,14 @@ const en: PrivacyContent = {
   translationNote:
     'This is a convenience translation. If the English and Hebrew versions differ, the Hebrew version prevails.',
   intro: [
-    'Marva operates marva-water.com — an advertising platform that hands out free, advertiser-funded mineral water. This page explains what information the site collects, how we use it, and your rights.',
+    'Marva operates marva-water.com - an advertising platform that hands out free, advertiser-funded mineral water. This page explains what information the site collects, how we use it, and your rights.',
   ],
   sections: [
     {
       heading: 'Who we are and who this policy covers',
       paragraphs: [
         'Marva serves two audiences: businesses interested in advertising or distributing bottles (who fill out forms on this site), and the general public who receive the bottles for free.',
-        'If you receive a bottle, we ask nothing of you — no sign-up, no app, and no data collection about who drinks. The only personal information this site collects comes from the business inquiry forms.',
+        'If you receive a bottle, we ask nothing of you - no sign-up, no app, and no data collection about who drinks. The only personal information this site collects comes from the business inquiry forms.',
       ],
     },
     {
@@ -154,9 +154,9 @@ const en: PrivacyContent = {
         'When you fill out a form on this site (general inquiry, advertiser form, or distributor form), you voluntarily share:',
       ],
       bullets: [
-        'Contact details — full name or contact person, phone, and email',
-        'Business details — business name, business type and location',
-        'Campaign details — bottle quantities, preferred date, distribution method and preferred distribution points',
+        'Contact details - full name or contact person, phone, and email',
+        'Business details - business name, business type and location',
+        'Campaign details - bottle quantities, preferred date, distribution method and preferred distribution points',
         'Anything you write in the message and notes fields',
         'Which page of the site the inquiry was sent from',
       ],
@@ -164,7 +164,7 @@ const en: PrivacyContent = {
     {
       heading: 'Technical data and cookies',
       paragraphs: [
-        'The site itself runs no analytics, sets no advertising cookies, and does not track you. Our infrastructure providers (Cloudflare — hosting, and Google Fonts — font delivery) automatically process basic technical data such as IP addresses, as required to serve and secure the site.',
+        'The site itself runs no analytics, sets no advertising cookies, and does not track you. Our infrastructure providers (Cloudflare - hosting, and Google Fonts - font delivery) automatically process basic technical data such as IP addresses, as required to serve and secure the site.',
       ],
     },
     {
@@ -173,8 +173,8 @@ const en: PrivacyContent = {
       bullets: [
         'Responding to your inquiry',
         'Sending our media kit, pricing, and campaign proposals',
-        'Managing and running partnerships — advertiser campaigns and distributor points',
-        'Occasional Marva updates relevant to your inquiry — opt out anytime by replying',
+        'Managing and running partnerships - advertiser campaigns and distributor points',
+        'Occasional Marva updates relevant to your inquiry - opt out anytime by replying',
       ],
       afterBullets: [
         'We do not sell, rent, or share your details with third parties for their marketing purposes.',
@@ -184,9 +184,9 @@ const en: PrivacyContent = {
       heading: 'Who we share it with',
       paragraphs: ['Your information passes only through the service providers that run our infrastructure:'],
       bullets: [
-        'Web3Forms — the service that delivers form submissions to our inbox',
-        'Google (Gmail) — the mailbox where inquiries are received and managed',
-        'Cloudflare — website hosting and delivery',
+        'Web3Forms - the service that delivers form submissions to our inbox',
+        'Google (Gmail) - the mailbox where inquiries are received and managed',
+        'Cloudflare - website hosting and delivery',
       ],
       afterBullets: [
         'These providers process the information only to provide their service. Beyond that, we disclose information only if required by law.',

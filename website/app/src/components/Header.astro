@@ -9,16 +9,42 @@ interface Props {
 }
 
 const { locale, page } = Astro.props;
-const { navLinks, headerContent } = getContent(locale);
+const { navLinks, headerContent, miluim } = getContent(locale);
 
 const homeHref = canonicalHref('home', locale);
+/** Restated on the badge and CTA because their shared wrapper is forced to
+    dir="ltr" for physical placement — see the comment on that wrapper. */
+const dir = locale === 'he' ? 'rtl' : 'ltr';
+/* Logo placement, derived rather than guessed. The logo is centred in the
+   CONTAINER, but the clusters flanking it are very unequal now that the globe
+   is gone - hamburger 40px against badge+CTA ~168px on /en/ - so plain
+   centring walks it into the right cluster on narrow screens.
+
+   Padding on the ANCHOR shifts the logo left by half its value, so a padding
+   of exactly (groupWidth - leftWidth) re-centres the logo in the gap BETWEEN
+   the clusters. That difference is a constant per locale - the CTA label does
+   not reflow - which is why one value works at every width, where the fixed
+   guess it replaced did not. Measured: /en/ 167.8 - 40 => 128px, HE 134.3 - 40
+   => 94px.
+
+   Above 2*group + logo + 2*padding, plain centring already clears both
+   clusters and the shift is dropped: 496px on /en/, 400px on HE. Below 360px
+   /en/ cannot fit hamburger + wordmark + badge + "Contact us" at all (they sum
+   to 331px of a 328px content box), so only there does the wordmark give way
+   to the bare mark; Hebrew is narrower and keeps its wordmark down to 320px.
+   Re-measure all four numbers if the CTA label or the badge size changes. */
+const logoShift = locale === 'en' ? 'pr-[128px] min-[496px]:pr-0' : 'pr-[94px] min-[400px]:pr-0';
+const wordmarkClass = locale === 'en' ? 'max-[359px]:hidden' : '';
 ---
 
 <!-- ═══════════════════ HEADER ═══════════════════ -->
 <header class="site-header sticky top-0 z-50 bg-base/85 backdrop-blur-sm border-b border-border transition-shadow">
   <div class="relative max-w-6xl mx-auto px-4 sm:px-6 h-16 md:h-20 flex items-center">
-    <!-- Hamburger + language switcher: fixed physical LEFT at all sizes (Freewater-style) -->
-    <div class="absolute left-0 flex items-center gap-1">
+    <!-- Hamburger: fixed physical LEFT at all sizes (Freewater-style). The
+         globe/language button used to sit beside it; it was removed to buy
+         ~44px of header width back for the wordmark on phones, and the two
+         locale links moved into the nav overlay below. -->
+    <div class="absolute left-0 flex items-center">
       <!-- Hamburger: opens full-screen overlay -->
       <button
         id="hamburger"
@@ -32,60 +58,44 @@ const homeHref = canonicalHref('home', locale);
         <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-opacity duration-200"></span>
         <span class="hamburger-line block w-6 h-[2px] bg-ink rounded-full origin-center transition-transform duration-300"></span>
       </button>
-
-      <!-- Language switcher: globe button opens a small locale menu -->
-      <div class="relative">
-        <button
-          id="lang-toggle"
-          type="button"
-          aria-label={headerContent.langAriaLabel}
-          aria-expanded="false"
-          aria-controls="lang-menu"
-          class="w-10 h-10 flex items-center justify-center cursor-pointer"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" aria-hidden="true">
-            <circle cx="12" cy="12" r="9"></circle>
-            <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
-            <!-- x endpoints sit ON the circle at these y's (√(81−9)≈8.49), so the
-                 latitude lines stop at the rim instead of poking out past it. -->
-            <line x1="3.5" y1="9" x2="20.5" y2="9"></line>
-            <line x1="3.5" y1="15" x2="20.5" y2="15"></line>
-          </svg>
-        </button>
-
-        <!-- Disclosure, not role="menu": a menu role promises arrow-key/Home/End
-             navigation to screen readers, and this is a two-item list of plain
-             links reached with Tab. aria-expanded + aria-controls describe it
-             honestly without claiming keyboard behaviour we don't implement. -->
-        <div
-          id="lang-menu"
-          class="absolute left-0 top-full mt-2 min-w-[9rem] bg-surface border border-border rounded-xl shadow-card overflow-hidden py-1 z-50 opacity-0 -translate-y-1 pointer-events-none transition-[opacity,transform] duration-200"
-        >
-          {locales.map((l) => (
-            l === locale ? (
-              <span aria-current="true" class="block px-4 py-2.5 font-body text-sm text-start bg-sage-tint font-semibold text-ink">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="inline-block align-middle me-1.5" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                {localeNames[l]}
-              </span>
-            ) : (
-              <a href={altLocaleHref(page, locale)} class="block px-4 py-2.5 font-body text-sm text-start text-ink hover:bg-sage-tint transition-colors">
-                {localeNames[l]}
-              </a>
-            )
-          ))}
-        </div>
-      </div>
     </div>
 
-    <a href={homeHref} class="mx-auto" aria-label={headerContent.logoAriaLabel}>
-      <Logo size="sm" locale={locale} />
+    <!-- See logoShift / wordmarkClass in the frontmatter for why these are
+         locale-specific and where the numbers come from. -->
+    <a href={homeHref} class:list={['mx-auto', logoShift]} aria-label={headerContent.logoAriaLabel}>
+      <Logo size="sm" locale={locale} textClass={wordmarkClass} />
     </a>
 
-    <Button href={headerContent.ctaHref} size="m" class="absolute right-0 !px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-base">
-      {headerContent.ctaLabel}
-    </Button>
+    <!-- Reservist-owned-business credential + CTA, anchored as one group.
+         dir="ltr" is on the GROUP only, so DOM order maps to physical
+         left->right and the badge lands inboard of the button in BOTH locales.
+         A direction-following flex would put the badge on the outer edge on
+         /en/ and push the CTA off the right rail it has always sat on. Each
+         child then restates its own dir, so the group's direction never
+         reaches any text. -->
+    <div class="absolute right-0 flex items-center gap-2 sm:gap-3" dir="ltr">
+      <!-- Mark only, at every size including desktop - no pill, no visible
+           wordmark. Not a link either: the certificate is a credential Marva
+           holds, not a referral, and the header already spends its only
+           outbound slot on the CTA. The label still sits in the accessibility
+           tree via sr-only (and as a hover tooltip via title), so the image
+           itself is decorative and takes alt="". -->
+      <span dir={dir} title={miluim.badgeLabel} class="inline-flex items-center shrink-0">
+        <img
+          src="/miluim/miluim-triangle.png"
+          alt=""
+          width="96"
+          height="86"
+          loading="eager"
+          class="h-9 md:h-11 w-auto shrink-0"
+        />
+        <span class="sr-only">{miluim.badgeLabel}</span>
+      </span>
+
+      <Button href={headerContent.ctaHref} size="m" dir={dir} class="!px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-[1rem]">
+        {headerContent.ctaLabel}
+      </Button>
+    </div>
   </div>
 </header>
 
@@ -104,4 +114,20 @@ const homeHref = canonicalHref('home', locale);
       </a>
     ))}
   </nav>
+
+  <!-- Language switcher, rehoused. The header globe was removed to free width
+       on phones; putting the two locales here keeps switching one tap from the
+       top of any page rather than pushing it down to the footer. Plain links,
+       so there is no disclosure widget to open and no JS behind it. -->
+  <div class="mt-10 flex items-center gap-5">
+    {locales.map((l) => (
+      l === locale ? (
+        <span aria-current="true" class="font-body text-sm text-inverse/50">{localeNames[l]}</span>
+      ) : (
+        <a href={altLocaleHref(page, locale)} class="nav-overlay-link font-body text-sm text-inverse underline underline-offset-4 hover:text-sage transition-colors">
+          {localeNames[l]}
+        </a>
+      )
+    ))}
+  </div>
 </div>

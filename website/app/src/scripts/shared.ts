@@ -33,7 +33,6 @@ function openNav() {
   if (hamburgerLines[0]) hamburgerLines[0].style.transform = 'translateY(8px) rotate(45deg)';
   if (hamburgerLines[1]) hamburgerLines[1].style.opacity = '0';
   if (hamburgerLines[2]) hamburgerLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
-  closeLangMenu(); // opening the full-screen nav closes the language menu too
   document.body.style.overflow = 'hidden';
 }
 
@@ -53,38 +52,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && navOpen) closeNav();
 });
 
-/* ── 2. Header language menu (globe button → dropdown) ───────────────────
-   CSS-transition only (opacity + 4px translate); classList state drives
-   both the visual toggle and aria-expanded, so the menu opens/closes
-   correctly even if the transition itself never runs. ─────────────────── */
-const langToggle = document.getElementById('lang-toggle');
-const langMenu = document.getElementById('lang-menu');
-let langMenuOpen = false;
-
-function openLangMenu() {
-  langMenuOpen = true;
-  langMenu?.classList.remove('opacity-0', '-translate-y-1', 'pointer-events-none');
-  langToggle?.setAttribute('aria-expanded', 'true');
-}
-
-function closeLangMenu() {
-  langMenuOpen = false;
-  langMenu?.classList.add('opacity-0', '-translate-y-1', 'pointer-events-none');
-  langToggle?.setAttribute('aria-expanded', 'false');
-}
-
-langToggle?.addEventListener('click', () => (langMenuOpen ? closeLangMenu() : openLangMenu()));
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && langMenuOpen) closeLangMenu();
-});
-document.addEventListener('pointerdown', (e) => {
-  if (!langMenuOpen) return;
-  const target = e.target as Node;
-  if (langToggle?.contains(target) || langMenu?.contains(target)) return;
-  closeLangMenu();
-});
-
-/* ── 3. Header shadow on scroll ───────────────────────────────────────── */
+/* ── 2. Header shadow on scroll ───────────────────────────────────────── */
 const header = document.querySelector('.site-header');
 function updateHeaderShadow() {
   header?.classList.toggle('header-scrolled', window.scrollY > 40);
@@ -92,7 +60,7 @@ function updateHeaderShadow() {
 updateHeaderShadow();
 window.addEventListener('scroll', updateHeaderShadow);
 
-/* ── 4. Click-to-expand cards (where-cards, testimonials, etc.) ────────── */
+/* ── 3. Click-to-expand cards (where-cards, testimonials, etc.) ────────── */
 document.querySelectorAll<HTMLButtonElement>('.expand-trigger').forEach((btn) => {
   btn.addEventListener('click', () => {
     const panelId = btn.getAttribute('aria-controls');
@@ -103,7 +71,7 @@ document.querySelectorAll<HTMLButtonElement>('.expand-trigger').forEach((btn) =>
   });
 });
 
-/* ── 5. Advertiser-form conditional fields (delivery radios + save toggle)
+/* ── 4. Advertiser-form conditional fields (delivery radios + save toggle)
    No-op on pages that don't have these elements yet. ────────────────── */
 const prefPoints = document.getElementById('pref-points');
 document.querySelectorAll<HTMLInputElement>('input[name="delivery"]').forEach((radio) => {
@@ -137,7 +105,7 @@ saveToggle?.addEventListener('click', () => {
   saveToggle.classList.toggle('bg-sky', saveOpen);
 });
 
-/* ── 6. Generalized form submit handler — every .marva-form on any page ── */
+/* ── 5. Generalized form submit handler — every .marva-form on any page ── */
 const sendingLabel = document.documentElement.lang === 'en' ? 'Sending…' : 'שולח...';
 
 document.querySelectorAll<HTMLFormElement>('.marva-form').forEach((form) => {
@@ -184,7 +152,7 @@ document.querySelectorAll<HTMLFormElement>('.marva-form').forEach((form) => {
   });
 });
 
-/* ── 7. Calm GSAP scroll reveals — every page, guarded by reduced-motion ──
+/* ── 6. Calm GSAP scroll reveals — every page, guarded by reduced-motion ──
    .who-line (home #who) and .how-card (advertisers #how) get their own
    bespoke ScrollTrigger sequences in their page's own script — excluded here
    so they don't double-fire. #who has no h2 at all (3 stacked <p> lines), so
