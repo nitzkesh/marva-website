@@ -175,7 +175,10 @@ if (!reduced) {
   // appears, then dead content"). batch() gives every card its own trigger
   // but still groups same-frame entries (e.g. a desktop row) into one
   // staggered reveal, matching the old side-by-side behaviour there.
-  ['.where-card', '.testimonial-card', '.why-card', '.option-card', '.tile-card'].forEach((selector) => {
+  // .miluim-plate is a single block rather than a row of cards, so it just
+  // takes the same reveal on its own - the campaign banner used to be the
+  // one section on the home page that never entered.
+  ['.where-card', '.testimonial-card', '.why-card', '.option-card', '.tile-card', '.miluim-plate'].forEach((selector) => {
     const cards = document.querySelectorAll<HTMLElement>(selector);
     if (!cards.length) return;
     gsap.set(cards, { y: 30, opacity: 0 });

@@ -6,7 +6,7 @@ import Button from '../Button.astro';
 import Input from '../Input.astro';
 import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
-import { getContent, canonicalHref, visible, type Locale } from '../../data/content';
+import { getContent, canonicalHref, visible, miluimBannerText, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
 
 interface Props {
@@ -256,47 +256,54 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     )}
 
     <!-- ═══════════ E2. RESERVIST-OWNED BUSINESS (campaign banner) ═══════════
-         The campaign's own 970x250 banner, reproduced 1:1 rather than rebuilt:
-         same artwork, same lockup, same Keshet 12 colour bar. It is published
-         by מחבקים מילואימניקים specifically for certified businesses to display,
-         which is what makes shipping it verbatim the right call here.
+         The campaign's 970x250 / 300x250 artwork, rebuilt as text + marks
+         rather than shipped as the flat image it used to be. Same wording,
+         same two marks, same Keshet 12 stripe, same paper - every measurement
+         taken off their files and re-expressed in cqw, so this is one
+         proportional scale of their composition (see global.css for the
+         numbers and why they must be re-derived, not nudged).
 
-         max-w-[970px] is a hard ceiling, not a style choice: 970px is the
-         artwork's native width and the widest the campaign publishes, so
-         letting it fill max-w-6xl (1152px) would upscale and blur it.
+         Why rebuild rather than ship their JPEG: at 970px the image was 1x, so
+         it was the one soft element on the page on any retina screen, and it
+         sat 37px proud of the max-w-4xl buttons above and #upcoming card
+         below. Live text fixes both - it is sharp at any density and the plate
+         now measures 896px like its neighbours. The two marks stay images
+         because they are artwork, not type.
 
-         bg-base, because the banner carries its own cream plate and its own
-         bottom stripe. It also keeps the page's no-two-adjacent-backgrounds
-         rule intact: buttons above are bg-surface, #upcoming below is
-         bg-sand-tint. Re-encoded to WebP q92 (270KB JPEG -> 71KB), verified
-         visually identical against the original at 2x. -->
+         bg-base, because the plate carries its own cream and its own stripe.
+         That also keeps the page's no-two-adjacent-backgrounds rule: buttons
+         above are bg-surface, #upcoming below is bg-sand-tint. -->
     {sections.home.miluim && (
     <section class="bg-base pb-16 md:pb-24">
       <div class="max-w-6xl mx-auto px-6">
-        <!-- Two official cuts, not one scaled one. The 970x250 shrinks to
-             342x88 on a 390px phone - about a third of its design size, where
-             the sub-headline stops being readable - so below sm the campaign's
-             own 300x250 mobile cut takes over at its native size. Both are
-             their artwork, so the banner stays 1:1 at every width; only the
-             composition changes, which is exactly what the kit is for.
+        <div class="miluim-banner">
+          <!-- role="img" + aria-label, so the plate reads as the single
+               credential it depicts, in the reader's own language, instead of
+               spelling out Hebrew copy an English visitor did not ask for.
+               That also makes the whole subtree presentational, which is why
+               the marks take alt="". dir="rtl" is explicit rather than
+               inherited: on /en the page is LTR, and the sub-headline's hyphen
+               would jump to the wrong end of the line without it.
 
-             The aspect is pinned per breakpoint because the two cuts have very
-             different ratios (6/5 against 97/25). The width/height attributes
-             below can only describe ONE of them, so without these the box would
-             be reserved at the desktop ratio and jump when the mobile file
-             lands. -->
-        <picture>
-          <source media="(max-width: 639px)" srcset="/miluim/miluim-banner-mobile.webp" />
-          <img
-            src="/miluim/miluim-banner.webp"
-            alt={miluim.bannerAlt}
-            width="970"
-            height="250"
-            loading="lazy"
-            decoding="async"
-            class="block mx-auto w-full max-w-[300px] sm:max-w-[970px] aspect-[6/5] sm:aspect-[97/25] object-contain rounded-[10px]"
-          />
-        </picture>
+               .miluim-plate is what shared.ts reveals on scroll - it is in the
+               same batch as .where-card and .testimonial-card, so the banner
+               enters exactly like every other block on the site. -->
+          <div class="miluim-plate" role="img" aria-label={miluim.bannerAlt} lang="he" dir="rtl">
+            <!-- The separator space lives INSIDE the span, not between spans: .map()
+                 emits adjacent elements with no text node between them, so the
+                 three phrases would render as one word on the wide cut. A leading
+                 space is what survives both states - it spaces the words while the
+                 spans are inline, and CSS trims it at the start of a line once the
+                 container query makes them blocks. -->
+            <p class="miluim-head">{miluimBannerText.headlineLines.map((line, i) => (<span>{i > 0 ? ' ' : ''}{line}</span>))}</p>
+            <p class="miluim-sub">{miluimBannerText.sub}</p>
+            <div class="miluim-marks">
+              <img class="miluim-triangle" src="/miluim/miluim-triangle.webp" alt="" width="384" height="320" loading="lazy" decoding="async" />
+              <img class="miluim-keshet" src="/miluim/miluim-keshet.webp" alt="" width="163" height="70" loading="lazy" decoding="async" />
+            </div>
+            <div class="miluim-stripe"></div>
+          </div>
+        </div>
       </div>
     </section>
     )}

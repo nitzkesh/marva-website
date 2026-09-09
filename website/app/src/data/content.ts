@@ -86,18 +86,22 @@ export interface ConveyorChip {
 }
 
 /**
- * The reservist-owned-business credential: a mark-only badge in the header on
- * every page, and the campaign's own banner on the home page under the
- * "what's next" buttons.
- *
- * Neither string is decorative filler. `badgeLabel` is the badge's only
- * accessible name (the mark ships with alt=""), and `bannerAlt` has to carry
- * the banner's entire message, because that message lives in pixels.
+ * The reservist-owned-business credential, now only the campaign banner on the
+ * home page under the "what's next" buttons. A `badgeLabel` sat here too, for a
+ * mark-only badge in the header on all 10 pages; the badge came out on
+ * 2026-09-09 and the string went with it rather than linger as a field the
+ * editor still offers but nothing renders.
  */
 export interface MiluimContent {
-  /** Header badge's accessible name and hover tooltip; never rendered visibly. */
-  badgeLabel: string;
-  /** Alt for the campaign banner - it carries the banner's whole message. */
+  /**
+   * The banner's accessible name, in the reader's own language.
+   *
+   * The plate is `role="img"`, so this REPLACES its subtree rather than
+   * supplementing it: the Hebrew inside is the campaign's own credential
+   * wording, reproduced untranslated (see `miluimBannerText`), and an English
+   * visitor would otherwise be read Hebrew with no context. It therefore has to
+   * carry the banner's entire message on its own.
+   */
   bannerAlt: string;
 }
 
@@ -355,6 +359,26 @@ export function altLocaleHref(page: PageKey, locale: Locale): string {
   const other: Locale = locale === 'he' ? 'en' : 'he';
   return routesByPage[page][other];
 }
+
+/**
+ * The campaign banner's own wording - Hebrew in both locales, deliberately not
+ * translatable, which is why it sits here among the locale-independent
+ * constants rather than in content.he.json / content.en.json.
+ *
+ * It is the text of a credential issued by מחבקים מילואימניקים, reproduced
+ * exactly as the campaign publishes it; an English rendering would be a
+ * certification wording they never issued. English readers are not left
+ * without it - the plate takes `miluim.bannerAlt` as its accessible name, and
+ * that IS per-locale.
+ *
+ * The headline is three phrases, not one string, because the campaign's
+ * 300x250 cut breaks it over exactly these three lines while the 970x250 cut
+ * sets the same three inline (see .miluim-head in global.css).
+ */
+export const miluimBannerText = {
+  headlineLines: ['עסק של', 'מילואימניק', 'לפניך!'],
+  sub: 'אם קונים - אז מעסק במילואים',
+};
 
 /**
  * Language names for the switcher. Endonyms — a language is always offered in

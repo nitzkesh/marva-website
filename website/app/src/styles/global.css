@@ -464,6 +464,117 @@ html[lang='en'] .conveyor-marquee {
   will-change: transform;
 }
 
+/* ── Reservist-owned-business banner (home page) ──────────────────────────
+   A rebuild of the campaign's own 970x250 / 300x250 artwork: live text, the
+   two marks as images, the paper and the Keshet 12 stripe in CSS. It replaced
+   the flat JPEG-turned-WebP because that was a 1x raster - soft on every
+   retina screen, and 37px wider than the buttons above it and the list below.
+
+   Every number below is measured off the campaign's own files and quoted in
+   cqw, so the whole plate is one proportional scale of their artwork at any
+   width. The reference grids are 970x250 wide and 300x250 narrow: a value of
+   N artwork-pixels is N/970*100 cqw (or N/300*100 inside the container query),
+   which is why the numbers look arbitrary. Re-derive them, don't nudge them.
+
+   Container query, not a media query: the composition has to switch on how
+   wide the PLATE is, which is min(896, viewport - 48) here but need not stay
+   that. 560px is the plate width at which the wide cut's sub-headline drops
+   under ~17px and stops being readable. */
+.miluim-banner {
+  container-type: inline-size;
+  max-width: 896px;          /* = max-w-4xl: the big buttons above and the
+                                #upcoming card below are both this wide */
+  margin-inline: auto;
+}
+
+.miluim-plate {
+  position: relative;
+  aspect-ratio: 970 / 250;
+  overflow: hidden;
+  border-radius: 10px;
+  background-color: #F8F6EE;                        /* the campaign's paper */
+  background-image: url('/miluim/miluim-paper.webp');
+  /* Fixed px, never scaled: the campaign renders this paper stock 1:1 in both
+     of its cuts, so the grain must not track the plate's width. */
+  background-size: 208px 208px;
+  /* Explicit, not inherited: body is var(--font-body) (Work Sans), which
+     carries no Hebrew at all - the plate would fall through to Assistant on
+     /he and to the system Hebrew face on /en, where the EN body override
+     pins the stack to Work Sans. Every measurement in this block is
+     calibrated against Rubik 900. */
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+}
+
+.miluim-plate > * {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0;
+}
+
+/* Two different olives, both sampled from stroke interiors in the artwork
+   (eroded twice so no paper bleed is averaged in). The sub-headline really is
+   the darker of the two. */
+.miluim-head { color: #565F2A; font-size: 6.492cqw; top: 2.146cqw; }
+.miluim-sub  { color: #535A21; font-size: 4.738cqw; top: 9.121cqw; }
+
+/* The wide cut sets the headline's three phrases as one line; the narrow cut
+   breaks them over exactly these three. Inline spans + display:block is what
+   lets one string do both - the inter-span whitespace supplies the spaces
+   inline and collapses away once they are blocks. */
+.miluim-head span { display: inline; }
+
+/* direction:ltr because the mark order is part of the artwork, not text: the
+   triangle sits left of the Keshet lockup in both cuts. Without this the flex
+   row inherits the page's RTL on /he and swaps them. */
+.miluim-marks {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  direction: ltr;
+  gap: 0.928cqw;
+  top: 15.361cqw;
+}
+.miluim-marks img { display: block; }
+.miluim-triangle { width: 8.763cqw; height: auto; }
+.miluim-keshet   { width: 16.804cqw; height: auto; }
+
+/* Keshet 12's brand rainbow: nine flat bands with hard edges, not a gradient.
+   Both cuts run the same nine colours; the campaign crops the sequence
+   differently, hence the second set of stops below. `to right` is physical on
+   purpose - the stripe does not mirror on the LTR /en pages. */
+.miluim-stripe {
+  top: auto;
+  bottom: 0;
+  height: 1.186cqw;
+  background: linear-gradient(to right,
+    #53347E 0      12.06%, #414A92 12.06% 29.90%, #266CAB 29.90% 41.24%,
+    #1CA9C9 41.24% 46.29%, #48C775 46.29% 52.16%, #FFD50D 52.16% 58.45%,
+    #FEAA29 58.45% 67.53%, #F76F09 67.53% 80.52%, #D3021D 80.52% 100%);
+}
+
+@container (max-width: 560px) {
+  .miluim-plate { aspect-ratio: 6 / 5; }
+  /* 1.013 is the campaign's own leading: baselines 34.5 artwork-px apart at a
+     34.06px type size. */
+  .miluim-head { font-size: 11.353cqw; line-height: 1.013; top: 5.383cqw; }
+  .miluim-head span { display: block; }
+  .miluim-sub  { font-size: 6.839cqw; top: 43.237cqw; }
+  .miluim-marks { gap: 3cqw; top: 56cqw; }
+  .miluim-triangle { width: 22.33cqw; }
+  .miluim-keshet   { width: 42.33cqw; }
+  .miluim-stripe {
+    height: 3.667cqw;
+    background: linear-gradient(to right,
+      #53347E 0      2.67%,  #414A92 2.67%  27.67%, #266CAB 27.67% 43.67%,
+      #1CA9C9 43.67% 50.67%, #48C775 50.67% 58.67%, #FFD50D 58.67% 67.33%,
+      #FEAA29 67.33% 80.00%, #F76F09 80.00% 98.33%, #D3021D 98.33% 100%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

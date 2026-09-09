@@ -9,32 +9,36 @@ interface Props {
 }
 
 const { locale, page } = Astro.props;
-const { navLinks, headerContent, miluim } = getContent(locale);
+const { navLinks, headerContent } = getContent(locale);
 
 const homeHref = canonicalHref('home', locale);
-/** Restated on the badge and CTA because their shared wrapper is forced to
-    dir="ltr" for physical placement — see the comment on that wrapper. */
-const dir = locale === 'he' ? 'rtl' : 'ltr';
 /* Logo placement, derived rather than guessed. The logo is centred in the
-   CONTAINER, but the clusters flanking it are very unequal now that the globe
-   is gone - hamburger 40px against badge+CTA ~168px on /en/ - so plain
-   centring walks it into the right cluster on narrow screens.
+   CONTAINER, but the clusters flanking it are unequal - hamburger 40px against
+   the CTA - so plain centring walks it into the CTA on narrow screens.
 
    Padding on the ANCHOR shifts the logo left by half its value, so a padding
-   of exactly (groupWidth - leftWidth) re-centres the logo in the gap BETWEEN
-   the clusters. That difference is a constant per locale - the CTA label does
-   not reflow - which is why one value works at every width, where the fixed
-   guess it replaced did not. Measured: /en/ 167.8 - 40 => 128px, HE 134.3 - 40
-   => 94px.
+   of exactly (ctaWidth - 40) re-centres it in the gap BETWEEN the clusters.
+   Below sm the CTA is its small variant, which is the width that matters here:
+   measured 119.7px on /en/ and 86.1px on HE. Plain centring already clears both
+   clusters once the content box reaches 2*cta + logo, i.e. a viewport of
+   2*cta + logo + 32 (px-4), and above that the shift is dropped.
 
-   Above 2*group + logo + 2*padding, plain centring already clears both
-   clusters and the shift is dropped: 496px on /en/, 400px on HE. Below 360px
-   /en/ cannot fit hamburger + wordmark + badge + "Contact us" at all (they sum
-   to 331px of a 328px content box), so only there does the wordmark give way
-   to the bare mark; Hebrew is narrower and keeps its wordmark down to 320px.
-   Re-measure all four numbers if the CTA label or the badge size changes. */
-const logoShift = locale === 'en' ? 'pr-[128px] min-[496px]:pr-0' : 'pr-[94px] min-[400px]:pr-0';
-const wordmarkClass = locale === 'en' ? 'max-[359px]:hidden' : '';
+   /en/: 119.7 - 40 => 80px, cleared at 2*119.7 + 123.6 + 32 = 395 => 400px.
+   HE:   86.1 - 40 => 46px, cleared at 2*86.1 + 96.8 + 32 = 301 - below the
+   320px floor the site supports, so Hebrew needs no shift at any real width.
+
+   These were 128px/496px and 94px/400px until the reservist badge came out of
+   the header on 2026-09-09; the badge was ~51px of the old group. Re-measure
+   all of them if the CTA label changes or anything rejoins that cluster.
+
+   The /en/ wordmark still gives way to the bare mark on the very narrowest
+   phones: hamburger + wordmark + CTA = 40 + 123.6 + 119.7 = 283.3, so it needs
+   a 316px viewport. 336 leaves ~10px of clearance either side, which is the
+   guard the fallback face needs - Rubik loads with display=swap, so "Marva"
+   renders in Segoe UI first and slightly wider. Hebrew is narrower and keeps
+   its wordmark all the way down. */
+const logoShift = locale === 'en' ? 'pr-[80px] min-[400px]:pr-0' : '';
+const wordmarkClass = locale === 'en' ? 'max-[335px]:hidden' : '';
 ---
 
 <!-- ═══════════════════ HEADER ═══════════════════ -->
@@ -66,33 +70,13 @@ const wordmarkClass = locale === 'en' ? 'max-[359px]:hidden' : '';
       <Logo size="sm" locale={locale} textClass={wordmarkClass} />
     </a>
 
-    <!-- Reservist-owned-business credential + CTA, anchored as one group.
-         dir="ltr" is on the GROUP only, so DOM order maps to physical
-         left->right and the badge lands inboard of the button in BOTH locales.
-         A direction-following flex would put the badge on the outer edge on
-         /en/ and push the CTA off the right rail it has always sat on. Each
-         child then restates its own dir, so the group's direction never
-         reaches any text. -->
-    <div class="absolute right-0 flex items-center gap-2 sm:gap-3" dir="ltr">
-      <!-- Mark only, at every size including desktop - no pill, no visible
-           wordmark. Not a link either: the certificate is a credential Marva
-           holds, not a referral, and the header already spends its only
-           outbound slot on the CTA. The label still sits in the accessibility
-           tree via sr-only (and as a hover tooltip via title), so the image
-           itself is decorative and takes alt="". -->
-      <span dir={dir} title={miluim.badgeLabel} class="inline-flex items-center shrink-0">
-        <img
-          src="/miluim/miluim-triangle.png"
-          alt=""
-          width="96"
-          height="86"
-          loading="eager"
-          class="h-9 md:h-11 w-auto shrink-0"
-        />
-        <span class="sr-only">{miluim.badgeLabel}</span>
-      </span>
-
-      <Button href={headerContent.ctaHref} size="m" dir={dir} class="!px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-[1rem]">
+    <!-- CTA: fixed physical RIGHT at all sizes, mirroring the hamburger's
+         wrapper on the left. The reservist-credential badge used to sit inboard
+         of it, which is why this group carried dir="ltr" and a gap; with the
+         badge gone the CTA is the only child, so it follows the page direction
+         like everything else. -->
+    <div class="absolute right-0 flex items-center">
+      <Button href={headerContent.ctaHref} size="m" class="!px-4 !py-2.5 text-sm sm:!px-[22px] sm:!py-3 sm:text-[1rem]">
         {headerContent.ctaLabel}
       </Button>
     </div>
