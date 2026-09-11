@@ -31,7 +31,7 @@
   ],
   "headerContent": {
     "menuAriaLabel": "Navigation menu",
-    "logoAriaLabel": "Marva - home",
+    "logoAriaLabel": "Marva: home",
     "ctaLabel": "Contact us",
     "ctaHref": "/en/#inquiry"
   },
@@ -49,12 +49,12 @@
     "rights": "© Marva 2026"
   },
   "homeMeta": {
-    "title": "Marva - Free Water",
-    "description": "Advertisers pay for the bottle - you drink. Free mineral water whose label is your ad space"
+    "title": "Marva: Free Water",
+    "description": "Advertisers pay for the bottle. You drink. Free mineral water whose label is your ad space"
   },
   "homeHero": {
     "h1": "Free Water",
-    "sub": "Advertisers pay for the bottle - you drink",
+    "sub": "Advertisers pay for the bottle. You drink",
     "ctaLabel": "I want to advertise",
     "ctaHref": "/en/advertisers",
     "bottleLabelLines": [
@@ -187,19 +187,19 @@
       "badge": "Coming soon",
       "name": "◦ ◦ ◦",
       "short": "Our first customers' stories will show up here soon",
-      "long": "We're just launching - the first reviews are on their way. Want to be one of the first? Talk to us"
+      "long": "We're just launching. The first reviews are on their way. Want to be one of the first? Talk to us"
     },
     {
       "badge": "Coming soon",
       "name": "◦ ◦ ◦",
       "short": "Our first customers' stories will show up here soon",
-      "long": "We're just launching - the first reviews are on their way. Want to be one of the first? Talk to us"
+      "long": "We're just launching. The first reviews are on their way. Want to be one of the first? Talk to us"
     },
     {
       "badge": "Coming soon",
       "name": "◦ ◦ ◦",
       "short": "Our first customers' stories will show up here soon",
-      "long": "We're just launching - the first reviews are on their way. Want to be one of the first? Talk to us"
+      "long": "We're just launching. The first reviews are on their way. Want to be one of the first? Talk to us"
     }
   ],
   "bigButtonsHeading": "What's next?",
@@ -229,7 +229,7 @@
   ],
   "inquiryForm": {
     "heading": "Let's talk",
-    "subject": "New website inquiry - General",
+    "subject": "New website inquiry: General",
     "fromPage": "home",
     "thanks": "Thanks! We've got your message and will be in touch soon",
     "error": "Something went wrong sending this. Try again or email us at marvawater.info@gmail.com",
@@ -255,12 +255,12 @@
     }
   },
   "advertisersMeta": {
-    "title": "Marva - For Advertisers",
-    "description": "A water bottle in hand is media people can't ignore - and the audience says thank you for it"
+    "title": "Marva: For Advertisers",
+    "description": "A water bottle in hand is media people can't ignore, and the audience says thank you for it"
   },
   "advertisersHero": {
     "h1": "The next label is yours",
-    "sub": "A water bottle in hand is media people can't ignore - and the audience says thank you for it",
+    "sub": "A water bottle in hand is media people can't ignore, and the audience says thank you for it",
     "ctaLabel": "Get a quote",
     "ctaHref": "#ad-form"
   },
@@ -287,9 +287,9 @@
     }
   ],
   "labelPromo": {
-    "heading": "The label - your stage",
+    "heading": "The label is your stage",
     "caption": "True-to-scale proportions of a 210×42 mm label, including the mandatory zones",
-    "ariaLabel": "A replica of the bottle label as printed: the mandatory content on both sides - minerals table, kosher, deposit, recycling and producer details (masked in this demo) - with the label's blank middle as your brand zone",
+    "ariaLabel": "A replica of the bottle label as printed: the mandatory content on both sides (minerals table, kosher, deposit, recycling and producer details masked in this demo), with the label's blank middle as your brand zone",
     "regulatoryZoneLabel": "Mandatory zone",
     "brandZoneLabel": "Your brand zone",
     "brandZonePlaceholder": "Your brand here"
@@ -297,7 +297,7 @@
   "advertiserOptions": [
     {
       "title": "Full creative freedom",
-      "body": "Put whatever you want on the label. Any background you choose, and in the ad zone - logo, slogan, coupon code, discount barcode, image, or anything else"
+      "body": "Put whatever you want on the label. Any background you choose, and in the ad zone: logo, slogan, coupon code, discount barcode, image, or anything else"
     },
     {
       "title": "Save on costs, share the label",
@@ -318,7 +318,7 @@
     {
       "icon": "target",
       "title": "Real audience targeting",
-      "body": "You choose where, when, and who gets the bottles - down to the exact distribution point"
+      "body": "You choose where, when, and who gets the bottles, down to the exact distribution point"
     },
     {
       "icon": "megaphone",
@@ -332,7 +332,7 @@
     }
   ],
   "adForm": {
-    "subject": "New website inquiry - Advertiser",
+    "subject": "New website inquiry: Advertiser",
     "fromPage": "advertisers",
     "thanks": "Thanks! We've got your message and will be in touch soon",
     "error": "Something went wrong sending this. Try again or email us at marvawater.info@gmail.com",
@@ -374,15 +374,15 @@
     }
   },
   "distributorsMeta": {
-    "title": "Marva - For Distributors",
-    "description": "A water bottle in hand is an ad you can't ignore - and the audience says thank you for it"
+    "title": "Marva: For Distributors",
+    "description": "A water bottle in hand is an ad you can't ignore, and the audience says thank you for it"
   },
   "distributorsHero": {
     "h1": [
       "The water's on us.",
       "The customers are yours"
     ],
-    "sub": "A water bottle in hand is an ad you can't ignore - and the audience says thank you for it",
+    "sub": "A water bottle in hand is an ad you can't ignore, and the audience says thank you for it",
     "ctaLabel": "I want to distribute",
     "ctaHref": "#dist-form"
   },
@@ -390,12 +390,12 @@
   "whyDistribute": [
     {
       "keyword": "Zero cost",
-      "body": "Advertisers already paid for the bottles. You just hand them out - no inventory to buy, no risk",
+      "body": "Advertisers already paid for the bottles. You just hand them out, with no inventory to buy, no risk",
       "accent": "sage"
     },
     {
       "keyword": "Happy customers",
-      "body": "Free cold water is a service upgrade people remember - and tell others about",
+      "body": "Free cold water is a service upgrade people remember and tell others about",
       "accent": "sky"
     },
     {
@@ -421,7 +421,7 @@
   ],
   "distributorTypesClosing": "Don't see yourself on the list? If you've got an audience, talk to us",
   "distForm": {
-    "subject": "New website inquiry - Distributor",
+    "subject": "New website inquiry: Distributor",
     "fromPage": "distributors",
     "thanks": "Thanks! We've got your message and will be in touch soon",
     "error": "Something went wrong sending this. Try again or email us at marvawater.info@gmail.com",

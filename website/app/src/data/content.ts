@@ -377,7 +377,7 @@ export function altLocaleHref(page: PageKey, locale: Locale): string {
  */
 export const miluimBannerText = {
   headlineLines: ['עסק של', 'מילואימניק', 'לפניך!'],
-  sub: 'אם קונים - אז מעסק במילואים',
+  sub: 'אם קונים, אז מעסק במילואים',
 };
 
 /**
