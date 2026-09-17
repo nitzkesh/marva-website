@@ -8,7 +8,6 @@ import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
 import { getContent, canonicalHref, visible, miluimBannerText, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
-import WhoStatement from '../WhoStatement.astro';
 
 interface Props {
   locale: Locale;
@@ -140,7 +139,18 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     </section>
     )}
 
-    {sections.home.who && <WhoStatement locale={locale} />}
+    <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
+    {sections.home.who && (
+    <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sage-tint py-16">
+      <div class="max-w-3xl mx-auto px-6 text-center flex flex-col gap-6 w-full min-w-0">
+        {whoStatement.lines.map((line, i) => (
+          <p class={`who-line font-display font-bold text-ink leading-[1.2] text-balance ${i === 0 ? 'text-[clamp(2.25rem,4.5vw+1.1rem,4rem)]' : i === 2 ? 'text-[clamp(2rem,4vw+1rem,3.25rem)]' : 'text-[clamp(2rem,4vw+1rem,3.5rem)]'} ${i === 2 ? 'md:whitespace-nowrap' : ''}`}>
+            {line}
+          </p>
+        ))}
+      </div>
+    </section>
+    )}
 
     <!-- ═══════════════ D. WHERE DO WE WORK ═══════════════ -->
     {sections.home.where && (
@@ -370,6 +380,22 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
           { opacity: [0, 1], scale: [0.9, 1], y: [16, 0] },
           { delay: 0.15, ...springTransition },
         );
+      }
+
+      // A short explanatory sequence, played once as this statement enters.
+      const whoSection = document.getElementById('who');
+      const whoLines = document.querySelectorAll<HTMLElement>('.who-line');
+      if (whoSection && whoLines.length) {
+        const timeline = gsap.timeline({
+          scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
+        });
+        whoLines.forEach((line, index) => {
+          timeline.from(
+            line,
+            { y: 24, opacity: 0, duration: 0.5, ease: 'power2.out', clearProps: 'transform' },
+            index === 0 ? 0 : '+=0.3',
+          );
+        });
       }
     }
 
