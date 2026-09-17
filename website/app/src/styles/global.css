@@ -226,147 +226,59 @@ html[lang='en'] {
 }
 
 
-/* Conveyor strip — infinite marquee (two identical tracks translated as one row) */
-/* Layer promotion is `will-change: transform` below, and nothing else. The old
-   translate3d(x,0,0) trick does NOT survive this build — lightningcss rewrites it
-   to translate(x) as an equivalent 2D transform, verified in the deployed CSS — so
-   do not re-add it expecting a GPU hint. */
-.conveyor-marquee {
+/* Each logo wraps only after it is fully outside the clipping viewport.
+   No duplicate tracks and no visible hand-off at an iteration boundary. */
+.conveyor-viewport { overflow: hidden; }
+.conveyor-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  min-height: 56px;
+}
+.conveyor-viewport[data-ready] .conveyor-logos { height: 56px; }
+.conveyor-chip {
   display: flex;
   align-items: center;
-  width: max-content;
-  /* 35.5s is the HE desktop value in the constant-speed derivation below the
-     mobile duration comment; EN and the mobile breakpoint override it. */
-  animation: conveyor-scroll 35.5s linear infinite;
+  justify-content: center;
+  flex: 0 0 120px;
+  height: 56px;
+  width: 120px;
+  border-radius: 999px;
+}
+.conveyor-contact { width: max-content; flex-basis: auto; }
+.conveyor-contact a { display:flex; align-items:center; height:100%; padding:0 24px; border-radius:999px; background:var(--color-ink); color:var(--color-inverse); font-weight:600; white-space:nowrap; }
+.conveyor-contact a:focus-visible { outline:2px solid var(--color-sage-deep); outline-offset:-5px; }
+.conveyor-viewport[data-ready]:focus-within .conveyor-chip { animation-play-state:paused; }
+.conveyor-viewport[data-ready] .conveyor-chip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: conveyor-logo var(--conveyor-duration) linear infinite;
+  animation-delay: var(--conveyor-delay);
   will-change: transform;
 }
-/* Guard :hover behind (hover: hover) and (pointer: fine) — on a touchscreen
-   there is no pointer to "leave" an element with, so a tap makes :hover
-   stick and permanently pauses the marquee. :focus-within is left
-   unguarded: blur clears it normally and has no equivalent touch quirk. */
+@keyframes conveyor-logo {
+  from { transform: translateX(var(--conveyor-width)); }
+  to { transform: translateX(var(--conveyor-end)); }
+}
+html[dir='ltr'] .conveyor-viewport[data-ready] .conveyor-chip {
+  animation-direction: reverse;
+}
 @media (hover: hover) and (pointer: fine) {
-  .conveyor-viewport:hover .conveyor-marquee {
-    animation-play-state: paused;
-  }
+  .conveyor-viewport:hover .conveyor-chip { animation-play-state: paused; }
 }
-.conveyor-viewport:focus-within .conveyor-marquee {
-  animation-play-state: paused;
-}
-@keyframes conveyor-scroll {
-  /* RTL: the marquee is anchored at its RIGHT edge (matches dir="rtl" flex
-     flow) and the three duplicate tracks extend to the LEFT, into negative
-     x, off the visible viewport. Translating further left (away from x:0)
-     i.e. away from x:0) drags the whole block away from those duplicates —
-     the viewport runs dry for most of the cycle and every chip "pops back
-     in" only when the animation loops and snaps to 0.
-     Fix: animate from +50% down to 0 instead. This still reads as leftward
-     motion on screen (forward against RTL content), but now travels TOWARD
-     the duplicate tracks, so the viewport is always over covered content.
-     50% = width of exactly one track, since both tracks are identical,
-     so the loop point (0) lines back up with the start (+50%) seamlessly. */
-  from {
-    transform: translateX(50%);
+@media (prefers-reduced-motion: reduce) {
+  .conveyor-viewport[data-ready] .conveyor-chip {
+    position: static;
+    animation: none;
+    will-change: auto;
   }
-  to {
-    transform: translateX(0);
-  }
-}
-/* EN is LTR — mirror the loop so it still reads as "forward" (rightward)
-   instead of visually reversing against left-to-right content. Same two
-   identical tracks, same duration; only the apparent direction flips. */
-@keyframes conveyor-scroll-reverse {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-html[lang='en'] .conveyor-marquee {
-  animation-name: conveyor-scroll-reverse;
-  /* EN's chips are wider than HE's at every breakpoint, so a shared duration
-     can never hold a shared speed - 38s is EN's own desktop value from the
-     constant-speed derivation below the mobile duration comment. */
-  animation-duration: 38s;
-}
-.conveyor-track {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  width: max-content;
-  flex-shrink: 0;
-  /* The spacing between two tracks lives HERE, not as a gap on the marquee.
-     One loop period must equal one track's width exactly: with the gap on the
-     marquee the total is 2T + gap, so translating one half moves T + 0.5·gap and
-     the belt jumps a few px every cycle. Carried as trailing padding, each track
-     measures T + gap and a half-marquee shift lands on a perfect repeat.
-     Gap is responsive (24px, 112px from md up — see below). The desktop value is
-     deliberately large: it sets the loop period P, which must stay bigger than
-     the conveyor viewport (max ~1104px, from the max-w-6xl/px-6 wrapper) so a
-     single chip/logo is never visible twice on screen at once.
-
-     P = (sum of chip widths) + 5·gap, with 5 chips: 4 gaps between them plus the
-     trailing padding. Hebrew is the binding locale — its chips are much narrower
-     than the English ones (בקרוב 106px vs "Coming soon" 167px), so HE sets the
-     floor. Measured at 1280px: HE chips sum to 641.8px, so gap must exceed
-     92.4px. At 112px, P = 1201.8px - 97.8px of headroom. Dropping to 80px would
-     give P = 1041.8px, i.e. 62px BELOW the viewport, and the belt would show a
-     chip twice. (The sum fell from 669px, and the headroom from 125px, when
-     Kapayim was capped at 72px wide - see the img class in HomePage.astro.)
-     If a chip is ever added or removed, re-measure and re-derive this number. */
-  padding-inline-end: 24px;
-}
-@media (min-width: 768px) {
-  .conveyor-track {
-    gap: 112px;
-    padding-inline-end: 112px;
-  }
-}
-/* Speed, not duration, is what should be constant — and duration alone can no
-   longer hold it, because there are now two things that change P: breakpoint
-   (gap 112px -> 24px shrinks the track below md, as it always did) AND locale
-   (EN chips have always summed wider than HE's — the Kapayim swap just made
-   this visible, it didn't create it). One duration per breakpoint can only be
-   correct for one locale, so duration now has a locale axis too, carried by
-   the same `html[lang='en']` selector already used above to reverse the
-   keyframe direction: HE is the value on .conveyor-marquee (the default),
-   EN is its own override.
-   Design speed target: 34.0px/s. duration = loop period P / 34.0, rounded to
-   the nearest HALF second:
-     HE desktop  P=1201.8px -> 35.5s -> 33.85px/s
-     EN desktop  P=1297.5px -> 38s   -> 34.14px/s
-     HE mobile   P=761.8px  -> 22.5s -> 33.86px/s
-     EN mobile   P=857.5px  -> 25s   -> 34.30px/s
-   All four sit within 0.88% of the 34.0px/s target (33.85-34.30px/s).
-
-   Halves, not whole seconds as before. Capping Kapayim at 72px shortened every
-   period by 27.5px, and at whole-second precision HE would have landed on 22s
-   mobile / 35s desktop, i.e. +1.84% and +0.99% fast - visibly quicker than EN
-   on the same page. A half-second step costs nothing and halves the spread.
-   Recompute every value here if the gap, the chip set, or a logo cap changes. */
-@media (max-width: 767px) {
-  .conveyor-marquee {
-    animation-duration: 22.5s;
-  }
-  html[lang='en'] .conveyor-marquee {
-    animation-duration: 25s;
-  }
-}
-/* Fixed height, not min-height: chips carry either a text label or a partner
-   logo, and the belt only reads as one moving row if both come out the same
-   height. Vertical padding would add to the logo's intrinsic height and make
-   that chip taller than its neighbours. */
-.conveyor-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  height: 56px;
-  padding-inline: 24px;
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-size: 0.9375rem;
-  color: var(--color-muted);
+  .conveyor-viewport[data-ready] .conveyor-logos { height: auto; }
 }
 
 /* --- KPI icons (advertisers band) ------------------------------------------
@@ -598,20 +510,5 @@ html[lang='en'] .conveyor-marquee {
   html {
     scroll-behavior: auto;
   }
-  /* A media query adds nothing to specificity, so the bare selector below is
-     (0,1,0) while `html[lang='en'] .conveyor-marquee` above (the EN duration
-     override) is (0,2,1) — on /en/* that override outranks this rule and
-     wins on BOTH animation-name and animation-duration, so `animation: none`
-     here would be silently ignored and the belt would keep scrolling under
-     reduced motion. Repeating the locale selector ties the specificity and
-     wins on source order instead. Any future locale-scoped .conveyor-marquee
-     rule must be added here too, or it reopens this exact hole. */
-  .conveyor-marquee,
-  html[lang='en'] .conveyor-marquee {
-    animation: none;
-    transform: none;
-  }
-  .conveyor-marquee .conveyor-track[aria-hidden='true'] {
-    display: none;
-  }
+
 }

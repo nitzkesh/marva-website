@@ -153,12 +153,9 @@ document.querySelectorAll<HTMLFormElement>('.marva-form').forEach((form) => {
 });
 
 /* ── 6. Calm GSAP scroll reveals — every page, guarded by reduced-motion ──
-   .who-line (home #who) and .how-card (advertisers #how) get their own
-   bespoke ScrollTrigger sequences in their page's own script — excluded here
-   so they don't double-fire. #who has no h2 at all (3 stacked <p> lines), so
-   no exclusion is needed for it; .how-card was never an h2 either. ────── */
+   Keep the who-story headline readable throughout its own explanatory scene. */
 if (!reduced) {
-  document.querySelectorAll<HTMLElement>('main h2').forEach((h2) => {
+  document.querySelectorAll<HTMLElement>('main h2:not(#who-title)').forEach((h2) => {
     gsap.from(h2, {
       y: 30,
       opacity: 0,

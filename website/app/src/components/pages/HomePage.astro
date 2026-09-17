@@ -8,6 +8,7 @@ import Badge from '../Badge.astro';
 import ExpandCard from '../ExpandCard.astro';
 import { getContent, canonicalHref, visible, miluimBannerText, type Locale } from '../../data/content';
 import sections from '../../data/sections.json';
+import WhoStatement from '../WhoStatement.astro';
 
 interface Props {
   locale: Locale;
@@ -47,6 +48,12 @@ const cardPhotoSrc: Record<string, string> = {
 };
 
 const tintClasses = ['bg-sage-tint', 'bg-sky-tint', 'bg-sand-tint'];
+// Reserve each logo's aspect ratio before the image response arrives.
+const partnerLogoSizes: Record<string, { width: number; height: number }> = {
+  '/partners/cinema-city.png': { width: 240, height: 173 },
+  '/partners/valley.png': { width: 309, height: 256 },
+  '/partners/kapayim.png': { width: 378, height: 152 },
+};
 
 const bigButtonTints: Record<string, { bg: string; hover: string }> = {
   sage: { bg: 'bg-sage-tint', hover: 'hover:bg-sage' },
@@ -80,7 +87,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
             <h1 class="font-display font-black text-ink text-[clamp(2.75rem,5vw+1rem,4.5rem)] leading-[1.05]">
               {homeHero.h1}
             </h1>
-            <p class="font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
+            <p class="whitespace-pre-line font-display font-bold text-ink text-[clamp(1.5rem,3vw,2rem)] mt-4">
               {homeHero.sub}
             </p>
             {homeHero.line && (
@@ -115,66 +122,17 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
       <div class="relative z-10 border-t border-border bg-surface/70">
         <div class="max-w-6xl mx-auto px-6 py-7 md:py-8">
           <p class="font-body text-xs tracking-[0.12em] uppercase text-muted mb-3">{conveyorLabel}</p>
-          <div class="overflow-hidden conveyor-viewport">
-            <div class="conveyor-marquee">
-              <!-- Two identical tracks, translated by exactly one track's width (50%)
-                   per loop, so the belt loops seamlessly. Copy 0 is the live, interactive
-                   strip (real CTA link, aria-hidden="false"); copy 1 is a decorative
-                   duplicate (aria-hidden="true", non-interactive CTA stand-in).
-
-                   Two is the minimum that still covers the viewport at every point in
-                   the cycle, and it is enough BECAUSE of the loop-period invariant in
-                   global.css: a track is always wider than the viewport, so one spare
-                   copy always covers the gap the shift opens up. Verified 21/21 at both
-                   breakpoints and both locales.
-
-                   This was four copies until 2026-08-23. Four made the marquee 2993px
-                   wide on mobile — 8979 device px at 3x, past the 8192 max texture size
-                   many mobile GPUs have — so the compositor had to tile it, and the
-                   one-track snap at each loop could expose a tile that had not been
-                   rastered yet. That showed up as the chips vanishing for a frame once
-                   per cycle. Two copies halve it to 4490 device px, inside the limit.
-                   Do not add copies back without re-checking that number. -->
-              {[0, 1].map((copy) => (
-                <div class="conveyor-track" aria-hidden={copy === 0 ? 'false' : 'true'}>
-                  {visible(conveyorChips).map((chip, i) => (
-                    chip.isCta ? (
-                      copy === 0 ? (
-                        <a href={chip.href} class="conveyor-chip bg-ink text-inverse font-semibold hover:bg-[#2B2B2B] transition-colors">{chip.text}</a>
-                      ) : (
-                        <span tabindex="-1" class="conveyor-chip bg-ink text-inverse font-semibold">{chip.text}</span>
-                      )
-                    ) : chip.logo ? (
-                      <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
-                        {/* eager, not lazy: the belt sits just under the hero, so these are
-                            in view immediately and lazy only delays them. It also matters for
-                            the animation — a logo has no intrinsic width until it decodes, so
-                            a late arrival widens its chip and changes the track width mid-run,
-                            which shows up as a stutter in the belt. */}
-                        {/* h-10 sets the common height; max-w caps the wide ones.
-                            Height alone does not equalise perceived size: at h-10
-                            Cinema City lands 55.5px wide and Valley 48.3px, but
-                            Kapayim's 2.49 aspect ratio put it at 99.5px, roughly
-                            double their area, and it read as the biggest logo on
-                            the belt. 72px is where its bounding box (72x29 =
-                            2076px^2) matches theirs (2220 and 1932). Expressed as a
-                            cap rather than a per-logo size so any future wide
-                            wordmark is normalised on arrival. Changing this number
-                            changes chip width, which changes the loop period, which
-                            changes all four durations in global.css -- re-derive
-                            them if you touch it. */}
-                        <img src={chip.logo} alt={chip.text} class="h-10 w-auto max-w-[72px] object-contain" loading="eager" decoding="sync" />
-                      </span>
-                    ) : (
-                      <span class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
-                        <img src="/marva-mark.svg" alt="" class="w-4 h-4 opacity-40 grayscale" />
-                        {chip.text}
-                      </span>
-                    )
-                  ))}
-                </div>
+          <div class="conveyor-viewport" data-conveyor>
+            <ul class="conveyor-logos" aria-label={conveyorLabel}>
+              {visible(conveyorChips).filter(chip => chip.logo).map((chip, i) => (
+                <li class={`conveyor-chip ${tintClasses[i % tintClasses.length]}`}>
+                  <img src={chip.logo} alt={chip.text} {...partnerLogoSizes[chip.logo!]} class="h-10 w-auto max-w-[72px] object-contain" loading="eager" decoding="async" />
+                </li>
               ))}
-            </div>
+              <li class="conveyor-chip conveyor-contact">
+                <a href="#inquiry">{locale === 'he' ? 'רוצים להיות כאן? דברו איתנו' : 'Want to be here? Talk to us'}</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -182,27 +140,7 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
     </section>
     )}
 
-    <!-- ═══════════════ B. WHO ARE WE — FULL-SCREEN STATEMENT ═══════════════ -->
-    {sections.home.who && (
-    <section id="who" class="min-h-[70vh] flex items-center justify-center bg-sage-tint py-16">
-      <!-- sage-tint here (not sand-tint): sage is Marva's dominant brand colour (45% of the
-           palette) and was unused on the home page; #who is also the full-screen brand
-           statement moment, a natural place to spend it. This keeps page rhythm alternating —
-           hero bg-base -> who bg-sage-tint -> where bg-sand-tint -> big-buttons bg-surface ->
-           upcoming bg-sand-tint -> inquiry bg-surface — so no two adjacent sections share a bg. -->
-      <div class="max-w-3xl mx-auto px-6 text-center flex flex-col gap-6 w-full min-w-0">
-        {whoStatement.lines.map((line, i) => (
-          // Line 3 is the longest string and stays single-line from md up (below, it wraps
-          // to 2 balanced lines instead). Its clamp maximum steps down to 3.25rem (vs line 2's
-          // 3.5rem) so it fits the 720px usable width (max-w-3xl minus px-6) without bleeding
-          // past the column at desktop widths.
-          <p class={`who-line font-display font-bold text-ink leading-[1.2] text-balance ${i === 0 ? 'text-[clamp(2.25rem,4.5vw+1.1rem,4rem)]' : i === 2 ? 'text-[clamp(2rem,4vw+1rem,3.25rem)]' : 'text-[clamp(2rem,4vw+1rem,3.5rem)]'} ${i === 2 ? 'md:whitespace-nowrap' : ''}`}>
-            {line}
-          </p>
-        ))}
-      </div>
-    </section>
-    )}
+    {sections.home.who && <WhoStatement locale={locale} />}
 
     <!-- ═══════════════ D. WHERE DO WE WORK ═══════════════ -->
     {sections.home.where && (
@@ -402,6 +340,8 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
 
   <script>
     import { animate, stagger } from 'motion';
+    import { initConveyor } from '../../scripts/conveyor';
+    initConveyor();
     import gsap from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -433,35 +373,5 @@ const bigButtonTints: Record<string, { bg: string; hover: string }> = {
       }
     }
 
-    /* Who-are-we stacked cascade — home #who only. 3 lines sit stacked
-       normally (no pinning) and fade/slide in one after another as the
-       section is scrolled to — not a `main h2` reveal (there's no h2 in
-       #who at all, just 3 <p class="who-line">), so no exclusion is needed
-       for it in shared.ts.
-
-       Genuinely sequential, not a GSAP `stagger` (stagger only offsets each
-       line's START by a fixed delta — with these durations the tweens still
-       overlap in time, so lines 2 and 3 end up mid-fade together and read as
-       "showing at once"). Each `+=0.3` position instead starts a line only
-       after the PREVIOUS one has fully finished, so line 2 doesn't begin
-       until line 1 has completely landed. */
-    if (!reduced) {
-      const whoSection = document.getElementById('who');
-      const whoLines = document.querySelectorAll<HTMLElement>('.who-line');
-
-      if (whoSection && whoLines.length) {
-        const tl = gsap.timeline({
-          scrollTrigger: { trigger: whoSection, start: 'top 70%', once: true },
-        });
-
-        whoLines.forEach((line, i) => {
-          tl.from(
-            line,
-            { y: 24, opacity: 0, duration: 0.5, ease: 'power2.out', clearProps: 'transform' },
-            i === 0 ? 0 : '+=0.3',
-          );
-        });
-      }
-    }
   </script>
 </Layout>

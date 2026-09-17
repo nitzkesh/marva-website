@@ -76,14 +76,6 @@
     {
       "text": "Kapayim",
       "logo": "/partners/kapayim.png"
-    },
-    {
-      "text": "Coming soon"
-    },
-    {
-      "text": "Want to be here? Talk to us",
-      "href": "/en/#inquiry",
-      "isCta": true
     }
   ],
   "miluim": {
@@ -94,6 +86,13 @@
       "Marva is a new advertising platform",
       "Free mineral water",
       "The label is your ad space"
+    ],
+    "headline": "Advertising that leaves the screen.",
+    "replayLabel": "Watch again",
+    "stages": [
+      "An ad on a screen",
+      "Out into the real world",
+      "Your brand. In their hands."
     ]
   },
   "howHeading": "How does it work?",

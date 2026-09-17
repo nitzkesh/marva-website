@@ -283,7 +283,7 @@ export interface ContentBundle {
   conveyorLabel: string;
   conveyorChips: ConveyorChip[];
   miluim: MiluimContent;
-  whoStatement: { lines: string[] };
+  whoStatement: { lines: string[]; headline: string; replayLabel: string; stages: string[] };
   howHeading: string;
   howSteps: HowStep[];
   whereHeading: string;
