@@ -33,7 +33,8 @@ website/editor: local editing UI/server.
 The current repository workflow deploys after matching pushes to main, using npm ci, npm run build, then Wrangler Pages deploy to marva-website.
 Do not deploy the inspected checkout now: production contains newer/different assets and font behavior. Obtain the live-source revision first.
 The editor has a publish control; avoid it until source parity is verified. Previewing the local code is not proof of production parity.
-Marva editor and preview can run independently of portfolio-ai. No investment tool, broker credential or Mission Control service is required.
+Marva editor and preview operate independently using their documented commands and ports.
 
 ## Boundaries
 No online checkout observed. No backend database, CRM, analytics correctness, form delivery or production runtime version was verified. Do not import old Base44/Next.js/Netlify alternatives as current architecture.
+

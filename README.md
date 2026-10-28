@@ -12,5 +12,6 @@ This documentation refresh does not change website/app or the deployment workflo
 
 ## Scope
 Marva supplies free mineral water funded by bottle-label advertising. Advertisers and distribution partners have separate site journeys. Hebrew and English are both shipped languages. The site collects inquiries; it is not a checkout.
-The local editor is an independent Marva tool. It does not require portfolio-ai or Mission Control.
+The local editor is an independent Marva tool.
 Old delivery/design/copy documents and the Claude Design handoff are not current authority. Their replacement references are above; history is retained in Git.
+
