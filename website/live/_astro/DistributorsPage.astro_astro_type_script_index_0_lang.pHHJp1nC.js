@@ -1,0 +1,1 @@
+import{t as e}from"./hero-spring.BKyeAV8e.js";e();
