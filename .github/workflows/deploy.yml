@@ -1,48 +1,29 @@
 name: Deploy Marva website
-
 on:
   push:
     branches: [main]
     paths:
-      - 'website/app/**'
+      - 'website/live/**'
+      - 'ops/check-live.mjs'
       - '.github/workflows/deploy.yml'
-
-# The job only ever reads the repo: Cloudflare is authenticated with its own API
-# token, so GITHUB_TOKEN never needs write. The repo default is already `read`,
-# but pinning it here keeps the guarantee with the workflow rather than in a
-# repo setting that can be changed without touching this file.
 permissions:
   contents: read
-
-# One deploy at a time per ref. Queue rather than cancel: `wrangler pages deploy`
-# uploads to a live site, and interrupting it mid-upload risks publishing a
-# half-written build.
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy-marva-production
   cancel-in-progress: false
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: website/app
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
-
-      # Node 24 is Active LTS until 2028-04; 22 dropped to maintenance (security
-      # fixes only) and is the version the local machine has already moved off,
-      # so this also removes local/CI drift.
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-
-      - run: npm ci
-
-      - run: npm run build
-
-      - name: Deploy to Cloudflare Pages
-        run: npx wrangler pages deploy dist --project-name=marva-website --force
+      - name: Validate the checked-in production source
+        run: node ops/check-live.mjs
+      - name: Deploy exact checked-in static files
+        run: npx --yes wrangler@4.108.0 pages deploy website/live --project-name=marva-website --branch=main --commit-hash="$GITHUB_SHA"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: 8648b92ed2c23dd6065cdb4d74df01fd

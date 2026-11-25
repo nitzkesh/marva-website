@@ -1,17 +1,24 @@
-# Marva — current project reference
-Updated 2026-10-28. Owner decision: the live site at https://marva-water.com is the approved source of truth.
+# Marva — current production source
 
-## Read first
-1. [Current state and source hierarchy](docs/CURRENT_STATE.md)
-2. [Brand book](brand-book/BRAND_BOOK.md) and [visual PDF](brand-book/Marva_Brand_Book_2026-10-28.pdf)
-3. [Technology reference](docs/TECH_STACK.md)
-4. [Content and asset reference](docs/CONTENT_ASSETS.md)
+Updated 2026-11-25. The owner designated https://marva-water.com as the source of truth and requested that GitHub be reconciled to it.
 
-The local repository and GitHub main baseline (79e0cae605b23d0a505becdef0d1bafe733d06b1) are NOT certified to reproduce the live website. Live intro assets and font order differ. Do not deploy this source over the approved site until that gap is reconciled.
-This documentation refresh does not change website/app or the deployment workflow.
+## Edit and deploy
 
-## Scope
-Marva supplies free mineral water funded by bottle-label advertising. Advertisers and distribution partners have separate site journeys. Hebrew and English are both shipped languages. The site collects inquiries; it is not a checkout.
-The local editor is an independent Marva tool.
-Old delivery/design/copy documents and the Claude Design handoff are not current authority. Their replacement references are above; history is retained in Git.
+**website/live/** is the authoritative, deployable static website: HTML, CSS, JavaScript and assets. These are the actual published files recovered from Cloudflare Pages, not a new rendering of the outdated Astro checkout. Edit the relevant files here. Both Hebrew and English are included.
 
+Run `node ops/check-live.mjs` to check required routes and local asset references. To preview locally, serve `website/live` with a static HTTP server. Merge changes to main to deploy that exact directory to the existing marva-website Pages project. Production access and domains are unchanged.
+
+**website/app/** is preserved as historical Astro source. It does not reproduce the approved production site and is no longer the production build input. Do not deploy it or use the legacy editor publish operation. A future return to an Astro build requires a separate visual and functional reconciliation.
+
+## Recovery evidence
+
+- Immutable baseline: https://143b6a4f.marva-website.pages.dev
+- Deployment: 143b6a4f-a48c-4b6e-abae-a04961649b4e, published 2026-11-22.
+- Recovered 1,023 public files (76,921,539 bytes before the copy edit). Every file passed the original Cloudflare BLAKE3 content-hash check.
+- 30 dot-prefixed build artifacts are recorded in the baseline manifest but intentionally excluded from the public deployment source.
+- The sole visible change is removal of “וחתונות” from the Hebrew homepage events sentence. English content is unchanged.
+- `ops/live-baseline.json` preserves the full original manifest.
+- `ops/live-recovery-report.json` records each recovered file's SHA-256, size and original Cloudflare hash.
+- `node ops/check-live.mjs --baseline` verifies the initial reconciliation byte-for-byte while allowing only that exact copy edit. This historical check is not appropriate after future approved edits.
+
+See [current state](docs/CURRENT_STATE.md) and [brand book](brand-book/BRAND_BOOK.md). Preserve the existing site appearance and behavior for bounded edits.
